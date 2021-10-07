@@ -1,0 +1,16 @@
+﻿<root>
+  <Activities>
+    <Activity DiagramFullName ="WFBuilder.Activities.Transparent" Namespace="WorkflowEngine.SDK.ActivityLib.General.Logger" Type="Transparent" PinsQtyIn ="1" PinsQtyOut ="1">
+      <Properties>
+        <Property Category="Transparent" name ="PinsQty" value="2" format="Integer"/>
+      </Properties>
+    </Activity>
+    <Activity DiagramFullName ="WFBuilder.Activities.Log" Namespace="WorkflowEngine.SDK.ActivityLib.General.Logger" Type="Log" PinsQtyIn ="1" PinsQtyOut ="1">
+      <Properties>
+        <Property Category="Log" name ="Level" value="INFO" format="String"/>
+        <Property Category="Log" name ="Delimiter" value="" format="String"/>
+        <Property Category="Log" name ="Values" value="" format="String" />
+      </Properties>
+    </Activity>
+  </Activities>
+</root>

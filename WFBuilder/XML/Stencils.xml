@@ -1,0 +1,16 @@
+﻿<root>
+  <Stencils>
+    <Stencil id="1" name="General" isVisible="1">
+      <Activities>
+        <Activity Namespace="WFBuilder.Activities" Type="Transparent"  PinsQtyIn ="2" PinsQtyOut ="6"/>
+        <Activity Namespace="WFBuilder.Activities" Type="Log"  PinsQtyIn ="1" PinsQtyOut ="1"/>
+      </Activities>
+    </Stencil>
+    <Stencil id="2" name="General2" isVisible="1">
+      <Activities>
+        <Activity Namespace="WFBuilder.Activities" Type="Transparent"  PinsQtyIn ="2" PinsQtyOut ="6"/>
+        <Activity Namespace="WFBuilder.Activities" Type="Log"  PinsQtyIn ="1" PinsQtyOut ="1"/>
+      </Activities>
+    </Stencil>
+  </Stencils>
+</root>
