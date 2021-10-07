@@ -23,7 +23,7 @@ namespace WFBuilder.Activities
 
 
         [XtraSerializableProperty]
-        //[PropertyGridEditor(TemplateKey = "VariableEditorTemplate")]
+        ////[PropertyGridEditor(TemplateKey = "VariableEditorTemplate")]
         [Description(""), Category("Log")]
         public string Delimiter { get; set; }
 
