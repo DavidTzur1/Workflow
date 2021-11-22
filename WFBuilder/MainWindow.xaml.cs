@@ -18,8 +18,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
-using WFBuilder.Shapes;
-using WFBuilder.DiagramContainers;
 using System.ComponentModel;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Ribbon;
@@ -136,8 +134,6 @@ namespace WFBuilder
         void InitializeStencils()
         {
             XMLStencils = XElement.Load(ConfigurationManager.AppSettings["Stencils"]);
-            XMLDiagramContainers = XElement.Load(ConfigurationManager.AppSettings["DiagramContainers"]);
-
             List<string> stencilCollection = new List<string>();
             foreach (XElement stencil in XMLStencils.Element("Stencils").Elements("Stencil"))
             {
@@ -203,68 +199,7 @@ namespace WFBuilder
 
 
 
-        private void Diagram_CustomGetEditableItemProperties(object sender, DiagramCustomGetEditableItemPropertiesEventArgs e)
-        {
-            try
-            {
-
-                log.Debug("CustomGetEditableItemProperties " + e.Item.Name);
-                if (e.Item.GetType().IsSubclassOf(typeof(DiagramContainerEx)))
-                {
-                    //////////////Remove all the standard properties //////////////////////
-                    var iterator = e.Properties.GetEnumerator();
-                    while (iterator.MoveNext())
-                    {
-                        e.Properties.RemoveAt(0);
-                    }
-
-
-                    var items = e.Item.Controller.Item.NestedItems;
-                    int i = 1;
-                    int inIndex = 1;
-                    int outIndex = 33;
-                    foreach (var item in items)
-                    {
-                        log.Debug("Tag=" + item.Tag?.ToString());
-
-                        if (item is InputPointShape)
-                        {
-                            e.Properties.Add(e.CreateProxyProperty("in" + inIndex++, pin => ((InputPointShape)item).PinID, (pin, value) => ((InputPointShape)item).PinID = value, new Attribute[] { new DisplayAttribute() { GroupName = "Pins In" }, new ReadOnlyAttribute(true) }));
-                        }
-                        if (item is OutputPointShape)
-                        {
-                            e.Properties.Add(e.CreateProxyProperty("out" + outIndex++, pin => ((OutputPointShape)item).PinID, (pin, value) => ((OutputPointShape)item).PinID = value, new Attribute[] { new DisplayAttribute() { GroupName = "Pins Out" }, new ReadOnlyAttribute(true) }));
-                        }
-
-                    }
-
-
-                    /////////////Add Base custom properties//////////////////////////////////////
-                    PropertyDescriptor infoPropertyDescriptor = TypeDescriptor.GetProperties(Type.GetType("WFBuilder.DiagramContainers.DiagramContainerEx"))["ID"];
-                    e.Properties.Add(infoPropertyDescriptor);
-                    infoPropertyDescriptor = TypeDescriptor.GetProperties(Type.GetType("WFBuilder.DiagramContainers.DiagramContainerEx"))["NameID"];
-                    e.Properties.Add(infoPropertyDescriptor);
-                    //e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.DiagramContainers.DiagramContainerEx"))["InputPins"]) ;
-                    //e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.DiagramContainers.DiagramContainerEx"))["OutputPins"]);
-
-                    /////////////add your custom properties//////////////////////////////////////
-                    XElement diagramContainer = XMLDiagramContainers.Element("DiagramContainers").Elements("DiagramContainer").FirstOrDefault(item => item.Attribute("Type").Value == e.Item.Name);
-                    foreach (XElement property in diagramContainer.Element("Properties").Elements("Property"))
-                    {
-                        infoPropertyDescriptor = TypeDescriptor.GetProperties(Type.GetType(diagramContainer.Attribute("DiagramFullName").Value))[property.Attribute("name").Value];
-                        e.Properties.Add(infoPropertyDescriptor);
-                    }
-
-                    
-
-                    //////////////////////////////////////////////////////////////////////////////
-                }
-            }
-            catch(Exception ex)
-            {
-                log.Error(ex);
-            }
-        }
+      
 
         private void Diagram_QueryConnectionPoints(object sender, DiagramQueryConnectionPointsEventArgs e)
         {
