@@ -91,6 +91,7 @@
     <Compile Include="BaseAdapter.cs" />
     <Compile Include="Behaviors\ListBoxBehavior.cs" />
     <Compile Include="Models\VariableModel.cs" />
+    <Compile Include="PropertyGridControlEx.cs" />
     <Compile Include="Validations\ValidVariableNameAttribute.cs" />
     <Compile Include="Validations\VariableValTypeAttribute.cs" />
     <Page Include="MainWindow.xaml">

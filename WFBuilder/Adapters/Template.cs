@@ -11,20 +11,25 @@ using System.Threading.Tasks;
 
 namespace WFBuilder.Adapters
 {
+    //[Range(int.MinValue,int.MaxValue) ]
+    //[RegularExpression(@"^\d+.?\d{0,2}$")]
+
+    //[PropertyGridEditor(TemplateKey = "SpinEditor")]
+    //public string StrInt { get; set; }
+
     public class Template : BaseAdapter
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [XtraSerializableProperty]
-        [PropertyGridEditor(TemplateKey = "SpinEditor")]
         [Description("Template Adapter"), Category("Template")]
         public int PinsQty { get; set; }
-        [XtraSerializableProperty]
-        //[Range(int.MinValue,int.MaxValue) ]
-        //[RegularExpression(@"^\d+.?\d{0,2}$")]
 
+        
+        [XtraSerializableProperty]
+        [Description("Template Adapter"), Category("Template")]
         [PropertyGridEditor(TemplateKey = "SpinEditor")]
-        public string StrInt { get; set; }
+        public string VarString { get; set; }
 
         public Template()
         {
@@ -51,7 +56,7 @@ namespace WFBuilder.Adapters
 
             //Add prorerties of this adapter
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["StrInt"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarString"]);
         }
     }
 }

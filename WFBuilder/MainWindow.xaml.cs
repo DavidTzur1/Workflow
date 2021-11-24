@@ -38,7 +38,7 @@ namespace WFBuilder
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         static public XElement XMLStencils { get; set; }
-       
+
         public int CunterID
         {
             get { return (int)GetValue(CunterIDProperty); }
@@ -53,16 +53,13 @@ namespace WFBuilder
             set { SetValue(VariablesProperty, value); }
         }
         public static readonly DependencyProperty VariablesProperty = DependencyProperty.Register("Variables", typeof(ObservableCollection<VariableModel>), typeof(MainWindow));
-        
-
-       
 
         static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-           // MessageBox.Show("My message here");
+            // MessageBox.Show("My message here");
         }
 
-            public MainWindow()
+        public MainWindow()
         {
             InitializeComponent();
             CunterID = 0;
@@ -78,10 +75,7 @@ namespace WFBuilder
             diagramControl.ItemInitializing += Diagram_ItemInitializing;
             diagramControl.Loaded += DiagramControl_Loaded;
 
-            //DSVariables dSVariables = new DSVariables();
-            //diagramControl.Items.Add(dSVariables);
-
-            Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
+            Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
 
         }
 
@@ -104,10 +98,10 @@ namespace WFBuilder
         private void DiagramControl_Loaded(object sender, RoutedEventArgs e)
         {
             RibbonControl ribbon = LayoutHelper.FindElementByType<RibbonControl>(diagramControl);
-           // ribbon.ToolbarItems.Remove(ribbon.ToolbarItems.FirstOrDefault(item => ((BarItemLink)item).BarItemName == DefaultBarItemNames.Save));
+            // ribbon.ToolbarItems.Remove(ribbon.ToolbarItems.FirstOrDefault(item => ((BarItemLink)item).BarItemName == DefaultBarItemNames.Save));
         }
 
-        
+
 
         private void Diagram_ItemInitializing(object sender, DiagramItemInitializingEventArgs e)
         {
@@ -198,11 +192,11 @@ namespace WFBuilder
                 (e.Item as BaseAdapter).AddProperties(e);
             }
 
-           ////////////////////////////////////////////////////////////////////////
-            else if(e.Item is DiagramRoot)
+            ////////////////////////////////////////////////////////////////////////
+            else if (e.Item is DiagramRoot)
             {
                 e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" } }));
-                e.Properties.Add(e.CreateProxyProperty("CunterID", item => CunterID, (item, value) => CunterID = value ,new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+                e.Properties.Add(e.CreateProxyProperty("CunterID", item => CunterID, (item, value) => CunterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
             }
         }
         private void Diagram_QueryConnectionPoints(object sender, DiagramQueryConnectionPointsEventArgs e)
@@ -212,14 +206,14 @@ namespace WFBuilder
             DiagramShape shape = e.HoveredItem as DiagramShape;
             if (shape != null)
             {
-                if (shape.Tag.ToString()== "input")
+                if (shape.Tag.ToString() == "input")
                 {
                     log.Debug("input");
                     e.ItemConnectionBorderState = ConnectionElementState.Hidden;
                     if (e.ConnectorPointType == ConnectorPointType.Begin)
                         e.ItemConnectionPointStates.ToList().ForEach(cp => cp.State = ConnectionElementState.Disabled);
                 }
-                else if (shape.Tag.ToString() =="output")
+                else if (shape.Tag.ToString() == "output")
                 {
                     log.Debug("output");
                     e.ItemConnectionBorderState = ConnectionElementState.Hidden;
@@ -229,8 +223,8 @@ namespace WFBuilder
             }
         }
     }
-
-    
 }
+    
+
 
 
