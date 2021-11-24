@@ -6,14 +6,18 @@
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxdiag="http://schemas.devexpress.com/winfx/2008/xaml/diagram"
     xmlns:dxdiagt="http://schemas.devexpress.com/winfx/2008/xaml/diagram/themekeys"
-    xmlns:local="clr-namespace:WFBuilder" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:local="clr-namespace:WFBuilder"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-    xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid" 
+    xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:local1="clr-namespace:WFBuilder.Behaviors"
     x:Class="WFBuilder.MainWindow"
      mc:Ignorable="d"
     Title="MainWindow" Height="800" Width="1000">
+    
     <dx:ThemedWindow.Resources>
         <Style TargetType="{x:Type dxdiag:DiagramConnector}">
             <Setter Property="Type" Value="Straight" />
@@ -28,8 +32,50 @@
             <!--<dxdiag:DiagramDesignerControl.Actions>
                 <dxb:RemoveBarItemAndLinkAction  ItemName="{x:Static dxdiag:DefaultBarItemNames.Save}" />
             </dxdiag:DiagramDesignerControl.Actions>-->
-           
-           
+            <dxdiag:DiagramDesignerControl.Resources>
+                <DataTemplate x:Key="contentComboBoxEditor">
+                    <dxe:ComboBoxEdit Name="PART_Editor">
+                        <dxe:ComboBoxEditItem Content="Director"/>
+                        <dxe:ComboBoxEditItem Content="Manager"/>
+                    </dxe:ComboBoxEdit>
+                </DataTemplate>
+                <DataTemplate x:Key="SpinEditor">
+                    <dxe:PopupBaseEdit Name="PART_Editor">
+                        <dxe:PopupBaseEdit.EditTemplate>
+                            <ControlTemplate>
+                                <dxe:SpinEdit x:Name="PART_Editor" 
+                                                  EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalContentAlignment="Left"
+                                                  AllowNullInput="False"
+                                                  ShowBorder="False"
+                                                  IsFloatValue="False"
+                                                  ValidateOnTextInput="True"
+                                                  Increment="50"
+                                                  MinValue="500"
+                                                  MaxValue="5000"
+                                                  InvalidValueBehavior="AllowLeaveEditor"
+                                                  Mask="#####">
+                                </dxe:SpinEdit>
+                            </ControlTemplate>
+                        </dxe:PopupBaseEdit.EditTemplate>
+                        <!--<dxe:PopupBaseEdit.PopupContentTemplate>
+                            <ControlTemplate>
+                                <dxe:ListBoxEdit ShowBorder="False"
+                                                     EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue}"
+                                                     ItemsSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).DataContext.Definition.DataContext.Widths}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <local1:ListBoxBehavior/>
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxe:ListBoxEdit>
+                            </ControlTemplate>
+                        </dxe:PopupBaseEdit.PopupContentTemplate>-->
+                    </dxe:PopupBaseEdit>
+
+                </DataTemplate>
+                    
+            </dxdiag:DiagramDesignerControl.Resources>
+
+
 
         </dxdiag:DiagramDesignerControl>
         

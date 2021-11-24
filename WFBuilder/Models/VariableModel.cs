@@ -10,6 +10,7 @@ using WFBuilder.Validations;
 
 namespace WFBuilder.Models
 {
+    [Serializable]
     public class VariableModel
     {
         [XtraSerializableProperty ]
@@ -19,6 +20,7 @@ namespace WFBuilder.Models
         public ValidationDataTypeEx ValType { get; set; } = ValidationDataTypeEx.Integer;
         [XtraSerializableProperty]
         [VariableValType ("ValType",ErrorMessage ="Not valid")]
+        
         public object Val { get; set; }
 
         public LevelScopeType LevelScope { get; set; } = LevelScopeType.Local;

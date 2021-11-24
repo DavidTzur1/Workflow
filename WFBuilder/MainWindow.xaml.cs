@@ -25,6 +25,8 @@ using DevExpress.Xpf.Bars;
 using System.Collections.ObjectModel;
 using WFBuilder.Models;
 using DevExpress.Xpf.PropertyGrid;
+using DevExpress.Utils.Serializing;
+using DevExpress.Data.Browsing;
 
 namespace WFBuilder
 {
@@ -36,22 +38,31 @@ namespace WFBuilder
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         static public XElement XMLStencils { get; set; }
-        static public XElement XMLDiagramContainers { get; set; }
-
+       
         public int CunterID
         {
             get { return (int)GetValue(CunterIDProperty); }
             set { SetValue(CunterIDProperty, value); }
         }
-        public static readonly DependencyProperty CunterIDProperty = DependencyProperty.Register("CunterID", typeof(int), typeof(MainWindow));
-        private void BarButtonItem_ItemDoubleClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        public static readonly DependencyProperty CunterIDProperty = DependencyProperty.Register("CunterID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
+
+        [XtraSerializableProperty(XtraSerializationVisibility.Collection, useCreateItem: true)]
+        public ObservableCollection<VariableModel> Variables
         {
-            MessageBox.Show("My message here");
+            get { return (ObservableCollection<VariableModel>)GetValue(VariablesProperty); }
+            set { SetValue(VariablesProperty, value); }
         }
+        public static readonly DependencyProperty VariablesProperty = DependencyProperty.Register("Variables", typeof(ObservableCollection<VariableModel>), typeof(MainWindow));
+        
 
        
 
-        public MainWindow()
+        static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+           // MessageBox.Show("My message here");
+        }
+
+            public MainWindow()
         {
             InitializeComponent();
             CunterID = 0;
@@ -67,13 +78,16 @@ namespace WFBuilder
             diagramControl.ItemInitializing += Diagram_ItemInitializing;
             diagramControl.Loaded += DiagramControl_Loaded;
 
-            DSVariables dSVariables = new DSVariables();
-            diagramControl.Items.Add(dSVariables);
+            //DSVariables dSVariables = new DSVariables();
+            //diagramControl.Items.Add(dSVariables);
 
-            
+            Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
 
+        }
 
-
+        static MainWindow()
+        {
+            DiagramControl.ItemTypeRegistrator.Register(typeof(MainWindow));
         }
 
         private void PropertyGridControl_ValidateCell(object sender, ValidateCellEventArgs e)
@@ -159,13 +173,13 @@ namespace WFBuilder
             Stencils.ForEach(s => DiagramToolboxRegistrator.UnregisterStencil(s));
         }
 
-       
-
         private void diagram_CustomGetSerializableItemProperties(object sender, DevExpress.Xpf.Diagram.DiagramCustomGetSerializableItemPropertiesEventArgs e)
         {
             if (e.ItemType == typeof(DiagramRoot))
             {
+                //e.Properties.Add(TypeDescriptor.GetProperties(typeof(MainWindow))["CunterID"]);
                 e.Properties.Add(e.CreateProxyProperty("CunterID", item => CunterID, (item, value) => CunterID = value));
+                e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value));
             }
         }
 
@@ -181,26 +195,16 @@ namespace WFBuilder
             //////////////////////////////////////////////////////////////////////
             if (e.Item is BaseAdapter)
             {
-
-                ///////////////////Add Adapter properties //////////////////////
                 (e.Item as BaseAdapter).AddProperties(e);
             }
-            else if (e.Item is DSVariables)
-            {
-                ///////////////Add Adapter properties //////////////////////
-                (e.Item as DSVariables).AddProperties(e);
-            }
+
+           ////////////////////////////////////////////////////////////////////////
             else if(e.Item is DiagramRoot)
             {
-                e.Properties.Add(TypeDescriptor.GetProperties(typeof(MainWindow))["CunterID"]);
+                e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" } }));
+                e.Properties.Add(e.CreateProxyProperty("CunterID", item => CunterID, (item, value) => CunterID = value ,new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
             }
         }
-           
-
-
-
-      
-
         private void Diagram_QueryConnectionPoints(object sender, DiagramQueryConnectionPointsEventArgs e)
         {
             log.Debug("Diagram_QueryConnectionPoints");
@@ -225,6 +229,8 @@ namespace WFBuilder
             }
         }
     }
+
+    
 }
 
 

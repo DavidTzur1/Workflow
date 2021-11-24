@@ -89,7 +89,7 @@
     <Compile Include="Adapters\Template.cs" />
     <Compile Include="Adapters\Template1.cs" />
     <Compile Include="BaseAdapter.cs" />
-    <Compile Include="DSVariables.cs" />
+    <Compile Include="Behaviors\ListBoxBehavior.cs" />
     <Compile Include="Models\VariableModel.cs" />
     <Compile Include="Validations\ValidVariableNameAttribute.cs" />
     <Compile Include="Validations\VariableValTypeAttribute.cs" />
