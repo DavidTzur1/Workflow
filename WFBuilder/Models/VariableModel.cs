@@ -1,18 +1,26 @@
-﻿using DevExpress.Utils.Serializing;
+﻿using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Utils.Serializing;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
+using System.Windows;
 using WFBuilder.Validations;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WFBuilder.Models
 {
     [Serializable]
     public class VariableModel
     {
+        [XtraSerializableProperty]
+        [ReadOnly(true) ]
+        [Display (Order=-9)]
+        public int VariableID { get; set; }
         [XtraSerializableProperty ]
         [Required(ErrorMessage = "Please enter unique name")]
         public string Name { get; set; }
@@ -25,7 +33,10 @@ namespace WFBuilder.Models
 
         public LevelScopeType LevelScope { get; set; } = LevelScopeType.Local;
 
-        public VariableModel() { }
+        public VariableModel() 
+        {
+            VariableID = (Window.GetWindow(App.Current.MainWindow) as MainWindow).NextVariableID++;
+        }
         
     }
 

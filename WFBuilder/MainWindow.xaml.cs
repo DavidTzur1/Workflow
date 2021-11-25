@@ -39,12 +39,20 @@ namespace WFBuilder
 
         static public XElement XMLStencils { get; set; }
 
-        public int CunterID
+        public  int NextAdapterID
         {
-            get { return (int)GetValue(CunterIDProperty); }
-            set { SetValue(CunterIDProperty, value); }
+            get { return (int)GetValue(NextAdapterIDProperty); }
+            set { SetValue(NextAdapterIDProperty, value); }
         }
-        public static readonly DependencyProperty CunterIDProperty = DependencyProperty.Register("CunterID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
+        public static readonly DependencyProperty NextAdapterIDProperty = DependencyProperty.Register("NextAdapterID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
+
+        ////////////////Variables/////////////////////////////////////////////
+        public int NextVariableID
+        {
+            get { return (int)GetValue(NextVariableIDProperty); }
+            set { SetValue(NextVariableIDProperty, value); }
+        }
+        public static readonly DependencyProperty NextVariableIDProperty = DependencyProperty.Register("NextVariableID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
 
         [XtraSerializableProperty(XtraSerializationVisibility.Collection, useCreateItem: true)]
         public ObservableCollection<VariableModel> Variables
@@ -54,6 +62,40 @@ namespace WFBuilder
         }
         public static readonly DependencyProperty VariablesProperty = DependencyProperty.Register("Variables", typeof(ObservableCollection<VariableModel>), typeof(MainWindow));
 
+        ////////////////EntryPoints/////////////////////////////////////////////
+        public int NextEntryPointID
+        {
+            get { return (int)GetValue(NextEntryPointIDProperty); }
+            set { SetValue(NextEntryPointIDProperty, value); }
+        }
+        public static readonly DependencyProperty NextEntryPointIDProperty = DependencyProperty.Register("NextEntryPointID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
+        [XtraSerializableProperty(XtraSerializationVisibility.Collection, useCreateItem: true)]
+        public ObservableCollection<EntryPointModel> EntryPoints
+        {
+            get { return (ObservableCollection<EntryPointModel>)GetValue(EntryPointsProperty); }
+            set { SetValue(EntryPointsProperty, value); }
+        }
+        public static readonly DependencyProperty EntryPointsProperty = DependencyProperty.Register("EntryPoints", typeof(ObservableCollection<EntryPointModel>), typeof(MainWindow));
+
+        ////////////////BroadcastMessages/////////////////////////////////////////////
+
+        public int NextBroadcastMessageID
+        {
+            get { return (int)GetValue(NextBroadcastMessageIDProperty); }
+            set { SetValue(NextBroadcastMessageIDProperty, value); }
+        }
+        public static readonly DependencyProperty NextBroadcastMessageIDProperty = DependencyProperty.Register("NextBroadcastMessageID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
+        [XtraSerializableProperty(XtraSerializationVisibility.Collection, useCreateItem: true)]
+        public ObservableCollection<BroadcastMessageModel> BroadcastMessages
+        {
+            get { return (ObservableCollection<BroadcastMessageModel>)GetValue(BroadcastMessagesProperty); }
+            set { SetValue(BroadcastMessagesProperty, value); }
+        }
+        public static readonly DependencyProperty BroadcastMessagesProperty = DependencyProperty.Register("BroadcastMessages", typeof(ObservableCollection<BroadcastMessageModel>), typeof(MainWindow));
+
+        
+        ////////////////////////////////////////////////////////////////////////////
+
         static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             // MessageBox.Show("My message here");
@@ -62,7 +104,10 @@ namespace WFBuilder
         public MainWindow()
         {
             InitializeComponent();
-            CunterID = 0;
+            NextAdapterID = 0;
+            NextVariableID = 0;
+            NextEntryPointID = 0;
+            NextBroadcastMessageID = 0;
             RemoveAllDefaultStencils();
             InitializeStencils();
 
@@ -76,6 +121,8 @@ namespace WFBuilder
             diagramControl.Loaded += DiagramControl_Loaded;
 
             Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
+            EntryPoints = new ObservableCollection<EntryPointModel>();
+            BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
 
         }
 
@@ -115,8 +162,8 @@ namespace WFBuilder
             //Add Id and Header to adapter
             if (e.Item is BaseAdapter)
             {
-                (e.Item as BaseAdapter).Tag = CunterID;
-                (e.Item as BaseAdapter).Header = (e.Item as BaseAdapter).Name + CunterID++;
+                (e.Item as BaseAdapter).Tag = NextAdapterID;
+                (e.Item as BaseAdapter).Header = (e.Item as BaseAdapter).Name + NextAdapterID++;
             }
 
             //Prohibit adding connectors without end items
@@ -131,8 +178,8 @@ namespace WFBuilder
             {
                 if (item.Item is BaseAdapter)
                 {
-                    item.Item.Tag = CunterID;
-                    (item.Item as BaseAdapter).Header = (item.Item as BaseAdapter).Name + CunterID++;
+                    item.Item.Tag = NextAdapterID;
+                    (item.Item as BaseAdapter).Header = (item.Item as BaseAdapter).Name + NextAdapterID++;
 
                 }
             }
@@ -171,9 +218,17 @@ namespace WFBuilder
         {
             if (e.ItemType == typeof(DiagramRoot))
             {
-                //e.Properties.Add(TypeDescriptor.GetProperties(typeof(MainWindow))["CunterID"]);
-                e.Properties.Add(e.CreateProxyProperty("CunterID", item => CunterID, (item, value) => CunterID = value));
+                //e.Properties.Add(TypeDescriptor.GetProperties(typeof(MainWindow))["CunterID"]);NextVariableID
+                e.Properties.Add(e.CreateProxyProperty("NextAdapterID", item => NextAdapterID, (item, value) => NextAdapterID = value));
+
+                e.Properties.Add(e.CreateProxyProperty("NextVariableID", item => NextVariableID, (item, value) => NextVariableID = value));
                 e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value));
+
+                e.Properties.Add(e.CreateProxyProperty("NextEntryPointID", item => NextEntryPointID, (item, value) => NextEntryPointID = value));
+                e.Properties.Add(e.CreateProxyProperty("EntryPoints", item => EntryPoints, (item, value) => EntryPoints = value));
+
+                e.Properties.Add(e.CreateProxyProperty("NextBroadcastMessageID", item => NextBroadcastMessageID, (item, value) => NextBroadcastMessageID = value));
+                e.Properties.Add(e.CreateProxyProperty("BroadcastMessages", item => BroadcastMessages, (item, value) => BroadcastMessages = value));
             }
         }
 
@@ -195,8 +250,16 @@ namespace WFBuilder
             ////////////////////////////////////////////////////////////////////////
             else if (e.Item is DiagramRoot)
             {
+                e.Properties.Add(e.CreateProxyProperty("NextAdapterID", item => NextAdapterID, (item, value) => NextAdapterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+
                 e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" } }));
-                e.Properties.Add(e.CreateProxyProperty("CunterID", item => CunterID, (item, value) => CunterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+                e.Properties.Add(e.CreateProxyProperty("NextVariableID", item => NextVariableID, (item, value) => NextVariableID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+
+                e.Properties.Add(e.CreateProxyProperty("EntryPoints", item => EntryPoints, (item, value) => EntryPoints = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" } }));
+                e.Properties.Add(e.CreateProxyProperty("NextEntryPointID", item => NextEntryPointID, (item, value) => NextEntryPointID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+
+                e.Properties.Add(e.CreateProxyProperty("BroadcastMessages", item => BroadcastMessages, (item, value) => BroadcastMessages = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" } }));
+                e.Properties.Add(e.CreateProxyProperty("NextBroadcastMessageID", item => NextBroadcastMessageID, (item, value) => NextBroadcastMessageID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
             }
         }
         private void Diagram_QueryConnectionPoints(object sender, DiagramQueryConnectionPointsEventArgs e)
