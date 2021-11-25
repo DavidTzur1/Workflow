@@ -45,13 +45,16 @@
                 </DataTemplate>
                 <DataTemplate x:Key="SpinEditor">
                     <dxe:PopupBaseEdit Name="PART_Editor">
-                       
+
                         <dxe:PopupBaseEdit.PopupContentTemplate>
                             <ControlTemplate>
+                                <!--EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue}"-->
                                 <dxe:ListBoxEdit ShowBorder="False" DisplayMember="Name" ValueMember="Name"
-                                                     EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue}"
-                                                     ItemsSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).DataContext.Definition.DataContext.Variables}" >
-                                    
+                                                     
+                                                     EditValue="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Self}}"
+                                                     ItemsSource="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).(dxprg:PropertyGridHelper.PropertyGrid).(dxdiag:DiagramControl.Diagram).DataContext.Variables, RelativeSource={RelativeSource Self}}">
+                                    <!--ItemsSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).DataContext.Definition.DataContext.Variables}-->" >
+
                                     <dxmvvm:Interaction.Behaviors>
                                         <local1:ListBoxBehavior/>
                                     </dxmvvm:Interaction.Behaviors>
@@ -61,13 +64,32 @@
                     </dxe:PopupBaseEdit>
 
                 </DataTemplate>
-                    
+
+                <DataTemplate x:Key="Adapters">
+                    <dxe:PopupBaseEdit Name="PART_Editor">
+
+                        <dxe:PopupBaseEdit.PopupContentTemplate>
+                            <ControlTemplate>
+                                <!--EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue}"DisplayMember="Name" ValueMember="Name"-->
+                                <dxe:ListBoxEdit ShowBorder="False" 
+                                                     
+                                                     EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue}"
+                                                     ItemsSource="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).(dxprg:PropertyGridHelper.PropertyGrid).(dxdiag:DiagramControl.Diagram).DataContext.Adapters, RelativeSource={RelativeSource Self}}">
+                                    <!--ItemsSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).DataContext.Definition.DataContext.Variables}--> " >
+
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <local1:ListBoxBehavior/>
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxe:ListBoxEdit>
+                            </ControlTemplate>
+                        </dxe:PopupBaseEdit.PopupContentTemplate>
+                    </dxe:PopupBaseEdit>
+
+                </DataTemplate>
+
             </dxdiag:DiagramDesignerControl.Resources>
-
-
-
         </dxdiag:DiagramDesignerControl>
-        
+        <!--<Button Command="{Binding GetAdapterListCommand}"/>-->
 
     </Grid>
 </dx:ThemedWindow>

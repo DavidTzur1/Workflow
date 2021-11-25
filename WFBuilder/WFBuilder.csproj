@@ -90,6 +90,7 @@
     <Compile Include="Adapters\Template1.cs" />
     <Compile Include="BaseAdapter.cs" />
     <Compile Include="Behaviors\ListBoxBehavior.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Models\BroadcastMessageModel.cs" />
     <Compile Include="Models\EntryPointModel.cs" />
     <Compile Include="Models\VariableModel.cs" />

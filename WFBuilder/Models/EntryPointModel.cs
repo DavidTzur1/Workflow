@@ -1,4 +1,5 @@
-﻿using DevExpress.Utils.Serializing;
+﻿using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Utils.Serializing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +19,7 @@ namespace WFBuilder.Models
         [XtraSerializableProperty]
         public string EntryPointName { get; set; }
         [XtraSerializableProperty]
+        [PropertyGridEditor(TemplateKey = "Adapters")]
         public int AdapterID { get; set; }
         [XtraSerializableProperty]
         public int PinID { get; set; }

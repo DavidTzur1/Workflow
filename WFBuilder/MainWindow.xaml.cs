@@ -86,6 +86,7 @@ namespace WFBuilder
         }
         public static readonly DependencyProperty NextBroadcastMessageIDProperty = DependencyProperty.Register("NextBroadcastMessageID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
         [XtraSerializableProperty(XtraSerializationVisibility.Collection, useCreateItem: true)]
+        [Display (Order =10)]
         public ObservableCollection<BroadcastMessageModel> BroadcastMessages
         {
             get { return (ObservableCollection<BroadcastMessageModel>)GetValue(BroadcastMessagesProperty); }
@@ -98,12 +99,14 @@ namespace WFBuilder
 
         static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            //(DataContext as MainWindowViewModel).GetVarablesCommand;
             // MessageBox.Show("My message here");
         }
-
+        MainWindowViewModel VM = new MainWindowViewModel();
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
             NextAdapterID = 0;
             NextVariableID = 0;
             NextEntryPointID = 0;
@@ -250,16 +253,16 @@ namespace WFBuilder
             ////////////////////////////////////////////////////////////////////////
             else if (e.Item is DiagramRoot)
             {
-                e.Properties.Add(e.CreateProxyProperty("NextAdapterID", item => NextAdapterID, (item, value) => NextAdapterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+                e.Properties.Add(e.CreateProxyProperty("NextAdapterID", item => NextAdapterID, (item, value) => NextAdapterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
 
-                e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" } }));
-                e.Properties.Add(e.CreateProxyProperty("NextVariableID", item => NextVariableID, (item, value) => NextVariableID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+                e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot",Order=1 } }));
+                e.Properties.Add(e.CreateProxyProperty("NextVariableID", item => NextVariableID, (item, value) => NextVariableID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
 
-                e.Properties.Add(e.CreateProxyProperty("EntryPoints", item => EntryPoints, (item, value) => EntryPoints = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" } }));
-                e.Properties.Add(e.CreateProxyProperty("NextEntryPointID", item => NextEntryPointID, (item, value) => NextEntryPointID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+                e.Properties.Add(e.CreateProxyProperty("EntryPoints", item => EntryPoints, (item, value) => EntryPoints = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" ,Order=1} }));
+                e.Properties.Add(e.CreateProxyProperty("NextEntryPointID", item => NextEntryPointID, (item, value) => NextEntryPointID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
 
-                e.Properties.Add(e.CreateProxyProperty("BroadcastMessages", item => BroadcastMessages, (item, value) => BroadcastMessages = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" } }));
-                e.Properties.Add(e.CreateProxyProperty("NextBroadcastMessageID", item => NextBroadcastMessageID, (item, value) => NextBroadcastMessageID = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" }, new ReadOnlyAttribute(true) }));
+                e.Properties.Add(e.CreateProxyProperty("BroadcastMessages", item => BroadcastMessages, (item, value) => BroadcastMessages = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot", Order = 1 }} ));
+                e.Properties.Add(e.CreateProxyProperty("NextBroadcastMessageID", item => NextBroadcastMessageID, (item, value) => NextBroadcastMessageID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
             }
         }
         private void Diagram_QueryConnectionPoints(object sender, DiagramQueryConnectionPointsEventArgs e)
@@ -285,6 +288,23 @@ namespace WFBuilder
                 }
             }
         }
+
+        public List<int> Adapters
+        {
+            get
+            {
+                var list = new List<int>();
+                foreach (var item in diagramControl.Items)
+                {
+                    if (item is BaseAdapter)
+                    {
+                        list.Add(int.Parse(item.Tag.ToString()));
+                    }
+                }
+                return list;
+            }
+        }
+        
     }
 }
     
