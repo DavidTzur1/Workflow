@@ -86,8 +86,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Adapters\AdapterModel.cs" />
     <Compile Include="Adapters\Template.cs" />
-    <Compile Include="Adapters\Template1.cs" />
     <Compile Include="BaseAdapter.cs" />
     <Compile Include="Behaviors\ListBoxBehavior.cs" />
     <Compile Include="MainWindowViewModel.cs" />
@@ -160,6 +160,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Documents\Document.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

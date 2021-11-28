@@ -28,14 +28,17 @@ namespace WFBuilder.Adapters
         
         [XtraSerializableProperty]
         [Description("Template Adapter"), Category("Template")]
-        [PropertyGridEditor(TemplateKey = "SpinEditor")]
+        [PropertyGridEditor(TemplateKey = "VariablesEditor")]
         public string VarString { get; set; }
 
         public Template()
         {
             base.Name = "Template";
 
-            base.PinsIn.Add(new Pin() { id = 1, name = "In" });
+            base.PinsIn.Add(new Pin() { id = 1, name = "In1" });
+            base.PinsIn.Add(new Pin() { id = 2, name = "In2" });
+            base.PinsIn.Add(new Pin() { id = 3, name = "In3" });
+            base.PinsIn.Add(new Pin() { id = 4, name = "In4" });
 
             base.PinsOut.Add(new Pin() { id = 33, name = "Ack" });
             base.PinsOut.Add(new Pin() { id = 34, name = "Nck" });

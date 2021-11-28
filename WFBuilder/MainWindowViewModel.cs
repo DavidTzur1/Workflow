@@ -2,6 +2,7 @@
 using DevExpress.Mvvm.DataAnnotations;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,27 @@ namespace WFBuilder
         }
 
         [Command]
-        public List<VariableModel> GetVarables()
+        public ObservableCollection<VariableModel> Variables()
         {
-            return new List<VariableModel>() { new VariableModel() { Name = "Abc", VariableID = 1, Val = 10 } };
+            //int itemsCount = (Window.GetWindow(App.Current.MainWindow) as MainWindow).diagramControl.Items.Count();
+            //MessageBox.Show($"diagramControl.Items.Count()={ itemsCount}");
+            return (Window.GetWindow(App.Current.MainWindow) as MainWindow).Variables;
+        }
+
+        [Command]
+        public List<int> Adapters()
+        {
+           // return new List<VariableModel>() { new VariableModel() { Name = "Abc", VariableID = 1, Val = 10 } };
+
+            var list = new List<int>();
+            foreach (var item in (Window.GetWindow(App.Current.MainWindow) as MainWindow).diagramControl.Items)
+            {
+                if (item is BaseAdapter)
+                {
+                    list.Add(int.Parse(item.Tag.ToString()));
+                }
+            }
+            return list;
         }
         public MainWindowViewModel()
         {

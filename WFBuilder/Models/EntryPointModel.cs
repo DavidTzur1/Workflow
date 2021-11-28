@@ -19,7 +19,7 @@ namespace WFBuilder.Models
         [XtraSerializableProperty]
         public string EntryPointName { get; set; }
         [XtraSerializableProperty]
-        [PropertyGridEditor(TemplateKey = "Adapters")]
+        [PropertyGridEditor(TemplateKey = "AdaptersEditor")]
         public int AdapterID { get; set; }
         [XtraSerializableProperty]
         public int PinID { get; set; }

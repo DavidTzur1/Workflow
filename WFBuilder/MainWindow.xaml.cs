@@ -27,6 +27,7 @@ using WFBuilder.Models;
 using DevExpress.Xpf.PropertyGrid;
 using DevExpress.Utils.Serializing;
 using DevExpress.Data.Browsing;
+using WFBuilder.Adapters;
 
 namespace WFBuilder
 {
@@ -107,10 +108,7 @@ namespace WFBuilder
         {
             InitializeComponent();
             DataContext = this;
-            NextAdapterID = 0;
-            NextVariableID = 0;
-            NextEntryPointID = 0;
-            NextBroadcastMessageID = 0;
+            //diagramControl.DocumentSource = @"..\..\Document.xml";
             RemoveAllDefaultStencils();
             InitializeStencils();
 
@@ -127,6 +125,9 @@ namespace WFBuilder
             EntryPoints = new ObservableCollection<EntryPointModel>();
             BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
 
+           
+
+
         }
 
         static MainWindow()
@@ -142,13 +143,15 @@ namespace WFBuilder
 
         private void DiagramControl_CustomGetEditableItemPropertiesCacheKey(object sender, DiagramCustomGetEditableItemPropertiesCacheKeyEventArgs e)
         {
-            if (e.Item is DiagramRoot) e.CacheKey = null;
+            //if (e.Item is DiagramRoot) e.CacheKey = null;
+            e.CacheKey = null;
         }
 
         private void DiagramControl_Loaded(object sender, RoutedEventArgs e)
         {
             RibbonControl ribbon = LayoutHelper.FindElementByType<RibbonControl>(diagramControl);
             // ribbon.ToolbarItems.Remove(ribbon.ToolbarItems.FirstOrDefault(item => ((BarItemLink)item).BarItemName == DefaultBarItemNames.Save));
+            diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
         }
 
 
@@ -289,16 +292,16 @@ namespace WFBuilder
             }
         }
 
-        public List<int> Adapters
+        public List<AdapterModel> Adapters
         {
             get
             {
-                var list = new List<int>();
+                var list = new List<AdapterModel>();
                 foreach (var item in diagramControl.Items)
                 {
                     if (item is BaseAdapter)
                     {
-                        list.Add(int.Parse(item.Tag.ToString()));
+                        list.Add(new AdapterModel() { AdapterID = int.Parse(item.Tag.ToString()),AdapterName=(item as BaseAdapter).Header });
                     }
                 }
                 return list;
