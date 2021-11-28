@@ -86,6 +86,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Adapters\Temlate1.cs" />
     <Compile Include="Adapters\Template.cs" />
     <Compile Include="BaseAdapter.cs" />
     <Compile Include="Behaviors\ListBoxBehavior.cs" />

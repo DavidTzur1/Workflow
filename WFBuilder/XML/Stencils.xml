@@ -3,7 +3,7 @@
     <Stencil id="1" name="General" isVisible="1">
       <Activities>
         <Activity Namespace="WFBuilder.Adapters" Type="Template" />
-        <!--<Activity Namespace="WFBuilder.Adapters" Type="Template1" />-->
+        <Activity Namespace="WFBuilder.Adapters" Type="Template1" />
       </Activities>
     </Stencil>
   </Stencils>

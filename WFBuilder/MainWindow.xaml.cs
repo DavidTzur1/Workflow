@@ -152,7 +152,7 @@ namespace WFBuilder
         {
             RibbonControl ribbon = LayoutHelper.FindElementByType<RibbonControl>(diagramControl);
             // ribbon.ToolbarItems.Remove(ribbon.ToolbarItems.FirstOrDefault(item => ((BarItemLink)item).BarItemName == DefaultBarItemNames.Save));
-           // diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
+           diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
 
             //var a = GetInputPins(4);
         }
@@ -311,6 +311,15 @@ namespace WFBuilder
             }
         }
 
+        private List<PinModel> _inputPins;
+        public List<PinModel> InputPins
+        {
+            get
+            {
+                return _inputPins;
+            }
+        }
+
         public  List<PinModel> GetInputPins(int adapterID )
         {
             var list = new List<PinModel>();
@@ -330,7 +339,14 @@ namespace WFBuilder
             }
             return list;
         }
-        
+
+       
+
+        private void ListBoxEdit_EditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
+        {
+           // MessageBox.Show("My message here");
+            _inputPins = GetInputPins((int)e.NewValue);
+        }
     }
 }
     
