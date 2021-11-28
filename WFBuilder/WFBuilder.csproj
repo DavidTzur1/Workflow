@@ -86,13 +86,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Adapters\AdapterModel.cs" />
     <Compile Include="Adapters\Template.cs" />
     <Compile Include="BaseAdapter.cs" />
     <Compile Include="Behaviors\ListBoxBehavior.cs" />
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="Models\AdapterModel.cs" />
     <Compile Include="Models\BroadcastMessageModel.cs" />
     <Compile Include="Models\EntryPointModel.cs" />
+    <Compile Include="Models\PinModel.cs" />
     <Compile Include="Models\VariableModel.cs" />
     <Compile Include="PropertyGridControlEx.cs" />
     <Compile Include="Validations\ValidVariableNameAttribute.cs" />

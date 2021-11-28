@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WFBuilder.Adapters
+namespace WFBuilder.Models
 {
     public class AdapterModel
     {

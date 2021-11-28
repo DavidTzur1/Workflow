@@ -102,6 +102,7 @@ namespace WFBuilder
         {
             //(DataContext as MainWindowViewModel).GetVarablesCommand;
             // MessageBox.Show("My message here");
+           
         }
         MainWindowViewModel VM = new MainWindowViewModel();
         public MainWindow()
@@ -151,7 +152,9 @@ namespace WFBuilder
         {
             RibbonControl ribbon = LayoutHelper.FindElementByType<RibbonControl>(diagramControl);
             // ribbon.ToolbarItems.Remove(ribbon.ToolbarItems.FirstOrDefault(item => ((BarItemLink)item).BarItemName == DefaultBarItemNames.Save));
-            diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
+           // diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
+
+            //var a = GetInputPins(4);
         }
 
 
@@ -306,6 +309,26 @@ namespace WFBuilder
                 }
                 return list;
             }
+        }
+
+        public  List<PinModel> GetInputPins(int adapterID )
+        {
+            var list = new List<PinModel>();
+            var adapter = diagramControl.Items.Where(item => item.Tag?.ToString() == adapterID.ToString()).FirstOrDefault() as BaseAdapter;
+            var inputPanel = adapter.Items.Where(item => item.Tag?.ToString() == "InputPanel").FirstOrDefault() as DiagramList;
+            if(inputPanel != null)
+            {
+                foreach(var item in inputPanel.Items)
+                {
+                    if(item.Tag?.ToString() == "DiagramContainer")
+                    {
+                        var lineShape = (item as DiagramContainer).Items.Where(shape => shape.Tag?.ToString() == "line").FirstOrDefault() as DiagramShape;
+                        var labelShape = (item as DiagramContainer).Items.Where(shape => shape.Tag?.ToString() == "label").FirstOrDefault() as DiagramShape;
+                        list.Add(new PinModel() { PinID = int.Parse(lineShape.Content),PinName= labelShape.Content });
+                    }
+                }
+            }
+            return list;
         }
         
     }

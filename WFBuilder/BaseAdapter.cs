@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Windows.Media.Imaging;
 using System.Runtime.Remoting;
 using System.ComponentModel;
+using WFBuilder.Models;
 
 namespace WFBuilder
 {
@@ -216,6 +217,7 @@ namespace WFBuilder
             return new DiagramContainer()
             {
                 //Stroke = Brushes.Red,
+                Tag = "DiagramContainer",
                 ItemsCanSelect = false,
                 ItemsCanMove = false,
                 CanAttachConnectorBeginPoint = false,
