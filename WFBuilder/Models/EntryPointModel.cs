@@ -3,6 +3,7 @@ using DevExpress.Utils.Serializing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,14 +16,18 @@ namespace WFBuilder.Models
     {
         [XtraSerializableProperty]
         [ReadOnly(true)]
+        [Display(Order = 0)]
         public int EntryPointID { get; set; }
         [XtraSerializableProperty]
+        [Display(Order = 1)]
         public string EntryPointName { get; set; }
         [XtraSerializableProperty]
         [PropertyGridEditor(TemplateKey = "AdaptersEditor")] //PinsEditor
+        [Display(Order = 2)]
         public int AdapterID { get; set; }
         [XtraSerializableProperty]
         [PropertyGridEditor(TemplateKey = "PinsEditor")]
+        [Display(Order = 3)]
         public int PinID { get; set; }
 
         public EntryPointModel()
