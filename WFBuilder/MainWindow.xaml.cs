@@ -28,6 +28,7 @@ using DevExpress.Xpf.PropertyGrid;
 using DevExpress.Utils.Serializing;
 using DevExpress.Data.Browsing;
 using WFBuilder.Adapters;
+using DevExpress.Xpf.Editors;
 
 namespace WFBuilder
 {
@@ -40,7 +41,7 @@ namespace WFBuilder
 
         static public XElement XMLStencils { get; set; }
 
-        public  int NextAdapterID
+        public int NextAdapterID
         {
             get { return (int)GetValue(NextAdapterIDProperty); }
             set { SetValue(NextAdapterIDProperty, value); }
@@ -87,7 +88,7 @@ namespace WFBuilder
         }
         public static readonly DependencyProperty NextBroadcastMessageIDProperty = DependencyProperty.Register("NextBroadcastMessageID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
         [XtraSerializableProperty(XtraSerializationVisibility.Collection, useCreateItem: true)]
-        [Display (Order =10)]
+        [Display(Order = 10)]
         public ObservableCollection<BroadcastMessageModel> BroadcastMessages
         {
             get { return (ObservableCollection<BroadcastMessageModel>)GetValue(BroadcastMessagesProperty); }
@@ -95,14 +96,14 @@ namespace WFBuilder
         }
         public static readonly DependencyProperty BroadcastMessagesProperty = DependencyProperty.Register("BroadcastMessages", typeof(ObservableCollection<BroadcastMessageModel>), typeof(MainWindow));
 
-        
+
         ////////////////////////////////////////////////////////////////////////////
 
         static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //(DataContext as MainWindowViewModel).GetVarablesCommand;
             // MessageBox.Show("My message here");
-           
+
         }
         MainWindowViewModel VM = new MainWindowViewModel();
         public MainWindow()
@@ -126,7 +127,7 @@ namespace WFBuilder
             EntryPoints = new ObservableCollection<EntryPointModel>();
             BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
 
-           
+
 
 
         }
@@ -152,7 +153,7 @@ namespace WFBuilder
         {
             RibbonControl ribbon = LayoutHelper.FindElementByType<RibbonControl>(diagramControl);
             // ribbon.ToolbarItems.Remove(ribbon.ToolbarItems.FirstOrDefault(item => ((BarItemLink)item).BarItemName == DefaultBarItemNames.Save));
-           diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
+            diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
 
             //var a = GetInputPins(4);
         }
@@ -261,13 +262,13 @@ namespace WFBuilder
             {
                 e.Properties.Add(e.CreateProxyProperty("NextAdapterID", item => NextAdapterID, (item, value) => NextAdapterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
 
-                e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot",Order=1 } }));
+                e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot", Order = 1 } }));
                 e.Properties.Add(e.CreateProxyProperty("NextVariableID", item => NextVariableID, (item, value) => NextVariableID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
 
-                e.Properties.Add(e.CreateProxyProperty("EntryPoints", item => EntryPoints, (item, value) => EntryPoints = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot" ,Order=1} }));
+                e.Properties.Add(e.CreateProxyProperty("EntryPoints", item => EntryPoints, (item, value) => EntryPoints = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot", Order = 1 } }));
                 e.Properties.Add(e.CreateProxyProperty("NextEntryPointID", item => NextEntryPointID, (item, value) => NextEntryPointID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
 
-                e.Properties.Add(e.CreateProxyProperty("BroadcastMessages", item => BroadcastMessages, (item, value) => BroadcastMessages = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot", Order = 1 }} ));
+                e.Properties.Add(e.CreateProxyProperty("BroadcastMessages", item => BroadcastMessages, (item, value) => BroadcastMessages = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot", Order = 1 } }));
                 e.Properties.Add(e.CreateProxyProperty("NextBroadcastMessageID", item => NextBroadcastMessageID, (item, value) => NextBroadcastMessageID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
             }
         }
@@ -304,12 +305,14 @@ namespace WFBuilder
                 {
                     if (item is BaseAdapter)
                     {
-                        list.Add(new AdapterModel() { AdapterID = int.Parse(item.Tag.ToString()),AdapterName=(item as BaseAdapter).Header });
+                        list.Add(new AdapterModel() { AdapterID = int.Parse(item.Tag.ToString()), AdapterName = (item as BaseAdapter).Header });
                     }
                 }
                 return list;
             }
         }
+
+        ////////////////////////////////////////////////////////////////////////////////
 
         private List<PinModel> _inputPins;
         public List<PinModel> InputPins
@@ -320,35 +323,67 @@ namespace WFBuilder
             }
         }
 
-        public  List<PinModel> GetInputPins(int adapterID )
+        public List<PinModel> GetInputPins(int adapterID)
         {
             var list = new List<PinModel>();
             var adapter = diagramControl.Items.Where(item => item.Tag?.ToString() == adapterID.ToString()).FirstOrDefault() as BaseAdapter;
             var inputPanel = adapter.Items.Where(item => item.Tag?.ToString() == "InputPanel").FirstOrDefault() as DiagramList;
-            if(inputPanel != null)
+            if (inputPanel != null)
             {
-                foreach(var item in inputPanel.Items)
+                foreach (var item in inputPanel.Items)
                 {
-                    if(item.Tag?.ToString() == "DiagramContainer")
+                    if (item.Tag?.ToString() == "DiagramContainer")
                     {
                         var lineShape = (item as DiagramContainer).Items.Where(shape => shape.Tag?.ToString() == "line").FirstOrDefault() as DiagramShape;
                         var labelShape = (item as DiagramContainer).Items.Where(shape => shape.Tag?.ToString() == "label").FirstOrDefault() as DiagramShape;
-                        list.Add(new PinModel() { PinID = int.Parse(lineShape.Content),PinName= labelShape.Content });
+                        list.Add(new PinModel() { PinID = int.Parse(lineShape.Content), PinName = labelShape.Content });
                     }
                 }
             }
             return list;
         }
 
-       
 
+        int oldAdapterID;
+        int newAdapterID;
         private void ListBoxEdit_EditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
         {
-           // MessageBox.Show("My message here");
-            _inputPins = GetInputPins((int)e.NewValue);
+            if ((e.Source as ListBoxEdit).Name == "AdaptersEditor")
+            {
+                _inputPins = GetInputPins((int)e.NewValue);
+                oldAdapterID = int.Parse(e.OldValue.ToString());
+                newAdapterID = int.Parse(e.NewValue.ToString());
+            }
+            if ((e.Source as ListBoxEdit).Name == "PinsEditor")
+            {
+                if (e.OldValue != null)
+                {
+                    int oldPinID = int.Parse(e.OldValue?.ToString());
+                    UpdateBackgroundInputPointShape(oldAdapterID, oldPinID, Brushes.Black);
+                }
+
+                int newPinID = int.Parse(e.NewValue.ToString());
+                UpdateBackgroundInputPointShape(newAdapterID, newPinID, Brushes.Red);
+            }
+        }
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        private void UpdateBackgroundInputPointShape(int adapterID, int pinID, Brush brush)
+        {
+
+            var adapter = diagramControl.Items.Where(item => item.Tag?.ToString() == adapterID.ToString()).FirstOrDefault() as BaseAdapter;
+            var inputPanel = adapter.Items.Where(item => item.Tag?.ToString() == "InputPanel").FirstOrDefault() as DiagramList;
+            var diagramContainer = inputPanel.Items.Where(item => ((item as DiagramContainer).Items.Where(shape => shape.Tag?.ToString() == "line" && (shape as DiagramShape).Content == pinID.ToString())).Count() > 0).FirstOrDefault() as DiagramContainer;
+            if(diagramContainer != null)
+            {
+                DiagramShape shape = diagramContainer.Items.Where(item => item.Tag?.ToString() == "input").FirstOrDefault() as DiagramShape;
+                shape.Background = brush;
+            }
         }
     }
 }
+
     
 
 

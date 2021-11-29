@@ -67,7 +67,7 @@
                     <dxe:PopupBaseEdit Name="PART_Editor">
                         <dxe:PopupBaseEdit.PopupContentTemplate>
                             <ControlTemplate>
-                                <dxe:ListBoxEdit ShowBorder="False"     EditValueChanged="ListBoxEdit_EditValueChanged"                                            
+                                <dxe:ListBoxEdit ShowBorder="False"     EditValueChanged="ListBoxEdit_EditValueChanged" Name="AdaptersEditor"                                           
                                                      EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue}" DisplayMember="AdapterName" ValueMember="AdapterID"
                                                      ItemsSource="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).(dxprg:PropertyGridHelper.PropertyGrid).(dxdiag:DiagramControl.Diagram).DataContext.Adapters, RelativeSource={RelativeSource Self}}">
                                     <dxmvvm:Interaction.Behaviors>
@@ -84,7 +84,7 @@
                     <dxe:PopupBaseEdit Name="PART_Editor">
                         <dxe:PopupBaseEdit.PopupContentTemplate>
                             <ControlTemplate>
-                                <dxe:ListBoxEdit ShowBorder="False"                                                    
+                                <dxe:ListBoxEdit ShowBorder="False"   EditValueChanged="ListBoxEdit_EditValueChanged" Name="PinsEditor"                                                 
                                                      EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue}" DisplayMember="PinName" ValueMember="PinID" 
                                                      ItemsSource="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).(dxprg:PropertyGridHelper.PropertyGrid).(dxdiag:DiagramControl.Diagram).DataContext.InputPins, RelativeSource={RelativeSource Self}}">
                                     <dxmvvm:Interaction.Behaviors>
