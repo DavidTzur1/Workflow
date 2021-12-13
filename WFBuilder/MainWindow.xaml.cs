@@ -30,18 +30,26 @@ using DevExpress.Data.Browsing;
 using WFBuilder.Adapters;
 using DevExpress.Xpf.Editors;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace WFBuilder
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : ThemedWindow
+    public partial class MainWindow : ThemedWindow, INotifyPropertyChanged
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public static MainWindow Instance;
 
-        static public XElement XMLStencils { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+            static public XElement XMLStencils { get; set; }
 
         public int NextAdapterID
         {
@@ -354,13 +362,18 @@ namespace WFBuilder
 
         ////////////////////////////////////////////////////////////////////////////////
 
-        public List<PinModel> _inputPins;
+        private List<PinModel> _inputPins;
         public List<PinModel> InputPins
         {
             get
             {
                 if (_inputPins == null) _inputPins = new List<PinModel>() { new PinModel() { PinID = -1, PinName = "<Empty>" } };
                 return _inputPins;
+            }
+            set
+            {
+                _inputPins = value;
+                NotifyPropertyChanged("InputPins");
             }
         }
 
