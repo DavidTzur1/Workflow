@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Runtime.Remoting;
 using System.ComponentModel;
 using WFBuilder.Models;
+using DevExpress.Utils.Serializing;
+using DevExpress.Mvvm.Native;
 
 namespace WFBuilder
 {
@@ -21,6 +23,8 @@ namespace WFBuilder
         public int id { get; set; }
         public string name { get; set; }
     }
+
+   
     public  class BaseAdapter : DiagramList
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -28,6 +32,149 @@ namespace WFBuilder
         public List<Pin> PinsIn = new List<Pin>();
         public List<Pin> PinsOut = new List<Pin>();
 
+        /////////////////////////////////////////////////////////////////
+
+        [XtraSerializableProperty]
+        public int PinsInCount
+        {
+            get { return (int)GetValue(PinsInCountProperty); }
+            set { SetValue(PinsInCountProperty, value); }
+        }
+
+        public static readonly DependencyProperty PinsInCountProperty = DependencyProperty.Register("PinsInCount", typeof(int), typeof(BaseAdapter), new PropertyMetadata(OnPinsInCountChanged));
+
+        static double pinHeight = 40;
+
+        void CorrectHeights()
+        {
+            if (this.Items.Count < 3)
+                return;
+            var inputPanel = this.Items[0] as DiagramList;
+            var imagePanel = this.Items[1] as DiagramList;
+            var outputPanel = this.Items[2] as DiagramList;
+            int inputsCount = inputPanel?.Items.Count ?? 0;
+            int outputsCount = outputPanel?.Items.Count ?? 0;
+            int maxPinsCount = Math.Max(inputsCount, outputsCount);
+            double panelHeight = maxPinsCount * pinHeight;
+            if (maxPinsCount > 0)
+                imagePanel.Items[0].Height = panelHeight;
+            if (inputsCount > 0)
+                foreach (var input in inputPanel.Items)
+                    input.Height = pinHeight;
+            if (outputsCount > 0)
+                foreach (var output in outputPanel.Items)
+                    output.Height = pinHeight;
+            this.Items.ForEach(x => x.Height = panelHeight);
+        }
+
+        void OnBeginChangingLayout()
+        {
+            this.BeginAddItems();
+            foreach (DiagramList panel in this.Items)
+            {
+                panel.BeginAddItems();
+            }
+        }
+        void OnEndChangingLayout()
+        {
+            foreach (DiagramList panel in this.Items)
+            {
+                panel.EndAddItems();
+            }
+            this.EndAddItems();
+        }
+
+        static void MakePinHeightAsPreviousPinsHeight(DiagramList panel, DiagramContainer pin)
+        {
+            if (panel.Items.Count > 0)
+                pin.Height = panel.Items[0].Height;
+        }
+        static void OnPinsInCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+            if (d is BaseAdapter)
+            {
+                var adapter = d as BaseAdapter;
+
+                if (adapter.Items.Where(x => x.Tag?.ToString() == "InputPanel").FirstOrDefault() is DiagramList inputsPanel)
+                {
+                    int actualOldValue = inputsPanel.Items.Count;
+                    if (actualOldValue == (int)e.NewValue)
+                        return;
+
+                    adapter.OnBeginChangingLayout();
+                    if ((int)e.NewValue > actualOldValue)
+                    {
+                        for (int i = actualOldValue + 1; i <= (int)e.NewValue; i++)
+                        {
+                            DiagramContainer input = CreateDiagramContainer(inputsPanel.Width);
+                            input.Items.Add(CreateLabelShape(new Point(12, 10), "In" + i, Sides.Top));
+                            input.Items.Add(CreateInputPointShape(new Point(0, 25)));
+                            input.Items.Add(CreateLineShape(new Point(10, 30), i.ToString()));
+                            MakePinHeightAsPreviousPinsHeight(inputsPanel, input);
+                            (inputsPanel as DiagramList).Items.Add(input);
+                            input.SizeChanged += input_SizeChanged;
+
+                        }
+                    }
+                    else
+                    {
+                        inputsPanel.Items.Skip((int)e.NewValue).ToList().ForEach(item => inputsPanel.Items.Remove(item));
+                    }
+
+                    adapter.CorrectHeights();
+                    adapter.OnEndChangingLayout();
+                }
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        [XtraSerializableProperty]
+        public int PinsOutCount
+        {
+            get { return (int)GetValue(PinsOutCountProperty); }
+            set { SetValue(PinsOutCountProperty, value); }
+        }
+
+        public static readonly DependencyProperty PinsOutCountProperty = DependencyProperty.Register("PinsOutCount", typeof(int), typeof(BaseAdapter), new PropertyMetadata(OnPinsOutCountChanged));
+
+        static void OnPinsOutCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BaseAdapter)
+            {
+                var adapter = d as BaseAdapter;
+
+                if (adapter.Items.Where(x => x.Tag?.ToString() == "OutputPanel").FirstOrDefault() is DiagramList outputsPanel)
+                {
+                    int actualOldValue = outputsPanel.Items.Count;
+                    if (actualOldValue == (int)e.NewValue)
+                        return;
+
+                    adapter.OnBeginChangingLayout();
+                    if ((int)e.NewValue > actualOldValue)
+                    {
+                        for (int i = actualOldValue + 1; i <= (int)e.NewValue; i++)
+                        {
+                            DiagramContainer output = CreateDiagramContainer(outputsPanel.Width);
+                            output.Items.Add(CreateLineShape(new Point(0, 30), i.ToString(), Sides.Right));
+                            output.Items.Add(CreateOutputPointShape(new Point(outputsPanel.Width - 10, 25)));
+                            output.Items.Add(CreateLabelShape(new Point(outputsPanel.Width - 30, 10), "Out" + i, Sides.Top));
+                            MakePinHeightAsPreviousPinsHeight(outputsPanel, output);
+                            (outputsPanel as DiagramList).Items.Add(output);
+                            output.SizeChanged += output_SizeChanged;
+                        }
+
+                    }
+                    else
+                    {
+                        outputsPanel.Items.Skip((int)e.NewValue).ToList().ForEach(item => outputsPanel.Items.Remove(item));
+                    }
+                    adapter.CorrectHeights();
+                    adapter.OnEndChangingLayout();
+                }
+            }
+        }
 
         public BaseAdapter()
         {
@@ -41,7 +188,8 @@ namespace WFBuilder
             Orientation = Orientation.Horizontal;
             Stroke = Brushes.Transparent;
             CanAddItems = false;
-            
+            Width = 100;
+
         }
 
         static BaseAdapter()

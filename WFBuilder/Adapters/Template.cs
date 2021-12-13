@@ -22,12 +22,31 @@ namespace WFBuilder.Adapters
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [XtraSerializableProperty]
-        [Description("Template Adapter"), Category("Template")]
-        public int PinsQty { get; set; }
+        [Description("Property without template"), Category("Template")]
+        public int SimpleInt { get; set; }
 
-        
+       
+
+        private int pinsQty =0;
         [XtraSerializableProperty]
-        [Description("Template Adapter"), Category("Template")]
+        [Description("Property without template"), Category("Template")]
+        
+        public int PinsQty
+        {
+            get => pinsQty;
+
+            set
+            {
+                pinsQty = value;
+                base.PinsInCount = value;
+                base.PinsOutCount = value;
+            }
+        }
+
+
+
+        [XtraSerializableProperty]
+        [Description("Property with template"), Category("Template")]
         [PropertyGridEditor(TemplateKey = "VariablesEditor")]
         public string VarString { get; set; }
 
@@ -37,14 +56,17 @@ namespace WFBuilder.Adapters
 
             base.PinsIn.Add(new Pin() { id = 1, name = "In1" });
             base.PinsIn.Add(new Pin() { id = 2, name = "In2" });
-            base.PinsIn.Add(new Pin() { id = 3, name = "In3" });
-            base.PinsIn.Add(new Pin() { id = 4, name = "In4" });
+            //base.PinsIn.Add(new Pin() { id = 3, name = "In3" });
+            //base.PinsIn.Add(new Pin() { id = 4, name = "In4" });
 
             base.PinsOut.Add(new Pin() { id = 33, name = "Ack" });
             base.PinsOut.Add(new Pin() { id = 34, name = "Nck" });
 
-            Width = 100;
-            Height = Math.Max(base.PinsIn.Count + 1, base.PinsOut.Count + 1) * 30;
+            base.PinsInCount = 2;
+            base.PinsOutCount = 2;
+
+            //Width = 100;
+            Height = Math.Max(base.PinsIn.Count , base.PinsOut.Count ) * 40;
         }
 
         static Template()
@@ -57,9 +79,15 @@ namespace WFBuilder.Adapters
             //Add Base properties
             base.AddProperties(e);
 
-            //Add prorerties of this adapter
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
+            ////////////////////////////////////Pins Property optional///////////////////////////////////////////////////////////
+
+            e.Properties.Add(e.CreateProxyProperty("PinsInQty", adapter => base.PinsInCount, (adapter, value) => base.PinsInCount = value, new Attribute[] { new DisplayAttribute() { GroupName = "Pins" } }));
+            e.Properties.Add(e.CreateProxyProperty("PinsOutQty", adapter => base.PinsOutCount, (adapter, value) => base.PinsOutCount = value, new Attribute[] { new DisplayAttribute() { GroupName = "Pins" } }));
+
+            ///////////////////////////////////Add prorerties of this adapter//////////////////////////////////////
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["SimpleInt"]);
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarString"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
         }
     }
 }

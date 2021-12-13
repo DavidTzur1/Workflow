@@ -32,6 +32,8 @@ namespace WFBuilder.Adapters
 
             base.PinsIn.Add(new Pin() { id = 1, name = "In1" });
             base.PinsIn.Add(new Pin() { id = 2, name = "In2" });
+            base.PinsIn.Add(new Pin() { id = 3, name = "In3" });
+            base.PinsIn.Add(new Pin() { id = 4, name = "In4" });
 
 
             base.PinsOut.Add(new Pin() { id = 33, name = "Ack" });

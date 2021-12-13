@@ -29,6 +29,7 @@ using DevExpress.Utils.Serializing;
 using DevExpress.Data.Browsing;
 using WFBuilder.Adapters;
 using DevExpress.Xpf.Editors;
+using System.Diagnostics;
 
 namespace WFBuilder
 {
@@ -38,6 +39,7 @@ namespace WFBuilder
     public partial class MainWindow : ThemedWindow
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public static MainWindow Instance;
 
         static public XElement XMLStencils { get; set; }
 
@@ -70,12 +72,16 @@ namespace WFBuilder
             get { return (int)GetValue(NextEntryPointIDProperty); }
             set { SetValue(NextEntryPointIDProperty, value); }
         }
-        public static readonly DependencyProperty NextEntryPointIDProperty = DependencyProperty.Register("NextEntryPointID", typeof(int), typeof(MainWindow), new PropertyMetadata(0, OnPropertyChanged));
+        public static readonly DependencyProperty NextEntryPointIDProperty = DependencyProperty.Register("NextEntryPointID", typeof(int), typeof(MainWindow));
         [XtraSerializableProperty(XtraSerializationVisibility.Collection, useCreateItem: true)]
         public ObservableCollection<EntryPointModel> EntryPoints
         {
             get { return (ObservableCollection<EntryPointModel>)GetValue(EntryPointsProperty); }
-            set { SetValue(EntryPointsProperty, value); }
+            set 
+            { 
+                SetValue(EntryPointsProperty, value);
+                //MessageBox.Show("Set EntryPoints");
+            }
         }
         public static readonly DependencyProperty EntryPointsProperty = DependencyProperty.Register("EntryPoints", typeof(ObservableCollection<EntryPointModel>), typeof(MainWindow));
 
@@ -102,6 +108,13 @@ namespace WFBuilder
         static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //(DataContext as MainWindowViewModel).GetVarablesCommand;
+           // MessageBox.Show("My message here");
+
+        }
+
+        static void OnPropertyChanged1(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            //(DataContext as MainWindowViewModel).GetVarablesCommand;
             // MessageBox.Show("My message here");
 
         }
@@ -113,6 +126,7 @@ namespace WFBuilder
             //diagramControl.DocumentSource = @"..\..\Document.xml";
             RemoveAllDefaultStencils();
             InitializeStencils();
+            Instance = this;
 
             diagramControl.QueryConnectionPoints += Diagram_QueryConnectionPoints;
             diagramControl.CustomGetEditableItemProperties += diagram_CustomGetEditableItemProperties;
@@ -122,15 +136,40 @@ namespace WFBuilder
             diagramControl.ItemsPasting += DiagramControl_ItemsPasting;
             diagramControl.ItemInitializing += Diagram_ItemInitializing;
             diagramControl.Loaded += DiagramControl_Loaded;
+            diagramControl.CustomLoadDocument += DiagramControl_CustomLoadDocument;
+            
 
             Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
-            EntryPoints = new ObservableCollection<EntryPointModel>();
+            EntryPoints = new ObservableCollection<EntryPointModel>() ;
+            EntryPoints.CollectionChanged += EntryPoints_CollectionChanged;
             BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
 
 
 
 
         }
+
+        private void EntryPoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+           // MessageBox.Show("EntryPoints_CollectionChanged");
+        }
+
+        private void DiagramControl_CustomLoadDocument(object sender, DiagramCustomLoadDocumentEventArgs e)
+        {
+            if (e.DocumentSource == null)
+            {
+                //MessageBox.Show("DocumentLoaded");
+                NextAdapterID = 0;
+                NextBroadcastMessageID = 0;
+                NextEntryPointID = 0;
+                NextVariableID = 0;
+               Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
+                EntryPoints = new ObservableCollection<EntryPointModel>();
+                BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
+            }
+        }
+
+
 
         static MainWindow()
         {
@@ -153,7 +192,8 @@ namespace WFBuilder
         {
             RibbonControl ribbon = LayoutHelper.FindElementByType<RibbonControl>(diagramControl);
             // ribbon.ToolbarItems.Remove(ribbon.ToolbarItems.FirstOrDefault(item => ((BarItemLink)item).BarItemName == DefaultBarItemNames.Save));
-            diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
+            //diagramControl.DocumentSource = @"..\..\Documents\Document.xml";
+           // MessageBox.Show("Loaded");
 
             //var a = GetInputPins(4);
         }
@@ -300,7 +340,7 @@ namespace WFBuilder
         {
             get
             {
-                var list = new List<AdapterModel>();
+                var list = new List<AdapterModel>() { new AdapterModel { AdapterID = -1, AdapterName = "<Empty>" } };
                 foreach (var item in diagramControl.Items)
                 {
                     if (item is BaseAdapter)
@@ -314,11 +354,12 @@ namespace WFBuilder
 
         ////////////////////////////////////////////////////////////////////////////////
 
-        private List<PinModel> _inputPins;
+        public List<PinModel> _inputPins;
         public List<PinModel> InputPins
         {
             get
             {
+                if (_inputPins == null) _inputPins = new List<PinModel>() { new PinModel() { PinID = -1, PinName = "<Empty>" } };
                 return _inputPins;
             }
         }
@@ -350,6 +391,7 @@ namespace WFBuilder
         {
             if ((e.Source as ListBoxEdit).Name == "AdaptersEditor")
             {
+                if (e.NewValue == null) return;
                 _inputPins = GetInputPins((int)e.NewValue);
                 oldAdapterID = int.Parse(e.OldValue.ToString());
                 newAdapterID = int.Parse(e.NewValue.ToString());
@@ -381,6 +423,49 @@ namespace WFBuilder
                 shape.Background = brush;
             }
         }
+
+        int currentAdapterID=-1;
+        private void Adapter_EditValueChanged(object sender, EditValueChangedEventArgs e)
+        {
+            try
+            {
+
+                Debug.WriteLine("Adapter_EditValueChanged");
+                //if (e.OldValue == e.NewValue) return;
+                //    currentAdapterID = int.Parse(e.NewValue.ToString());
+                //log.Debug($"Adapter_EditValueChanged OldValue={e.OldValue} NewValue={e.NewValue} currentPinID={currentAdapterID}");
+                //if (e.NewValue.ToString() == "-1") return;
+                //_inputPins = GetInputPins((int)e.NewValue);
+
+                //if (e.OldValue != null && currentPinID >= 0) UpdateBackgroundInputPointShape(int.Parse(e.OldValue.ToString()), currentPinID, Brushes.Black);
+                //UpdateBackgroundInputPointShape(currentAdapterID, currentPinID, Brushes.Red);
+            }
+            catch(Exception ex)
+            {
+                log.Error(ex);
+            }
+
+
+        }
+
+        int currentPinID =-1;
+
+        private void Pin_EditValueChanged(object sender, EditValueChangedEventArgs e)
+        {
+            try
+            {
+                log.Debug($"Pin_EditValueChanged currentAdapterID={currentAdapterID} OldValue={e.OldValue}  NewValue={e.NewValue}");
+                if (e.NewValue == null) return;
+                int currentPinID = int.Parse(e.NewValue.ToString());
+                if (e.OldValue != null && currentAdapterID >= 0) UpdateBackgroundInputPointShape(int.Parse(e.OldValue.ToString()), currentPinID, Brushes.Black);
+                if (currentAdapterID >= 0) UpdateBackgroundInputPointShape(currentAdapterID, currentPinID, Brushes.Red);
+            }
+            catch(Exception ex)
+            {
+                log.Error(ex);
+            }
+        }
+
     }
 }
 

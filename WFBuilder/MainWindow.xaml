@@ -25,9 +25,9 @@
         </Style>
 
         <DataTemplate x:Key="{dxdiagt:DiagramControlThemeKeys ResourceKey=PropertiesPanelContentTemplate, IsThemeIndependent=True}">
-            <local:PropertyGridControlEx Style="{dxci:ThemeResource {dxdiagt:DiagramControlThemeKeys ResourceKey=PropertyGridStyle}}" />
+            <local:PropertyGridControlEx SortMode="NoSort"  Style="{dxci:ThemeResource {dxdiagt:DiagramControlThemeKeys ResourceKey=PropertyGridStyle}}" />
         </DataTemplate>
-
+        
     </dx:ThemedWindow.Resources>
     <Grid>
 
@@ -37,12 +37,7 @@
                 <dxb:RemoveBarItemAndLinkAction  ItemName="{x:Static dxdiag:DefaultBarItemNames.Save}" />
             </dxdiag:DiagramDesignerControl.Actions>-->
             <dxdiag:DiagramDesignerControl.Resources>
-                <DataTemplate x:Key="contentComboBoxEditor">
-                    <dxe:ComboBoxEdit Name="PART_Editor">
-                        <dxe:ComboBoxEditItem Content="Director"/>
-                        <dxe:ComboBoxEditItem Content="Manager"/>
-                    </dxe:ComboBoxEdit>
-                </DataTemplate>
+                
                 <DataTemplate x:Key="VariablesEditor">
                     <dxe:PopupBaseEdit Name="PART_Editor">
 
@@ -63,11 +58,11 @@
 
                 </DataTemplate>
 
-                <DataTemplate x:Key="AdaptersEditor">
+                <!--<DataTemplate x:Key="AdaptersEditor">
                     <dxe:PopupBaseEdit Name="PART_Editor">
                         <dxe:PopupBaseEdit.PopupContentTemplate>
                             <ControlTemplate>
-                                <dxe:ListBoxEdit ShowBorder="False"     EditValueChanged="ListBoxEdit_EditValueChanged" Name="AdaptersEditor"                                           
+                                <dxe:ListBoxEdit ShowBorder="False"     EditValueChanged="ListBoxEdit_EditValueChanged" Name="AdaptersEditor"  AllowRejectUnknownValues="True"                                    
                                                      EditValue="{Binding Path=(dxe:BaseEdit.OwnerEdit).EditValue}" DisplayMember="AdapterName" ValueMember="AdapterID"
                                                      ItemsSource="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).(dxprg:PropertyGridHelper.PropertyGrid).(dxdiag:DiagramControl.Diagram).DataContext.Adapters, RelativeSource={RelativeSource Self}}">
                                     <dxmvvm:Interaction.Behaviors>
@@ -78,9 +73,17 @@
                         </dxe:PopupBaseEdit.PopupContentTemplate>
                     </dxe:PopupBaseEdit>
 
-                </DataTemplate>
+                </DataTemplate>-->
 
-                <DataTemplate x:Key="PinsEditor">
+                <DataTemplate x:Key="AdaptersEditorTemplate">
+                    <dxe:ComboBoxEdit Name="PART_Editor"  DisplayMember="AdapterName"  ValueMember="AdapterID"     ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=dxdiag:DiagramDesignerControl}, Path=DataContext.Adapters,Mode=OneWay}" />
+                </DataTemplate>
+                <DataTemplate x:Key="PinsEditorTemplate">
+                    <dxe:ComboBoxEdit Name="PART_Editor" DisplayMember="PinName" ValueMember="PinID"  AutoComplete="True" IsEnabled="True" IsReadOnly="False" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=dxdiag:DiagramDesignerControl}, Path=DataContext.InputPins,Mode=OneWay}">
+                        
+                    </dxe:ComboBoxEdit>
+                </DataTemplate>
+                <!--<DataTemplate x:Key="PinsEditor">
                     <dxe:PopupBaseEdit Name="PART_Editor">
                         <dxe:PopupBaseEdit.PopupContentTemplate>
                             <ControlTemplate>
@@ -95,7 +98,7 @@
                         </dxe:PopupBaseEdit.PopupContentTemplate>
                     </dxe:PopupBaseEdit>
 
-                </DataTemplate>
+                </DataTemplate>-->
 
             </dxdiag:DiagramDesignerControl.Resources>
         </dxdiag:DiagramDesignerControl>

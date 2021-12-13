@@ -13,12 +13,34 @@ namespace WFBuilder
 {
     public class PropertyGridControlEx : PropertyGridControl
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         private DiagramControl _Diagram;
 
         public PropertyGridControlEx()
         {
             Loaded += PropertyGridControlEx_Loaded;
+            CellValueChanged += PropertyGridControlEx_CellValueChanged;
+            
+            
+            
+        }
+
+      
+
+        private void PropertyGridControlEx_CellValueChanged(object sender, CellValueChangedEventArgs args)
+        {
+            
+           log.Debug($" args.Row.FullPath={args.Row.FullPath} CellValueChanged OldValue={args.OldValue} NewValue={args.NewValue}");
+            if(args.Row.Path == "AdapterID")
+            {
+                MainWindow.Instance._inputPins = MainWindow.Instance.GetInputPins((int)args.NewValue);
+                (sender as PropertyGridControl).SetRowValueByRowPath("EntryPoints.[0].PinID", 1);
+                this.GetRowValueByRowPath("EntryPoints.[0].PinID");
+                
+
+            }
         }
 
         private void PropertyGridControlEx_Loaded(object sender, RoutedEventArgs e)

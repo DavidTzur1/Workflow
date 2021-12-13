@@ -22,17 +22,21 @@ namespace WFBuilder.Models
         [Display(Order = 1)]
         public string EntryPointName { get; set; }
         [XtraSerializableProperty]
-        [PropertyGridEditor(TemplateKey = "AdaptersEditor")] //PinsEditor
+        [PropertyGridEditor(TemplateKey = "AdaptersEditorTemplate")] 
         [Display(Order = 2)]
         public int AdapterID { get; set; }
         [XtraSerializableProperty]
-        [PropertyGridEditor(TemplateKey = "PinsEditor")]
+        [PropertyGridEditor(TemplateKey = "PinsEditorTemplate")]
         [Display(Order = 3)]
         public int PinID { get; set; }
 
         public EntryPointModel()
         {
             EntryPointID = (Window.GetWindow(App.Current.MainWindow) as MainWindow).NextEntryPointID++;
+             //AdapterID = (Window.GetWindow(App.Current.MainWindow) as MainWindow).Adapters.FirstOrDefault().AdapterID;
+            // PinID = (Window.GetWindow(App.Current.MainWindow) as MainWindow).GetInputPins(AdapterID).FirstOrDefault().PinID;
+            AdapterID = -1;
+            PinID = -1;
         }
     }
 }
