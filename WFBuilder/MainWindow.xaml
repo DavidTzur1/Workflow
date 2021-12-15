@@ -32,7 +32,7 @@
     <Grid>
 
 
-        <dxdiag:DiagramDesignerControl x:Name="diagramControl" ShowRulers="False" AllowEmptySelection="False" >
+        <dxdiag:DiagramDesignerControl x:Name="diagramControl" ShowRulers="True" AllowEmptySelection="False" >
             <!--<dxdiag:DiagramDesignerControl.Actions>
                 <dxb:RemoveBarItemAndLinkAction  ItemName="{x:Static dxdiag:DefaultBarItemNames.Save}" />
             </dxdiag:DiagramDesignerControl.Actions>-->
@@ -78,9 +78,26 @@
                 <DataTemplate x:Key="AdaptersEditorTemplate">
                     <dxe:ComboBoxEdit Name="PART_Editor"  DisplayMember="AdapterName"  ValueMember="AdapterID"     ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=dxdiag:DiagramDesignerControl}, Path=DataContext.Adapters,Mode=OneWay}" />
                 </DataTemplate>
-                <DataTemplate x:Key="PinsEditorTemplate">
-                    <dxe:ComboBoxEdit Name="PART_Editor" DisplayMember="PinName" ValueMember="PinID"  AutoComplete="True" IsEnabled="True" IsReadOnly="False" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=dxdiag:DiagramDesignerControl}, Path=DataContext.InputPins,Mode=OneWay}">
+                <DataTemplate x:Key="PinsEditorTemplate1">
+                    <dxe:ComboBoxEdit Name="PART_Editor" 
+                                      DisplayMember="PinName" 
+                                      ValueMember="PinID"  
+                                      AutoComplete="True" 
+                                      IsEnabled="True" 
+                                      IsReadOnly="False" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=dxdiag:DiagramDesignerControl}, Path=DataContext.InputPins,Mode=OneWay}">
                         
+                    </dxe:ComboBoxEdit>
+                </DataTemplate>
+                <DataTemplate x:Key="PinsEditorTemplate">
+                    <dxe:ComboBoxEdit Name="PART_Editor"
+                        DisplayMember="PinName"
+                        ValueMember="PinID"
+                        AutoComplete="True"
+                        IsEnabled="True"
+                        IsReadOnly="False">
+                        <dxmvvm:Interaction.Behaviors>
+                            <local1:ComboBoxHelper />
+                        </dxmvvm:Interaction.Behaviors>
                     </dxe:ComboBoxEdit>
                 </DataTemplate>
                 <!--<DataTemplate x:Key="PinsEditor">

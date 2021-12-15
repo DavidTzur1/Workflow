@@ -159,7 +159,16 @@ namespace WFBuilder
 
         private void EntryPoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-           // MessageBox.Show("EntryPoints_CollectionChanged");
+           
+            if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                foreach(EntryPointModel item in e.OldItems)
+                {
+                    MainWindow.Instance.UpdateBackgroundInputPointShape(item.AdapterID, item.PinID, Brushes.Black);
+                }           
+            }
+
+           
         }
 
         private void DiagramControl_CustomLoadDocument(object sender, DiagramCustomLoadDocumentEventArgs e)
@@ -379,7 +388,8 @@ namespace WFBuilder
 
         public List<PinModel> GetInputPins(int adapterID)
         {
-            var list = new List<PinModel>();
+            var list = new List<PinModel>() { new PinModel() { PinID = -1, PinName = "<Empty>" } };
+            if (adapterID == -1) return list;
             var adapter = diagramControl.Items.Where(item => item.Tag?.ToString() == adapterID.ToString()).FirstOrDefault() as BaseAdapter;
             var inputPanel = adapter.Items.Where(item => item.Tag?.ToString() == "InputPanel").FirstOrDefault() as DiagramList;
             if (inputPanel != null)
@@ -397,37 +407,15 @@ namespace WFBuilder
             return list;
         }
 
-
-        int oldAdapterID;
-        int newAdapterID;
-        private void ListBoxEdit_EditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
-        {
-            if ((e.Source as ListBoxEdit).Name == "AdaptersEditor")
-            {
-                if (e.NewValue == null) return;
-                _inputPins = GetInputPins((int)e.NewValue);
-                oldAdapterID = int.Parse(e.OldValue.ToString());
-                newAdapterID = int.Parse(e.NewValue.ToString());
-            }
-            if ((e.Source as ListBoxEdit).Name == "PinsEditor")
-            {
-                if (e.OldValue != null)
-                {
-                    int oldPinID = int.Parse(e.OldValue?.ToString());
-                    UpdateBackgroundInputPointShape(oldAdapterID, oldPinID, Brushes.Black);
-                }
-
-                int newPinID = int.Parse(e.NewValue.ToString());
-                UpdateBackgroundInputPointShape(newAdapterID, newPinID, Brushes.Red);
-            }
-        }
+        
 
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
-        private void UpdateBackgroundInputPointShape(int adapterID, int pinID, Brush brush)
+        public void UpdateBackgroundInputPointShape(int adapterID, int pinID, Brush brush)
         {
-
+            if (adapterID == -1 || pinID == -1) return;
             var adapter = diagramControl.Items.Where(item => item.Tag?.ToString() == adapterID.ToString()).FirstOrDefault() as BaseAdapter;
+            if (adapter == null) return;
             var inputPanel = adapter.Items.Where(item => item.Tag?.ToString() == "InputPanel").FirstOrDefault() as DiagramList;
             var diagramContainer = inputPanel.Items.Where(item => ((item as DiagramContainer).Items.Where(shape => shape.Tag?.ToString() == "line" && (shape as DiagramShape).Content == pinID.ToString())).Count() > 0).FirstOrDefault() as DiagramContainer;
             if(diagramContainer != null)
@@ -437,47 +425,12 @@ namespace WFBuilder
             }
         }
 
-        int currentAdapterID=-1;
-        private void Adapter_EditValueChanged(object sender, EditValueChangedEventArgs e)
-        {
-            try
-            {
+       
+      
 
-                Debug.WriteLine("Adapter_EditValueChanged");
-                //if (e.OldValue == e.NewValue) return;
-                //    currentAdapterID = int.Parse(e.NewValue.ToString());
-                //log.Debug($"Adapter_EditValueChanged OldValue={e.OldValue} NewValue={e.NewValue} currentPinID={currentAdapterID}");
-                //if (e.NewValue.ToString() == "-1") return;
-                //_inputPins = GetInputPins((int)e.NewValue);
+       
 
-                //if (e.OldValue != null && currentPinID >= 0) UpdateBackgroundInputPointShape(int.Parse(e.OldValue.ToString()), currentPinID, Brushes.Black);
-                //UpdateBackgroundInputPointShape(currentAdapterID, currentPinID, Brushes.Red);
-            }
-            catch(Exception ex)
-            {
-                log.Error(ex);
-            }
-
-
-        }
-
-        int currentPinID =-1;
-
-        private void Pin_EditValueChanged(object sender, EditValueChangedEventArgs e)
-        {
-            try
-            {
-                log.Debug($"Pin_EditValueChanged currentAdapterID={currentAdapterID} OldValue={e.OldValue}  NewValue={e.NewValue}");
-                if (e.NewValue == null) return;
-                int currentPinID = int.Parse(e.NewValue.ToString());
-                if (e.OldValue != null && currentAdapterID >= 0) UpdateBackgroundInputPointShape(int.Parse(e.OldValue.ToString()), currentPinID, Brushes.Black);
-                if (currentAdapterID >= 0) UpdateBackgroundInputPointShape(currentAdapterID, currentPinID, Brushes.Red);
-            }
-            catch(Exception ex)
-            {
-                log.Error(ex);
-            }
-        }
+        
 
     }
 }

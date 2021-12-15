@@ -1,5 +1,6 @@
 ﻿using DevExpress.Xpf.Diagram;
 using DevExpress.Xpf.Docking;
+using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.PropertyGrid;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace WFBuilder
 {
@@ -22,23 +24,39 @@ namespace WFBuilder
         {
             Loaded += PropertyGridControlEx_Loaded;
             CellValueChanged += PropertyGridControlEx_CellValueChanged;
-            
-            
-            
+            ShownEditor += PropertyGridControlEx_ShownEditor;
+
+
+
         }
 
-      
+        private void PropertyGridControlEx_ShownEditor(object sender, PropertyGridEditorEventArgs args)
+        {
+            if (args.Editor is ComboBoxEdit && args.Row.Path == "PinID")
+            {
+                var rowValue = ((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("PinID", "AdapterID"));
+                if (rowValue != null)
+                    ((ComboBoxEdit)args.Editor).ItemsSource = MainWindow.Instance.GetInputPins((int)rowValue);
+            }
+        }
 
         private void PropertyGridControlEx_CellValueChanged(object sender, CellValueChangedEventArgs args)
         {
             
            log.Debug($" args.Row.FullPath={args.Row.FullPath} CellValueChanged OldValue={args.OldValue} NewValue={args.NewValue}");
-            if(args.Row.Path == "AdapterID")
+            if (args.Row.Path == "AdapterID")
+            {            
+                /////////////Update the BackgroundInputPoint
+
+                int pinID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("AdapterID", "PinID"));
+                MainWindow.Instance.UpdateBackgroundInputPointShape((int)args.OldValue, pinID, Brushes.Black);
+                MainWindow.Instance.UpdateBackgroundInputPointShape((int)args.NewValue, pinID, Brushes.Red);
+            }
+            else if(args.Row.Path == "PinID")
             {
-                MainWindow.Instance.InputPins = MainWindow.Instance.GetInputPins((int)args.NewValue);
-                //(sender as PropertyGridControl).SetRowValueByRowPath("EntryPoints.[0].PinID", 1);
-                //this.GetRowValueByRowPath("EntryPoints.[0].PinID");
-                
+                int adapterID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("PinID", "AdapterID"));
+                MainWindow.Instance.UpdateBackgroundInputPointShape(adapterID, (int)args.OldValue, Brushes.Black);
+                MainWindow.Instance.UpdateBackgroundInputPointShape(adapterID, (int)args.NewValue, Brushes.Red);
             }
         }
 

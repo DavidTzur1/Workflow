@@ -89,6 +89,7 @@
     <Compile Include="Adapters\Temlate1.cs" />
     <Compile Include="Adapters\Template.cs" />
     <Compile Include="BaseAdapter.cs" />
+    <Compile Include="Behaviors\ComboBoxHelper.cs" />
     <Compile Include="Behaviors\ListBoxBehavior.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Models\AdapterModel.cs" />
