@@ -42,12 +42,10 @@ namespace WFBuilder
 
         private void PropertyGridControlEx_CellValueChanged(object sender, CellValueChangedEventArgs args)
         {
-            
-           log.Debug($" args.Row.FullPath={args.Row.FullPath} CellValueChanged OldValue={args.OldValue} NewValue={args.NewValue}");
+            /////////////Update the BackgroundInputPoint
+            log.Debug($" args.Row.FullPath={args.Row.FullPath} CellValueChanged OldValue={args.OldValue} NewValue={args.NewValue}");
             if (args.Row.Path == "AdapterID")
             {            
-                /////////////Update the BackgroundInputPoint
-
                 int pinID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("AdapterID", "PinID"));
                 MainWindow.Instance.UpdateBackgroundInputPointShape((int)args.OldValue, pinID, Brushes.Black);
                 MainWindow.Instance.UpdateBackgroundInputPointShape((int)args.NewValue, pinID, Brushes.Red);

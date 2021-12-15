@@ -159,16 +159,16 @@ namespace WFBuilder
 
         private void EntryPoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-           
-            if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
-                foreach(EntryPointModel item in e.OldItems)
+                foreach (EntryPointModel item in e.OldItems)
                 {
                     MainWindow.Instance.UpdateBackgroundInputPointShape(item.AdapterID, item.PinID, Brushes.Black);
-                }           
+                }
             }
 
-           
+
         }
 
         private void DiagramControl_CustomLoadDocument(object sender, DiagramCustomLoadDocumentEventArgs e)
