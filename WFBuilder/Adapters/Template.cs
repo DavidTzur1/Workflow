@@ -27,7 +27,7 @@ namespace WFBuilder.Adapters
 
        
 
-        private int pinsQty =0;
+        private int pinsQty =-1;
         [XtraSerializableProperty]
         [Description("Property without template"), Category("Template")]
         
@@ -38,8 +38,11 @@ namespace WFBuilder.Adapters
             set
             {
                 pinsQty = value;
-                base.PinsInCount = value;
-                base.PinsOutCount = value;
+                if (pinsQty != -1)
+                {
+                    base.PinsInCount = value;
+                    base.PinsOutCount = value;
+                }
             }
         }
 

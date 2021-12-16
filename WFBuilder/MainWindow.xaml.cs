@@ -129,6 +129,7 @@ namespace WFBuilder
         MainWindowViewModel VM = new MainWindowViewModel();
         public MainWindow()
         {
+            //MessageBox.Show("MainWindow");
             InitializeComponent();
             DataContext = this;
             //diagramControl.DocumentSource = @"..\..\Document.xml";
@@ -159,6 +160,7 @@ namespace WFBuilder
 
         private void EntryPoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            MessageBox.Show("EntryPoints_CollectionChanged");
 
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
@@ -175,13 +177,14 @@ namespace WFBuilder
         {
             if (e.DocumentSource == null)
             {
-                //MessageBox.Show("DocumentLoaded");
+                MessageBox.Show("DocumentLoaded");
                 NextAdapterID = 0;
                 NextBroadcastMessageID = 0;
                 NextEntryPointID = 0;
                 NextVariableID = 0;
-               Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
-                EntryPoints = new ObservableCollection<EntryPointModel>();
+                Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
+                EntryPoints.Clear();
+                
                 BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
             }
         }
@@ -406,9 +409,6 @@ namespace WFBuilder
             }
             return list;
         }
-
-        
-
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
         public void UpdateBackgroundInputPointShape(int adapterID, int pinID, Brush brush)
