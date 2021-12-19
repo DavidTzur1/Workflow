@@ -94,6 +94,7 @@
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Models\AdapterModel.cs" />
     <Compile Include="Models\BroadcastMessageModel.cs" />
+    <Compile Include="Models\BrodcastTargetModel.cs" />
     <Compile Include="Models\EntryPointModel.cs" />
     <Compile Include="Models\PinModel.cs" />
     <Compile Include="Models\VariableModel.cs" />

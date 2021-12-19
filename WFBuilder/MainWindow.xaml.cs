@@ -146,21 +146,38 @@ namespace WFBuilder
             diagramControl.ItemInitializing += Diagram_ItemInitializing;
             diagramControl.Loaded += DiagramControl_Loaded;
             diagramControl.CustomLoadDocument += DiagramControl_CustomLoadDocument;
-            
+            diagramControl.DocumentLoaded += DiagramControl_DocumentLoaded;
 
             Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
+
             EntryPoints = new ObservableCollection<EntryPointModel>() ;
             EntryPoints.CollectionChanged += EntryPoints_CollectionChanged;
+
             BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
+            BroadcastMessages.CollectionChanged += BroadcastMessages_CollectionChanged;
+            
 
 
 
 
         }
 
+        private void DiagramControl_DocumentLoaded(object sender, DiagramDocumentLoadedEventArgs e)
+        {
+            EntryPoints.CollectionChanged += EntryPoints_CollectionChanged;
+            BroadcastMessages.CollectionChanged += BroadcastMessages_CollectionChanged;
+            foreach(BroadcastMessageModel model in BroadcastMessages)
+            {
+                model.BrodcastTarges.CollectionChanged += model.BrodcastTarges_CollectionChanged;
+            }
+            
+            
+
+        }
+
         private void EntryPoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            MessageBox.Show("EntryPoints_CollectionChanged");
+            //MessageBox.Show("EntryPoints_CollectionChanged");
 
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
@@ -169,22 +186,32 @@ namespace WFBuilder
                     MainWindow.Instance.UpdateBackgroundInputPointShape(item.AdapterID, item.PinID, Brushes.Black);
                 }
             }
+        }
+        private void BroadcastMessages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
 
-
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                foreach (BroadcastMessageModel model in e.OldItems)
+                {
+                    foreach(BrodcastTargetModel item in model.BrodcastTarges)
+                    MainWindow.Instance.UpdateBackgroundInputPointShape(item.AdapterID, item.PinID, Brushes.Black);
+                }
+            }
         }
 
         private void DiagramControl_CustomLoadDocument(object sender, DiagramCustomLoadDocumentEventArgs e)
         {
+           
             if (e.DocumentSource == null)
             {
-                MessageBox.Show("DocumentLoaded");
+                
                 NextAdapterID = 0;
                 NextBroadcastMessageID = 0;
                 NextEntryPointID = 0;
                 NextVariableID = 0;
                 Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
-                EntryPoints.Clear();
-                
+                EntryPoints.Clear();             
                 BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
             }
         }
