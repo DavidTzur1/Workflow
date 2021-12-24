@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WFBuilder.Models;
 
 namespace WFBuilder.Adapters
 {
@@ -50,8 +51,14 @@ namespace WFBuilder.Adapters
 
         [XtraSerializableProperty]
         [Description("Property with template"), Category("Template")]
-        [PropertyGridEditor(TemplateKey = "VariablesEditor")]
+        [PropertyGridEditor(TemplateKey = "VariablesStrEditor")]
         public string VarString { get; set; }
+
+        [XtraSerializableProperty]
+        [Description("Property with template"), Category("Template")]
+        [PropertyGridEditor(TemplateKey = "VariablesIntEditor")]
+        public int VarInt { get; set; }
+
 
         public Template()
         {
@@ -90,7 +97,9 @@ namespace WFBuilder.Adapters
             ///////////////////////////////////Add prorerties of this adapter//////////////////////////////////////
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["SimpleInt"]);
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarString"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarInt"]);
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
+
         }
     }
 }

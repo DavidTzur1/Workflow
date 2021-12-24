@@ -19,28 +19,35 @@ namespace WFBuilder.Models
     {
         [XtraSerializableProperty]
         [ReadOnly(true) ]
-        [Display (Order=-9)]
+        [Display(Order = 0)]
         public int VariableID { get; set; }
+
         [XtraSerializableProperty ]
         [Required(ErrorMessage = "Please enter unique name")]
+        [Display(Order = 1)]
         public string Name { get; set; }
+
         [XtraSerializableProperty]
-        public ValidationDataTypeEx ValType { get; set; } = ValidationDataTypeEx.Integer;
+        [Display(Order = 2)]
+        [PropertyGridEditor(TemplateKey = "ValTypeEditor")]
+        public ValidationDataTypeEx ValType { get; set; } = ValidationDataTypeEx.Null;
+
         [XtraSerializableProperty]
         [VariableValType ("ValType",ErrorMessage ="Not valid")]
-        
+        [Display(Order = 3)]
         public object Val { get; set; }
 
+        [Display(Order = 4)]
         public LevelScopeType LevelScope { get; set; } = LevelScopeType.Local;
 
         public VariableModel() 
         {
-            VariableID = (Window.GetWindow(App.Current.MainWindow) as MainWindow).NextVariableID++;
+            VariableID =  MainWindow.Instance.NextVariableID++;
         }
         
     }
 
-    public enum LevelScopeType { Local,Global}
-    public enum ValidationDataTypeEx {String,Integer,Double,Date,Currency,Boolean,Object}
+    public enum LevelScopeType {Local,Global}
+    public enum ValidationDataTypeEx {Null,String,Integer,Double,Date,Currency,Boolean,Object}
 
 }

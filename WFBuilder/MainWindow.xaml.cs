@@ -123,7 +123,7 @@ namespace WFBuilder
         static void OnPropertyChanged1(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //(DataContext as MainWindowViewModel).GetVarablesCommand;
-            // MessageBox.Show("My message here");
+            MessageBox.Show($"OnPropertyChanged1 e= {e.Property} Old={e.OldValue} New={e.NewValue}");
 
         }
         MainWindowViewModel VM = new MainWindowViewModel();
@@ -148,18 +148,34 @@ namespace WFBuilder
             diagramControl.CustomLoadDocument += DiagramControl_CustomLoadDocument;
             diagramControl.DocumentLoaded += DiagramControl_DocumentLoaded;
 
-            Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
+            Variables = new ObservableCollection<VariableModel>() 
+            { 
+                new VariableModel { Name = "Int1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 },
+                new VariableModel { Name = "Int2", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 },
+                new VariableModel { Name = "Str1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.String, Val = "ValSrr1" },
+                new VariableModel { Name = "Str2", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.String, Val = "ValStr2" }
+            };
+
+            Variables.CollectionChanged += Variables_CollectionChanged;
+            
 
             EntryPoints = new ObservableCollection<EntryPointModel>() ;
             EntryPoints.CollectionChanged += EntryPoints_CollectionChanged;
 
             BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
             BroadcastMessages.CollectionChanged += BroadcastMessages_CollectionChanged;
+
+            
             
 
 
 
 
+        }
+
+        private void Variables_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+           // MessageBox.Show($"Variables_CollectionChanged Action= { e.Action}");
         }
 
         private void DiagramControl_DocumentLoaded(object sender, DiagramDocumentLoadedEventArgs e)
@@ -202,18 +218,31 @@ namespace WFBuilder
 
         private void DiagramControl_CustomLoadDocument(object sender, DiagramCustomLoadDocumentEventArgs e)
         {
-           
+
             if (e.DocumentSource == null)
             {
-                
+
                 NextAdapterID = 0;
                 NextBroadcastMessageID = 0;
                 NextEntryPointID = 0;
                 NextVariableID = 0;
-                Variables = new ObservableCollection<VariableModel>() { new VariableModel { Name = "abc", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 }, new VariableModel { Name = "def", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 } };
-                EntryPoints.Clear();             
+                Variables = new ObservableCollection<VariableModel>()
+                {
+                    new VariableModel { Name = "Int1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 },
+                    new VariableModel { Name = "Int2", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 },
+                    new VariableModel { Name = "Str1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.String, Val = "ValSrr1" },
+                    new VariableModel { Name = "Str2", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.String, Val = "ValStr2" }
+                };
+
+                EntryPoints.Clear();
                 BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
+
+               
+
+
+
             }
+            
         }
 
 
@@ -452,12 +481,36 @@ namespace WFBuilder
             }
         }
 
-       
-      
+        ///////////////Varabels//////////////////////////////////////////////////////////////////////////
 
-       
+       public List<VariableModel> VariablesInt
+        {
+            
+            get
+            {
+                List<VariableModel> list = new List<VariableModel>();
+                foreach (var item in Variables.Where(x => x.ValType == ValidationDataTypeEx.Integer))
+                {
+                    list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"),VariableID=item.VariableID });
+                }
+                // return Variables.Where(x => x.ValType == ValidationDataTypeEx.Integer).ToList();
+                return list;
+            }
+        }
 
-        
+        public List<VariableModel> VariablesStr
+        {
+            get
+            {
+                return Variables.Where(x => x.ValType == ValidationDataTypeEx.String).ToList();
+            }
+        }
+
+
+
+
+
+
 
     }
 }
