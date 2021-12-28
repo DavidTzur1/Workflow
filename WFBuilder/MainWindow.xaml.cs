@@ -31,6 +31,8 @@ using WFBuilder.Adapters;
 using DevExpress.Xpf.Editors;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using DevExpress.Mvvm;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace WFBuilder
 {
@@ -127,6 +129,7 @@ namespace WFBuilder
 
         }
         MainWindowViewModel VM = new MainWindowViewModel();
+        
         public MainWindow()
         {
             //MessageBox.Show("MainWindow");
@@ -147,7 +150,7 @@ namespace WFBuilder
             diagramControl.Loaded += DiagramControl_Loaded;
             diagramControl.CustomLoadDocument += DiagramControl_CustomLoadDocument;
             diagramControl.DocumentLoaded += DiagramControl_DocumentLoaded;
-
+           
             Variables = new ObservableCollection<VariableModel>() 
             { 
                 new VariableModel { Name = "Int1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 },
@@ -165,13 +168,12 @@ namespace WFBuilder
             BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
             BroadcastMessages.CollectionChanged += BroadcastMessages_CollectionChanged;
 
-            
-            
-
-
 
 
         }
+
+       
+       
 
         private void Variables_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -378,7 +380,7 @@ namespace WFBuilder
             {
                 e.Properties.Add(e.CreateProxyProperty("NextAdapterID", item => NextAdapterID, (item, value) => NextAdapterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
 
-                e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot", Order = 1 } }));
+                e.Properties.Add(e.CreateProxyProperty("Variables", item => Variables, (item, value) => Variables = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot", Order = 1 }, new PropertyGridEditorAttribute() { TemplateKey = "VariablesEditor" } }));
                 e.Properties.Add(e.CreateProxyProperty("NextVariableID", item => NextVariableID, (item, value) => NextVariableID = value, new Attribute[] { new DisplayAttribute() { GroupName = "IDs" }, new ReadOnlyAttribute(true) }));
 
                 e.Properties.Add(e.CreateProxyProperty("EntryPoints", item => EntryPoints, (item, value) => EntryPoints = value, new Attribute[] { new DisplayAttribute() { GroupName = "DiagramRoot", Order = 1 } }));
@@ -507,9 +509,10 @@ namespace WFBuilder
         }
 
 
+        
+       
 
-
-
+        
 
 
     }

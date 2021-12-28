@@ -57,7 +57,7 @@ namespace WFBuilder.Adapters
         [XtraSerializableProperty]
         [Description("Property with template"), Category("Template")]
         [PropertyGridEditor(TemplateKey = "VariablesIntEditor")]
-        public int VarInt { get; set; }
+        public int VarInt { get; set; } = -1;
 
 
         public Template()

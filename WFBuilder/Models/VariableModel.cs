@@ -2,6 +2,7 @@
 using DevExpress.Utils.Serializing;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,10 +23,10 @@ namespace WFBuilder.Models
         [Display(Order = 0)]
         public int VariableID { get; set; }
 
-        [XtraSerializableProperty ]
+        [XtraSerializableProperty]
         [Required(ErrorMessage = "Please enter unique name")]
         [Display(Order = 1)]
-        public string Name { get; set; }
+        public string Name { get; set; } 
 
         [XtraSerializableProperty]
         [Display(Order = 2)]
@@ -40,11 +41,26 @@ namespace WFBuilder.Models
         [Display(Order = 4)]
         public LevelScopeType LevelScope { get; set; } = LevelScopeType.Local;
 
+        [XtraSerializableProperty(XtraSerializationVisibility.SimpleCollection)]
+        [ReadOnly(true)]
+       // [Browsable(false)]
+        public ObservableCollection<int> AdapterIDs { get; set; } = new ObservableCollection<int>();
+
+
+        //[Browsable(false)]
+        //public List<int> AdapterIDs = new List<int>();
+
         public VariableModel() 
         {
             VariableID =  MainWindow.Instance.NextVariableID++;
+            Name = $"Var1{VariableID.ToString()}";
         }
-        
+
+        public override string ToString()
+        {
+            return Name.ToString();
+        }
+
     }
 
     public enum LevelScopeType {Local,Global}

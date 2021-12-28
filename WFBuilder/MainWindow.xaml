@@ -14,7 +14,7 @@
     xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
     xmlns:dxci="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
-    xmlns:local1="clr-namespace:WFBuilder.Behaviors"
+    xmlns:behavior="clr-namespace:WFBuilder.Behaviors"
     xmlns:model="clr-namespace:WFBuilder.Models"
     x:Class="WFBuilder.MainWindow"
      mc:Ignorable="d"
@@ -28,7 +28,9 @@
         <DataTemplate x:Key="{dxdiagt:DiagramControlThemeKeys ResourceKey=PropertiesPanelContentTemplate, IsThemeIndependent=True}">
             <local:PropertyGridControlEx SortMode="NoSort"  Style="{dxci:ThemeResource {dxdiagt:DiagramControlThemeKeys ResourceKey=PropertyGridStyle}}" />
         </DataTemplate>
-        
+        <DataTemplate x:Key="VariablesEditor">
+            <TextBlock Text="Variables" Tag="VariablesEditor" />
+        </DataTemplate>
 
     </dx:ThemedWindow.Resources>
     <Grid>
@@ -41,23 +43,20 @@
             <dxdiag:DiagramDesignerControl.Resources>
 
                 <DataTemplate x:Key="ValTypeEditor">
-                    <dxe:ComboBoxEdit Name="PART_Editor"
-                        IsEnabled="{DXBinding Expr='Value == $model:ValidationDataTypeEx.Null'}"
-                                      
+                    <dxe:ComboBoxEdit Name="PART_Editor" Tag="ValTypeEditor"              
                         ItemsSource="{dxe:EnumItemsSource EnumType={x:Type model:ValidationDataTypeEx}}" />
                 </DataTemplate>
+                
                 <DataTemplate x:Key="VariablesIntEditor">
                     <dxe:PopupBaseEdit Name="PART_Editor">
               
                         <dxe:PopupBaseEdit.PopupContentTemplate>
                             <ControlTemplate>
-                                <dxe:ListBoxEdit ShowBorder="False" DisplayMember="Name" ValueMember="VariableID" DisplayFormatString="" 
-                                                     
+                                <dxe:ListBoxEdit ShowBorder="False" DisplayMember="Name" ValueMember="VariableID" DisplayFormatString=""                                                     
                                                      EditValue="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Self}}"
                                                      ItemsSource="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).(dxprg:PropertyGridHelper.PropertyGrid).(dxdiag:DiagramControl.Diagram).DataContext.VariablesInt, RelativeSource={RelativeSource Self}}" >
-
                                     <dxmvvm:Interaction.Behaviors>
-                                        <local1:ListBoxBehavior/>
+                                        <behavior:ListBoxBehavior />
                                     </dxmvvm:Interaction.Behaviors>
                                 </dxe:ListBoxEdit>
                             </ControlTemplate>
@@ -76,7 +75,7 @@
                                                      ItemsSource="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).(dxprg:PropertyGridHelper.PropertyGrid).(dxdiag:DiagramControl.Diagram).DataContext.VariablesStr, RelativeSource={RelativeSource Self}}">
 
                                     <dxmvvm:Interaction.Behaviors>
-                                        <local1:ListBoxBehavior/>
+                                        <behavior:ListBoxBehavior/>
                                     </dxmvvm:Interaction.Behaviors>
                                 </dxe:ListBoxEdit>
                             </ControlTemplate>
@@ -123,7 +122,7 @@
                         IsEnabled="True"
                         IsReadOnly="False">
                         <dxmvvm:Interaction.Behaviors>
-                            <local1:ComboBoxHelper />
+                            <behavior:ComboBoxHelper />
                         </dxmvvm:Interaction.Behaviors>
                     </dxe:ComboBoxEdit>
                 </DataTemplate>

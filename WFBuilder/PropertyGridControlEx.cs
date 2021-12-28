@@ -4,6 +4,8 @@ using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.PropertyGrid;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,12 +40,27 @@ namespace WFBuilder
                 if (rowValue != null)
                     ((ComboBoxEdit)args.Editor).ItemsSource = MainWindow.Instance.GetInputPins((int)rowValue);
             }
+
+            if (args.Editor is ComboBoxEdit)
+            {
+                if ((args.Editor as ComboBoxEdit).Tag?.ToString() == "ValTypeEditor")
+                {
+                    var rowValue = ((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("ValType", "AdapterIDs"));
+                    if (rowValue != null)
+                        ((ComboBoxEdit)args.Editor).IsEnabled = (((ObservableCollection<int>)rowValue).Count > 0)?false:true;
+                }
+
+            }
+
+
         }
 
         private void PropertyGridControlEx_CellValueChanged(object sender, CellValueChangedEventArgs args)
         {
             /////////////Update the BackgroundInputPoint
-            log.Debug($" args.Row.FullPath={args.Row.FullPath} CellValueChanged OldValue={args.OldValue} NewValue={args.NewValue}");
+            //log.Debug($" args.Row.FullPath={args.Row.FullPath} CellValueChanged OldValue={args.OldValue} NewValue={args.NewValue}");
+            //log.Debug("PropertyGridControlEx_CellValueChanged");
+            Debug.WriteLine($" args.Row.FullPath={args.Row.FullPath} CellValueChanged OldValue={args.OldValue} NewValue={args.NewValue}");
             if (args.Row.Path == "AdapterID")
             {            
                 int pinID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("AdapterID", "PinID"));
@@ -55,6 +72,23 @@ namespace WFBuilder
                 int adapterID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("PinID", "AdapterID"));
                 MainWindow.Instance.UpdateBackgroundInputPointShape(adapterID, (int)args.OldValue, Brushes.Black);
                 MainWindow.Instance.UpdateBackgroundInputPointShape(adapterID, (int)args.NewValue, Brushes.Red);
+            }
+            /////Fix the if condition
+            else if (args.Row.Path == "VarInt")
+            {
+
+                int adapterID = BaseAdapter.ActiveAdapterID;
+                if (args.NewValue != null)
+                {
+                    int newVal = (int)args.NewValue;
+                    MainWindow.Instance.Variables.Where(x => x.VariableID == newVal).FirstOrDefault()?.AdapterIDs.Add(adapterID);
+                }
+               if((args.OldValue != null))
+                {
+                    int oldVal = (int)args.OldValue;
+                    MainWindow.Instance.Variables.Where(x => x.VariableID == oldVal).FirstOrDefault()?.AdapterIDs.Remove(adapterID);
+
+                }
             }
         }
 
