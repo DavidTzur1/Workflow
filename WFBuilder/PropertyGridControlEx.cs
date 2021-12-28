@@ -73,7 +73,7 @@ namespace WFBuilder
                 MainWindow.Instance.UpdateBackgroundInputPointShape(adapterID, (int)args.OldValue, Brushes.Black);
                 MainWindow.Instance.UpdateBackgroundInputPointShape(adapterID, (int)args.NewValue, Brushes.Red);
             }
-            /////Fix the if condition
+            /////Fix the if condition///
             else if (args.Row.Path == "VarInt")
             {
 
