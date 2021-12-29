@@ -17,7 +17,15 @@ namespace WFBuilder.Validations
         public override bool IsValid(object value)
         {
             if (value is null) return false;
-            return (bool)value.ToString()?.StartsWith("@");
+            if((MainWindow.Instance.Variables.Where(x => x.Name==value.ToString()).ToList().Count > 1))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            
 
         }
     }

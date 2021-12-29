@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WFBuilder.Models;
+using WFBuilder.Validations;
 
 namespace WFBuilder.Adapters
 {
@@ -59,6 +61,12 @@ namespace WFBuilder.Adapters
         [PropertyGridEditor(TemplateKey = "VariablesIntEditor")]
         public int VarInt { get; set; } = -1;
 
+        [XtraSerializableProperty]
+        [Description("Property with template"), Category("Template")]
+        [PropertyGridEditor(TemplateKey = "VariablesIntEditor")]
+        [ValidIntVal("VarInt10", ErrorMessage = "The value is invalid")]
+        public string VarInt10 { get; set; } = "0";
+
 
         public Template()
         {
@@ -99,6 +107,7 @@ namespace WFBuilder.Adapters
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarString"]);
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarInt"]);
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarInt10"]);
 
         }
     }

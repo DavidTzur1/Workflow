@@ -200,7 +200,7 @@ namespace WFBuilder
 
         public virtual void AddProperties(DiagramCustomGetEditableItemPropertiesEventArgs e)
         {
-            ActiveAdapterID = (int)e.Item.Tag;
+            MainWindow.Instance.CurrentAdapterID= (int)e.Item.Tag;
             e.Properties.Add(e.CreateProxyProperty("Adapter Id", adapter => e.Item.Tag, (adapter, value) => e.Item.Tag = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" }, new ReadOnlyAttribute(true) }));
             e.Properties.Add(e.CreateProxyProperty("Adapter Name", adapter => (e.Item as BaseAdapter).Header, (adapter, value) => (e.Item as BaseAdapter).Header = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" } }));
 

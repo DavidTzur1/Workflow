@@ -26,6 +26,7 @@ namespace WFBuilder.Models
         [XtraSerializableProperty]
         [Required(ErrorMessage = "Please enter unique name")]
         [Display(Order = 1)]
+        [ValidVariableName("Name", ErrorMessage = "The variable with this name already exist")]
         public string Name { get; set; } 
 
         [XtraSerializableProperty]
@@ -38,6 +39,7 @@ namespace WFBuilder.Models
         [Display(Order = 3)]
         public object Val { get; set; }
 
+        [PropertyGridEditor(TemplateKey = "LevelScopeEditor")]
         [Display(Order = 4)]
         public LevelScopeType LevelScope { get; set; } = LevelScopeType.Local;
 
@@ -53,7 +55,7 @@ namespace WFBuilder.Models
         public VariableModel() 
         {
             VariableID =  MainWindow.Instance.NextVariableID++;
-            Name = $"Var1{VariableID.ToString()}";
+            Name = $"Var{VariableID.ToString()}";
         }
 
         public override string ToString()

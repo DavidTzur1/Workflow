@@ -27,13 +27,22 @@ namespace WFBuilder
             Loaded += PropertyGridControlEx_Loaded;
             CellValueChanged += PropertyGridControlEx_CellValueChanged;
             ShownEditor += PropertyGridControlEx_ShownEditor;
+            HiddenEditor += PropertyGridControlEx_HiddenEditor;
 
 
 
         }
 
+        private void PropertyGridControlEx_HiddenEditor(object sender, PropertyGridEditorEventArgs args)
+        {
+            _currentEditor = null;
+        }
+
+        private IBaseEdit _currentEditor;
         private void PropertyGridControlEx_ShownEditor(object sender, PropertyGridEditorEventArgs args)
         {
+            Debug.WriteLine($"EditorType={args.Editor.GetType()} FullPath={args.Row.FullPath}" );
+            _currentEditor = args.Editor;
             if (args.Editor is ComboBoxEdit && args.Row.Path == "PinID")
             {
                 var rowValue = ((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("PinID", "AdapterID"));
@@ -43,16 +52,29 @@ namespace WFBuilder
 
             if (args.Editor is ComboBoxEdit)
             {
-                if ((args.Editor as ComboBoxEdit).Tag?.ToString() == "ValTypeEditor")
+                if ((args.Editor as ComboBoxEdit).Tag?.ToString() == "ValTypeEditor" )
                 {
                     var rowValue = ((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("ValType", "AdapterIDs"));
                     if (rowValue != null)
                         ((ComboBoxEdit)args.Editor).IsEnabled = (((ObservableCollection<int>)rowValue).Count > 0)?false:true;
                 }
+                if ((args.Editor as ComboBoxEdit).Tag?.ToString() == "LevelScopeEditor")
+                {
+                    var rowValue = ((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("LevelScope", "AdapterIDs"));
+                    if (rowValue != null)
+                        ((ComboBoxEdit)args.Editor).IsEnabled = (((ObservableCollection<int>)rowValue).Count > 0) ? false : true;
+                }
 
             }
-
-
+            if(args.Editor is InplaceBaseEdit)
+            {
+                if(args.Row.FullPath.StartsWith("Variables.[") && args.Row.Path=="Name")
+                {
+                    var rowValue = ((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath(args.Row.FullPath.Replace("Name", "AdapterIDs"));
+                    if (rowValue != null)
+                        ((InplaceBaseEdit)args.Editor).IsEnabled = (((ObservableCollection<int>)rowValue).Count > 0) ? false : true;
+                }              
+            }
         }
 
         private void PropertyGridControlEx_CellValueChanged(object sender, CellValueChangedEventArgs args)
@@ -73,21 +95,29 @@ namespace WFBuilder
                 MainWindow.Instance.UpdateBackgroundInputPointShape(adapterID, (int)args.OldValue, Brushes.Black);
                 MainWindow.Instance.UpdateBackgroundInputPointShape(adapterID, (int)args.NewValue, Brushes.Red);
             }
-            /////Fix the if condition///
-            else if (args.Row.Path == "VarInt")
+
+            else if (_currentEditor is PopupBaseEdit)
             {
-
-                int adapterID = BaseAdapter.ActiveAdapterID;
-                if (args.NewValue != null)
+                if ((_currentEditor as PopupBaseEdit).Tag?.ToString() == "VariablesIntEditor")
                 {
-                    int newVal = (int)args.NewValue;
-                    MainWindow.Instance.Variables.Where(x => x.VariableID == newVal).FirstOrDefault()?.AdapterIDs.Add(adapterID);
-                }
-               if((args.OldValue != null))
-                {
-                    int oldVal = (int)args.OldValue;
-                    MainWindow.Instance.Variables.Where(x => x.VariableID == oldVal).FirstOrDefault()?.AdapterIDs.Remove(adapterID);
+                    int adapterID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath("Adapter Id");
+                    if (args.NewValue != null)
+                    {
+                        if (args.NewValue.ToString().StartsWith("@") || args.NewValue.ToString().StartsWith("::"))
+                        {
+                            var newVal = args.NewValue.ToString().TrimStart('@');
+                            MainWindow.Instance.Variables.Where(x => x.Name == newVal).FirstOrDefault()?.AdapterIDs.Add(adapterID);
+                        }
+                    }
+                    if ((args.OldValue != null))
+                    {
+                        if (args.OldValue.ToString().StartsWith("@") || args.NewValue.ToString().StartsWith("::"))
+                        {
+                            var oldVal = args.OldValue.ToString().TrimStart('@');
+                            MainWindow.Instance.Variables.Where(x => x.Name == oldVal).FirstOrDefault()?.AdapterIDs.Remove(adapterID);
+                        }
 
+                    }
                 }
             }
         }

@@ -100,6 +100,7 @@
     <Compile Include="Models\VariableModel.cs" />
     <Compile Include="PropertyGridControlEx.cs" />
     <Compile Include="Validations\ValidVariableNameAttribute.cs" />
+    <Compile Include="Validations\ValidIntValAttribute.cs" />
     <Compile Include="Validations\VariableValTypeAttribute.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +168,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Documents\Document.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Variables\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

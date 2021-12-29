@@ -43,6 +43,7 @@ namespace WFBuilder
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public static MainWindow Instance;
+        public int CurrentAdapterID { get; set; } = -1;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
