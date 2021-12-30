@@ -98,7 +98,7 @@ namespace WFBuilder
 
             else if (_currentEditor is PopupBaseEdit)
             {
-                if ((_currentEditor as PopupBaseEdit).Tag?.ToString() == "VariablesIntEditor")
+                if ((_currentEditor as PopupBaseEdit).Tag?.ToString() == "VariablesTempEditor")
                 {
                     int adapterID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath("Adapter Id");
                     if (args.NewValue != null)
@@ -111,7 +111,7 @@ namespace WFBuilder
                     }
                     if ((args.OldValue != null))
                     {
-                        if (args.OldValue.ToString().StartsWith("@") || args.NewValue.ToString().StartsWith("::"))
+                        if (args.OldValue.ToString().StartsWith("@") || args.OldValue.ToString().StartsWith("::"))
                         {
                             var oldVal = args.OldValue.ToString().TrimStart('@');
                             MainWindow.Instance.Variables.Where(x => x.Name == oldVal).FirstOrDefault()?.AdapterIDs.Remove(adapterID);

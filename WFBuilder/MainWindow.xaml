@@ -56,8 +56,7 @@
                 
 
                 <DataTemplate x:Key="VariablesIntEditor">
-                    <dxe:PopupBaseEdit Name="PART_Editor" Tag="VariablesIntEditor">
-              
+                    <dxe:PopupBaseEdit Name="PART_Editor" Tag="VariablesTempEditor">
                         <dxe:PopupBaseEdit.PopupContentTemplate >
                             <ControlTemplate>
                                 <dxe:ListBoxEdit ShowBorder="False" DisplayMember="Name" ValueMember="Name" DisplayFormatString=""                                                     
@@ -70,18 +69,14 @@
                             </ControlTemplate>
                         </dxe:PopupBaseEdit.PopupContentTemplate>
                     </dxe:PopupBaseEdit>
-
                 </DataTemplate>
                 <DataTemplate x:Key="VariablesStrEditor">
-                    <dxe:PopupBaseEdit Name="PART_Editor">
-
-                        <dxe:PopupBaseEdit.PopupContentTemplate>
+                    <dxe:PopupBaseEdit Name="PART_Editor" Tag="VariablesTempEditor">
+                        <dxe:PopupBaseEdit.PopupContentTemplate >
                             <ControlTemplate>
-                                <dxe:ListBoxEdit ShowBorder="False" DisplayMember="Name" ValueMember="VariableID"
-                                                     
+                                <dxe:ListBoxEdit ShowBorder="False" DisplayMember="Name" ValueMember="Name"                                                     
                                                      EditValue="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Self}}"
                                                      ItemsSource="{Binding Path=(dxe:PopupBaseEdit.PopupOwnerEdit).(dxprg:PropertyGridHelper.PropertyGrid).(dxdiag:DiagramControl.Diagram).DataContext.VariablesStr, RelativeSource={RelativeSource Self}}">
-
                                     <dxmvvm:Interaction.Behaviors>
                                         <behavior:ListBoxBehavior/>
                                     </dxmvvm:Interaction.Behaviors>

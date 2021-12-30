@@ -24,9 +24,7 @@ namespace WFBuilder.Adapters
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        [XtraSerializableProperty]
-        [Description("Property without template"), Category("Template")]
-        public int SimpleInt { get; set; }
+        
 
        
 
@@ -50,22 +48,20 @@ namespace WFBuilder.Adapters
         }
 
 
+        [XtraSerializableProperty]
+        [Description("Property without template"), Category("Template")]
+        public int SimpleInt { get; set; }
 
         [XtraSerializableProperty]
-        [Description("Property with template"), Category("Template")]
+        [Description("Property Int with template"), Category("Template")]
+        [PropertyGridEditor(TemplateKey = "VariablesIntEditor")]
+        [ValidIntVal("VarInt1", ErrorMessage = "The value is invalid")]
+        public string VarInt { get; set; } = "0";
+
+        [XtraSerializableProperty]
+        [Description("Property Str with template"), Category("Template")]
         [PropertyGridEditor(TemplateKey = "VariablesStrEditor")]
-        public string VarString { get; set; }
-
-        [XtraSerializableProperty]
-        [Description("Property with template"), Category("Template")]
-        [PropertyGridEditor(TemplateKey = "VariablesIntEditor")]
-        public int VarInt { get; set; } = -1;
-
-        [XtraSerializableProperty]
-        [Description("Property with template"), Category("Template")]
-        [PropertyGridEditor(TemplateKey = "VariablesIntEditor")]
-        [ValidIntVal("VarInt10", ErrorMessage = "The value is invalid")]
-        public string VarInt10 { get; set; } = "0";
+        public string VarStr { get; set; } = "";
 
 
         public Template()
@@ -73,14 +69,14 @@ namespace WFBuilder.Adapters
             base.Name = "Template";
 
             base.PinsIn.Add(new Pin() { id = 1, name = "In1" });
-            base.PinsIn.Add(new Pin() { id = 2, name = "In2" });
+            //base.PinsIn.Add(new Pin() { id = 2, name = "In2" });
             //base.PinsIn.Add(new Pin() { id = 3, name = "In3" });
             //base.PinsIn.Add(new Pin() { id = 4, name = "In4" });
 
             base.PinsOut.Add(new Pin() { id = 33, name = "Ack" });
             base.PinsOut.Add(new Pin() { id = 34, name = "Nck" });
 
-            base.PinsInCount = 2;
+            base.PinsInCount = 1;
             base.PinsOutCount = 2;
 
             //Width = 100;
@@ -104,10 +100,10 @@ namespace WFBuilder.Adapters
 
             ///////////////////////////////////Add prorerties of this adapter//////////////////////////////////////
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["SimpleInt"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarString"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarStr"]);
             e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarInt"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarInt10"]);
+           // e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
+
 
         }
     }

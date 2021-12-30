@@ -503,11 +503,20 @@ namespace WFBuilder
 
         public List<VariableModel> VariablesStr
         {
+
             get
             {
-                return Variables.Where(x => x.ValType == ValidationDataTypeEx.String).ToList();
+                List<VariableModel> list = new List<VariableModel>();
+                foreach (var item in Variables.Where(x => x.ValType == ValidationDataTypeEx.String))
+                {
+                    list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"), VariableID = item.VariableID });
+                }
+                
+                return list;
             }
         }
+
+        
 
 
         
