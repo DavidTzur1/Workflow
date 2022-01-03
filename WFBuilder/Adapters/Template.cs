@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WFBuilder.Attributes;
 using WFBuilder.Models;
 using WFBuilder.Validations;
 
@@ -54,13 +55,15 @@ namespace WFBuilder.Adapters
 
         [XtraSerializableProperty]
         [Description("Property Int with template"), Category("Template")]
-        [PropertyGridEditor(TemplateKey = "VariablesIntEditor")]
-        [ValidIntVal("VarInt1", ErrorMessage = "The value is invalid")]
+        [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("Integer")]
+        [ValidVal("Integer", ErrorMessage = "The value is invalid")]
+        [Display(Name="Var123")]
         public string VarInt { get; set; } = "0";
 
         [XtraSerializableProperty]
         [Description("Property Str with template"), Category("Template")]
-        [PropertyGridEditor(TemplateKey = "VariablesStrEditor")]
+        [PropertyGridEditor(TemplateKey = "VariablesStrEditor"), CustomDataType("String")]
+        [ValidVal("String", ErrorMessage = "The value is invalid")]
         public string VarStr { get; set; } = "";
 
 

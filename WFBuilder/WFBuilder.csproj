@@ -88,9 +88,12 @@
     </ApplicationDefinition>
     <Compile Include="Adapters\Temlate1.cs" />
     <Compile Include="Adapters\Template.cs" />
+    <Compile Include="Attributes\CustomDataTypeAttribute.cs" />
     <Compile Include="BaseAdapter.cs" />
     <Compile Include="Behaviors\ComboBoxHelper.cs" />
     <Compile Include="Behaviors\ListBoxBehavior.cs" />
+    <Compile Include="Converters\CustomDataTypeConverter.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Models\AdapterModel.cs" />
     <Compile Include="Models\BroadcastMessageModel.cs" />
@@ -99,8 +102,8 @@
     <Compile Include="Models\PinModel.cs" />
     <Compile Include="Models\VariableModel.cs" />
     <Compile Include="PropertyGridControlEx.cs" />
+    <Compile Include="Validations\ValidValAttribute.cs" />
     <Compile Include="Validations\ValidVariableNameAttribute.cs" />
-    <Compile Include="Validations\ValidIntValAttribute.cs" />
     <Compile Include="Validations\VariableValTypeAttribute.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -169,9 +172,7 @@
   <ItemGroup>
     <Resource Include="Documents\Document.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Variables\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

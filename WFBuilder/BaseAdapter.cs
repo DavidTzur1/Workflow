@@ -138,6 +138,11 @@ namespace WFBuilder
             set { SetValue(PinsOutCountProperty, value); }
         }
 
+        [XtraSerializableProperty]
+        [Category("Adapter")]
+        [ReadOnly(true)]
+        public int AdapterID { get; set; }
+
         public static readonly DependencyProperty PinsOutCountProperty = DependencyProperty.Register("PinsOutCount", typeof(int), typeof(BaseAdapter), new PropertyMetadata(OnPinsOutCountChanged));
 
         static void OnPinsOutCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -190,6 +195,7 @@ namespace WFBuilder
             Stroke = Brushes.Transparent;
             CanAddItems = false;
             Width = 100;
+           
 
         }
 
@@ -200,10 +206,11 @@ namespace WFBuilder
 
         public virtual void AddProperties(DiagramCustomGetEditableItemPropertiesEventArgs e)
         {
-            MainWindow.Instance.CurrentAdapterID= (int)e.Item.Tag;
-            e.Properties.Add(e.CreateProxyProperty("Adapter Id", adapter => e.Item.Tag, (adapter, value) => e.Item.Tag = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" }, new ReadOnlyAttribute(true) }));
-            e.Properties.Add(e.CreateProxyProperty("Adapter Name", adapter => (e.Item as BaseAdapter).Header, (adapter, value) => (e.Item as BaseAdapter).Header = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" } }));
-
+           // MainWindow.Instance.CurrentAdapterID= (int)e.Item.Tag;
+            MainWindow.Instance.CurrentAdapterID = AdapterID;
+            //e.Properties.Add(e.CreateProxyProperty("Adapter Id", adapter => e.Item.Tag, (adapter, value) => e.Item.Tag = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" }, new ReadOnlyAttribute(true) }));
+            e.Properties.Add(e.CreateProxyProperty("Name", adapter => (e.Item as BaseAdapter).Header, (adapter, value) => (e.Item as BaseAdapter).Header = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" } }));
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.BaseAdapter"))["AdapterID"]);
             foreach (var item in (e.Item as BaseAdapter).Items)
             {
 

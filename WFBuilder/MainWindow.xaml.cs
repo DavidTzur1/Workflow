@@ -291,7 +291,8 @@ namespace WFBuilder
             //Add Id and Header to adapter
             if (e.Item is BaseAdapter)
             {
-                (e.Item as BaseAdapter).Tag = NextAdapterID;
+               // (e.Item as BaseAdapter).Tag = NextAdapterID;
+                (e.Item as BaseAdapter).ID = NextAdapterID;
                 (e.Item as BaseAdapter).Header = (e.Item as BaseAdapter).Name + NextAdapterID++;
             }
 
@@ -307,7 +308,8 @@ namespace WFBuilder
             {
                 if (item.Item is BaseAdapter)
                 {
-                    item.Item.Tag = NextAdapterID;
+                    //item.Item.Tag = NextAdapterID;
+                    (item.Item as BaseAdapter).ID = NextAdapterID;
                     (item.Item as BaseAdapter).Header = (item.Item as BaseAdapter).Name + NextAdapterID++;
 
                 }
@@ -424,7 +426,7 @@ namespace WFBuilder
                 {
                     if (item is BaseAdapter)
                     {
-                        list.Add(new AdapterModel() { AdapterID = int.Parse(item.Tag.ToString()), AdapterName = (item as BaseAdapter).Header });
+                        list.Add(new AdapterModel() { AdapterID = (item as BaseAdapter).AdapterID, AdapterName = (item as BaseAdapter).Header });
                     }
                 }
                 return list;
@@ -452,7 +454,7 @@ namespace WFBuilder
         {
             var list = new List<PinModel>() { new PinModel() { PinID = -1, PinName = "<Empty>" } };
             if (adapterID == -1) return list;
-            var adapter = diagramControl.Items.Where(item => item.Tag?.ToString() == adapterID.ToString()).FirstOrDefault() as BaseAdapter;
+            var adapter = diagramControl.Items.Where(item  => (item as BaseAdapter).AdapterID == adapterID).FirstOrDefault() as BaseAdapter;
             var inputPanel = adapter.Items.Where(item => item.Tag?.ToString() == "InputPanel").FirstOrDefault() as DiagramList;
             if (inputPanel != null)
             {
@@ -473,7 +475,7 @@ namespace WFBuilder
         public void UpdateBackgroundInputPointShape(int adapterID, int pinID, Brush brush)
         {
             if (adapterID == -1 || pinID == -1) return;
-            var adapter = diagramControl.Items.Where(item => item.Tag?.ToString() == adapterID.ToString()).FirstOrDefault() as BaseAdapter;
+            var adapter = diagramControl.Items.Where(item => (item as BaseAdapter).AdapterID == adapterID).FirstOrDefault() as BaseAdapter;
             if (adapter == null) return;
             var inputPanel = adapter.Items.Where(item => item.Tag?.ToString() == "InputPanel").FirstOrDefault() as DiagramList;
             var diagramContainer = inputPanel.Items.Where(item => ((item as DiagramContainer).Items.Where(shape => shape.Tag?.ToString() == "line" && (shape as DiagramShape).Content == pinID.ToString())).Count() > 0).FirstOrDefault() as DiagramContainer;
@@ -486,44 +488,23 @@ namespace WFBuilder
 
         ///////////////Varabels//////////////////////////////////////////////////////////////////////////
 
-       public List<VariableModel> VariablesInt
-        {
-            
-            get
-            {
-                List<VariableModel> list = new List<VariableModel>();
-                foreach (var item in Variables.Where(x => x.ValType == ValidationDataTypeEx.Integer))
-                {
-                    list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"),VariableID=item.VariableID });
-                }
-                // return Variables.Where(x => x.ValType == ValidationDataTypeEx.Integer).ToList();
-                return list;
-            }
-        }
-
-        public List<VariableModel> VariablesStr
+        public List<VariableModel> VariablesGeneric(string param)
         {
 
-            get
+            ValidationDataTypeEx parameter = ValidationDataTypeEx.Null;
+            if (param == "String")
+                parameter = ValidationDataTypeEx.String;
+            if (param == "Integer")
+                parameter = ValidationDataTypeEx.Integer;
+
+            List<VariableModel> list = new List<VariableModel>();
+            foreach (var item in Variables.Where(x => x.ValType == parameter))
             {
-                List<VariableModel> list = new List<VariableModel>();
-                foreach (var item in Variables.Where(x => x.ValType == ValidationDataTypeEx.String))
-                {
-                    list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"), VariableID = item.VariableID });
-                }
-                
-                return list;
+                list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"), VariableID = item.VariableID });
             }
+            return list;
         }
-
-        
-
-
-        
        
-
-        
-
 
     }
 }
