@@ -292,7 +292,7 @@ namespace WFBuilder
             if (e.Item is BaseAdapter)
             {
                // (e.Item as BaseAdapter).Tag = NextAdapterID;
-                (e.Item as BaseAdapter).ID = NextAdapterID;
+                (e.Item as BaseAdapter).AdapterID = NextAdapterID;
                 (e.Item as BaseAdapter).Header = (e.Item as BaseAdapter).Name + NextAdapterID++;
             }
 
@@ -309,7 +309,7 @@ namespace WFBuilder
                 if (item.Item is BaseAdapter)
                 {
                     //item.Item.Tag = NextAdapterID;
-                    (item.Item as BaseAdapter).ID = NextAdapterID;
+                    (item.Item as BaseAdapter).AdapterID = NextAdapterID;
                     (item.Item as BaseAdapter).Header = (item.Item as BaseAdapter).Name + NextAdapterID++;
 
                 }
