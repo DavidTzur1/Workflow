@@ -174,17 +174,13 @@ namespace UnitTestWFBuilder
             XElement conn = new XElement("Connection");
             var numbers = item.Attribute("BeginItem").Value.Split(',').Select(Int32.Parse).ToList().Select(x=> x+1).ToList();
             string sourceAdapterID = children.Element($"Item{numbers[0]}").Attribute("AdapterID").Value;
-            //string sourcePinID = children.Element($"Item{numbers[0]}").Element("Children").Element($"Item{numbers[1]}")
-            //    .Element("Children").Element($"Item{numbers[2]}").Element("Children").Element("Item1").Attribute("Content").Value;
-
+            
             string sourcePinID = (children.Element($"Item{numbers[0]}").Element("Children").Element($"Item{numbers[1]}")
                 .Element("Children").Element($"Item{numbers[2]}").Element("Children").Elements().Where(x => x.Attribute("Tag").Value == "line").FirstOrDefault() as XElement).Attribute("Content").Value; 
 
             numbers = item.Attribute("EndItem").Value.Split(',').Select(Int32.Parse).ToList().Select(x => x + 1).ToList();
             string destAdapterID = children.Element($"Item{numbers[0]}").Attribute("AdapterID").Value;
-            //string destPinID = children.Element($"Item{numbers[0]}").Element("Children").Element($"Item{numbers[1]}")
-            //    .Element("Children").Element($"Item{numbers[2]}").Element("Children").Element("Item1").Attribute("Content").Value;
-
+            
             string destPinID = (children.Element($"Item{numbers[0]}").Element("Children").Element($"Item{numbers[1]}")
                 .Element("Children").Element($"Item{numbers[2]}").Element("Children").Elements().Where(x => x.Attribute("Tag").Value == "line").FirstOrDefault() as XElement).Attribute("Content").Value;
 
