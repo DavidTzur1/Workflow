@@ -1,8 +1,11 @@
-﻿using DevExpress.Mvvm.DataAnnotations;
+﻿using DevExpress.Diagram.Core;
+using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Utils.Serializing;
+using DevExpress.Utils.Serializing.Helpers;
 using DevExpress.Xpf.Diagram;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
@@ -25,15 +28,11 @@ namespace WFBuilder.Adapters
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        
-
-       
-
         private int pinsQty =-1;
         [XtraSerializableProperty]
         [Description("Property without template"), Category("Template")]
-        
-        public int PinsQty
+        [Display(Name = "PinsQty")]
+        public int _PinsQty
         {
             get => pinsQty;
 
@@ -51,20 +50,31 @@ namespace WFBuilder.Adapters
 
         [XtraSerializableProperty]
         [Description("Property without template"), Category("Template")]
-        public int SimpleInt { get; set; }
+        [Display(Name = "SimpleInt")]
+        public int _SimpleInt { get; set; }
 
         [XtraSerializableProperty]
         [Description("Property Int with template"), Category("Template")]
         [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("Integer")]
         [ValidVal("Integer", ErrorMessage = "The value is invalid")]
-        [Display(Name="Var123")]
-        public string VarInt { get; set; } = "0";
+        [Display(Name="VarInt")]
+        public string _VarInt { get; set; } = "0";
 
         [XtraSerializableProperty]
         [Description("Property Str with template"), Category("Template")]
-        [PropertyGridEditor(TemplateKey = "VariablesStrEditor"), CustomDataType("String")]
+        [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("String")]
         [ValidVal("String", ErrorMessage = "The value is invalid")]
-        public string VarStr { get; set; } = "";
+        [Display(Name = "VarStr")]
+        public string _VarStr { get; set; } = "";
+
+        [XtraSerializableProperty(XtraSerializationVisibility.SimpleCollection)]
+        [Display(Name = "Values")]
+        [Description("Property Str with template"), Category("Template")]
+        [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("String")]
+        public ObservableCollection<int> _Values { get; set; }
+
+
+        
 
 
         public Template()
@@ -84,6 +94,7 @@ namespace WFBuilder.Adapters
 
             //Width = 100;
             Height = Math.Max(base.PinsIn.Count , base.PinsOut.Count ) * 40;
+            _Values = new ObservableCollection<int>();
         }
 
         static Template()
@@ -102,10 +113,11 @@ namespace WFBuilder.Adapters
             e.Properties.Add(e.CreateProxyProperty("PinsOutQty", adapter => base.PinsOutCount, (adapter, value) => base.PinsOutCount = value, new Attribute[] { new DisplayAttribute() { GroupName = "Pins" } }));
 
             ///////////////////////////////////Add prorerties of this adapter//////////////////////////////////////
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["SimpleInt"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarStr"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["VarInt"]);
-           // e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["_SimpleInt"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["_VarStr"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["_VarInt"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["_Values"]);
+            // e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Template"))["PinsQty"]);
 
 
         }

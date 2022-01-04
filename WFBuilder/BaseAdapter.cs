@@ -35,6 +35,17 @@ namespace WFBuilder
 
         /////////////////////////////////////////////////////////////////
 
+        // public int AdapterID { get; set; }
+        [XtraSerializableProperty]
+        [Category("Adapter")]
+        [ReadOnly(true)]
+        public int AdapterID
+        {
+            get { return (int)GetValue(AdapterIDProperty); }
+            set { SetValue(AdapterIDProperty, value); }
+        }
+        public static readonly DependencyProperty AdapterIDProperty = DependencyProperty.Register("AdapterID", typeof(int), typeof(BaseAdapter));
+
         [XtraSerializableProperty]
         public int PinsInCount
         {
@@ -138,12 +149,10 @@ namespace WFBuilder
             set { SetValue(PinsOutCountProperty, value); }
         }
 
-        [XtraSerializableProperty]
-        [Category("Adapter")]
-        [ReadOnly(true)]
-        public int AdapterID { get; set; }
+       
 
         public static readonly DependencyProperty PinsOutCountProperty = DependencyProperty.Register("PinsOutCount", typeof(int), typeof(BaseAdapter), new PropertyMetadata(OnPinsOutCountChanged));
+
 
         static void OnPinsOutCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -208,9 +217,10 @@ namespace WFBuilder
         {
            // MainWindow.Instance.CurrentAdapterID= (int)e.Item.Tag;
             MainWindow.Instance.CurrentAdapterID = AdapterID;
-            //e.Properties.Add(e.CreateProxyProperty("Adapter Id", adapter => e.Item.Tag, (adapter, value) => e.Item.Tag = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" }, new ReadOnlyAttribute(true) }));
+            e.Properties.Add(e.CreateProxyProperty("AdapterID", adapter => (e.Item as BaseAdapter).AdapterID, (adapter, value) => (e.Item as BaseAdapter).AdapterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" }, new ReadOnlyAttribute(true) }));
             e.Properties.Add(e.CreateProxyProperty("Name", adapter => (e.Item as BaseAdapter).Header, (adapter, value) => (e.Item as BaseAdapter).Header = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" } }));
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.BaseAdapter"))["AdapterID"]);
+            //e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.BaseAdapter"))["AdapterID"]);
+            
             foreach (var item in (e.Item as BaseAdapter).Items)
             {
 

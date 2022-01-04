@@ -1,6 +1,7 @@
 ﻿using DevExpress.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -64,13 +65,107 @@ namespace UnitTestWFBuilder
             var children = xml.Element("Items").Element("Item1").Element("Children");
             foreach (var item in children.Elements())
             {
-                Debug.WriteLine(item.Attribute("ItemKind")?.Value);
+                if(item.Attribute("Tag")?.Value == "Adapter")
+                {
+                    XElement adapter = new XElement("Adapter",new XAttribute("ID",item.Attribute("AdapterID").Value),new XAttribute("Name",item.Attribute("Header").Value),new XAttribute("Type",item.Attribute("ItemKind").Value));
+                    adapter.Add(new XElement("Properties"));
+                    adapter.Element("Properties").Add(GetProperties(item));
+                    adapter.Element("Properties").Add(GetPins(item.Element("Children")));
+
+                    outXml.Element("Activities").Add(adapter);
+                }
+                else if (item.Attribute("ItemKind")?.Value == "DiagramConnector")
+                {
+                    Debug.WriteLine(item.Attribute("BeginItem").Value);
+                    Debug.WriteLine(item.Attribute("EndItem").Value);
+
+                }
+
+                
 
             }
-            //foreach (var item in )
-            //Debug.WriteLine(item.Name);
+
 
         }
+
+        public List<XAttribute> GetProperties(XElement root)
+        {
+            List<XAttribute>  properties = new List<XAttribute>();
+            foreach (var item in root.Attributes())
+            {
+                if (item.Name.ToString().StartsWith("_"))
+                {
+                    
+                    properties.Add(new XAttribute(item.Name.ToString().TrimStart('_'), item.Value));
+                }
+            }
+           
+            return properties;
+        }
+
+        public XElement GetPins(XElement panels)
+        {
+            XElement pins = new XElement("Pins");
+            foreach (var panel in panels.Elements())
+            {
+                if (panel.Attribute("Tag")?.Value == "InputPanel")
+                {
+                    XElement input = new XElement("In");
+                    foreach (var item in panel.Element("Children").Elements())
+                    {
+                        XElement pin = new XElement("Pin");
+                        foreach(var container in item.Elements())
+                        {
+                            foreach(var tag in container.Elements())
+                            {
+                                if(tag.Attribute("Tag").Value == "label")
+                                {
+                                    pin.Add(new XAttribute("Name", tag.Attribute("Content").Value));
+                                }
+                                else if (tag.Attribute("Tag").Value == "line")
+                                {
+                                    pin.Add(new XAttribute("ID", tag.Attribute("Content").Value));
+                                }
+                            }
+                            input.Add(pin);
+                        }
+
+                    }
+                    pins.Add(input);
+
+
+                }
+                else if (panel.Attribute("Tag")?.Value == "OutputPanel")
+                {
+                    XElement output = new XElement("Out");
+                    foreach (var item in panel.Element("Children").Elements())
+                    {
+                        XElement pin = new XElement("Pin");
+                        foreach (var container in item.Elements())
+                        {
+                            foreach (var tag in container.Elements())
+                            {
+                                if (tag.Attribute("Tag").Value == "label")
+                                {
+                                    pin.Add(new XAttribute("Name", tag.Attribute("Content").Value));
+                                }
+                                else if (tag.Attribute("Tag").Value == "line")
+                                {
+                                    pin.Add(new XAttribute("ID", tag.Attribute("Content").Value));
+                                }
+                            }
+                            output.Add(pin);
+                        }
+
+                    }
+                    pins.Add(output);
+
+                }
+
+            }
+            return pins;
+        }
+      
 
         public object DeserializeString(string base64String)
         {

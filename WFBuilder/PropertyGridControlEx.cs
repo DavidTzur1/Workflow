@@ -100,7 +100,7 @@ namespace WFBuilder
             {
                 if ((_currentEditor as PopupBaseEdit).Tag?.ToString() == "VariablesTempEditor")
                 {
-                    int adapterID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath("Adapter Id");
+                    int adapterID = (int)((PropertyGridControl)args.OriginalSource).GetRowValueByRowPath("AdapterID");
                     if (args.NewValue != null)
                     {
                         if (args.NewValue.ToString().StartsWith("@") || args.NewValue.ToString().StartsWith("::"))
