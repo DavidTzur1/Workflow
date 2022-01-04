@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -62,6 +63,7 @@ namespace UnitTestWFBuilder
 
             ////////////Adapters////////////////////////////////////////////////////////
             outXml.Add(new XElement("Activities"));
+            outXml.Add(new XElement("Connections"));
             var children = xml.Element("Items").Element("Item1").Element("Children");
             foreach (var item in children.Elements())
             {
@@ -78,6 +80,7 @@ namespace UnitTestWFBuilder
                 {
                     Debug.WriteLine(item.Attribute("BeginItem").Value);
                     Debug.WriteLine(item.Attribute("EndItem").Value);
+                    outXml.Element("Connections").Add(GetConnection(item,children));
 
                 }
 
@@ -165,7 +168,38 @@ namespace UnitTestWFBuilder
             }
             return pins;
         }
-      
+
+        public XElement GetConnection(XElement item , XElement children)
+        {
+            XElement conn = new XElement("Connection");
+            var numbers = item.Attribute("BeginItem").Value.Split(',').Select(Int32.Parse).ToList().Select(x=> x+1).ToList();
+            string sourceAdapterID = children.Element($"Item{numbers[0]}").Attribute("AdapterID").Value;
+            //string sourcePinID = children.Element($"Item{numbers[0]}").Element("Children").Element($"Item{numbers[1]}")
+            //    .Element("Children").Element($"Item{numbers[2]}").Element("Children").Element("Item1").Attribute("Content").Value;
+
+            string sourcePinID = (children.Element($"Item{numbers[0]}").Element("Children").Element($"Item{numbers[1]}")
+                .Element("Children").Element($"Item{numbers[2]}").Element("Children").Elements().Where(x => x.Attribute("Tag").Value == "line").FirstOrDefault() as XElement).Attribute("Content").Value; 
+
+            numbers = item.Attribute("EndItem").Value.Split(',').Select(Int32.Parse).ToList().Select(x => x + 1).ToList();
+            string destAdapterID = children.Element($"Item{numbers[0]}").Attribute("AdapterID").Value;
+            //string destPinID = children.Element($"Item{numbers[0]}").Element("Children").Element($"Item{numbers[1]}")
+            //    .Element("Children").Element($"Item{numbers[2]}").Element("Children").Element("Item1").Attribute("Content").Value;
+
+            string destPinID = (children.Element($"Item{numbers[0]}").Element("Children").Element($"Item{numbers[1]}")
+                .Element("Children").Element($"Item{numbers[2]}").Element("Children").Elements().Where(x => x.Attribute("Tag").Value == "line").FirstOrDefault() as XElement).Attribute("Content").Value;
+
+            conn.Add(new XAttribute("Source", $"{sourceAdapterID}:{sourcePinID}"), new XAttribute("Destination", $"{destAdapterID}:{destPinID}"));
+
+
+
+
+
+
+
+            return conn;
+        }
+
+
 
         public object DeserializeString(string base64String)
         {
