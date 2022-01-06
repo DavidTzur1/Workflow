@@ -17,14 +17,14 @@ namespace WFEngine.SDK
         static StartUp()
         {
             log.Debug("StartUp");
-            try
-            {
-                StartUpList = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(ConfigurationManager.AppSettings["StartUp"]));
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex.Message, ex);
-            }
+            //try
+            //{
+            //    StartUpList = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(ConfigurationManager.AppSettings["StartUp"]));
+            //}
+            //catch (Exception ex)
+            //{
+            //    log.Error(ex.Message, ex);
+            //}
         }
 
         public StartUp()
@@ -34,21 +34,21 @@ namespace WFEngine.SDK
 
         public static void Start()
         {
-            foreach (var item in StartUpList)
-            {
-                try
-                {
-                    if (!item.StartsWith("_"))
-                        Client.GetAsync(item);
-                    else
-                        log.Info($"The url:{item} is in comment ");
-                }
-                catch (Exception ex)
-                {
-                    log.Error(ex.Message);
-                }
+            //foreach (var item in StartUpList)
+            //{
+            //    try
+            //    {
+            //        if (!item.StartsWith("_"))
+            //            Client.GetAsync(item);
+            //        else
+            //            log.Info($"The url:{item} is in comment ");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        log.Error(ex.Message);
+            //    }
 
-            }
+            //}
 
 
         }

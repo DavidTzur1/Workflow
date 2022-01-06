@@ -43,11 +43,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v21.2, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v21.2, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Dataflow.6.0.0\lib\net461\System.Threading.Tasks.Dataflow.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -85,14 +90,35 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
+    <Content Include="XML\AppSettings.xml" />
+    <Content Include="XML\Services.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBLogModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SDK\ActionType.cs" />
+    <Compile Include="SDK\Activities.cs" />
+    <Compile Include="SDK\ActivityAction.cs" />
+    <Compile Include="SDK\AppSettings.cs" />
+    <Compile Include="SDK\Broadcasts.cs" />
+    <Compile Include="SDK\CallbackManager.cs" />
+    <Compile Include="SDK\Connections.cs" />
+    <Compile Include="SDK\DBWorkflowLog.cs" />
+    <Compile Include="SDK\EntryPoints.cs" />
+    <Compile Include="SDK\PinsError.cs" />
+    <Compile Include="SDK\Services.cs" />
+    <Compile Include="SDK\Session.cs" />
+    <Compile Include="SDK\Sessions.cs" />
     <Compile Include="SDK\StartUp.cs" />
+    <Compile Include="SDK\Variable.cs" />
+    <Compile Include="SDK\Variables.cs" />
+    <Compile Include="SDK\Workflow.cs" />
+    <Compile Include="SDK\WorkFlows.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.config" />
@@ -106,8 +132,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WFActivities\WFActivities.csproj">
+      <Project>{9c4e2dbd-7028-4353-a410-268ea1fae59b}</Project>
+      <Name>WFActivities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WFBuilder\WFBuilder.csproj">
+      <Project>{144670CB-6396-488C-A76D-2E03A3B69E78}</Project>
+      <Name>WFBuilder</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -140,6 +174,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy.exe /D /Y   C:\Users\dtzur\source\repos\Workflow\WFEngine\XML\*.*  D:\WFData\XML\*.*
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

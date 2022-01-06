@@ -33,6 +33,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using System.IO;
 
 namespace WFBuilder
 {
@@ -151,6 +152,7 @@ namespace WFBuilder
             diagramControl.Loaded += DiagramControl_Loaded;
             diagramControl.CustomLoadDocument += DiagramControl_CustomLoadDocument;
             diagramControl.DocumentLoaded += DiagramControl_DocumentLoaded;
+            
            
             Variables = new ObservableCollection<VariableModel>() 
             { 
@@ -173,7 +175,6 @@ namespace WFBuilder
 
         }
 
-       
        
 
         private void Variables_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

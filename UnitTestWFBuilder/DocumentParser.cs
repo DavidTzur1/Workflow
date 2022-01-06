@@ -61,7 +61,7 @@ namespace UnitTestWFBuilder
             }
 
 
-            ////////////Adapters////////////////////////////////////////////////////////
+            ////////////Adapters and Connections//////////////////////////////////////////////
             outXml.Add(new XElement("Activities"));
             outXml.Add(new XElement("Connections"));
             var children = xml.Element("Items").Element("Item1").Element("Children");
@@ -78,13 +78,8 @@ namespace UnitTestWFBuilder
                 }
                 else if (item.Attribute("ItemKind")?.Value == "DiagramConnector")
                 {
-                    Debug.WriteLine(item.Attribute("BeginItem").Value);
-                    Debug.WriteLine(item.Attribute("EndItem").Value);
                     outXml.Element("Connections").Add(GetConnection(item,children));
-
                 }
-
-                
 
             }
 
@@ -185,12 +180,6 @@ namespace UnitTestWFBuilder
                 .Element("Children").Element($"Item{numbers[2]}").Element("Children").Elements().Where(x => x.Attribute("Tag").Value == "line").FirstOrDefault() as XElement).Attribute("Content").Value;
 
             conn.Add(new XAttribute("Source", $"{sourceAdapterID}:{sourcePinID}"), new XAttribute("Destination", $"{destAdapterID}:{destPinID}"));
-
-
-
-
-
-
 
             return conn;
         }
