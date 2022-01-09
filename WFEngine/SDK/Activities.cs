@@ -54,15 +54,16 @@ namespace WFEngine.SDK
 
                 // assembly name
                 //string assemblyName = "WorkflowEngine";
-                string assemblyName = "WFActivities";
+                //string assemblyName = "WFActivities";
 
                 //namespace.class name
 
                 string name = xmlActivity.Attribute("Name").Value;
                 string type = xmlActivity.Attribute("Type").Value;
-               log.Debug($"Name={name} Type={type}");
+                //log.Debug($"Name={name} Type={type}");
                 //string Namespace = xmlActivity.Attribute("Namespace").Value;
-                string Namespace = "WFActivities";
+                string assemblyName = ActivityType.Data[type].AssemblyName; 
+                string Namespace = ActivityType.Data[type].Namespace;
                 string fullClassName = Namespace + "." + type;
 
                 string objectToInstantiate = fullClassName + "," + assemblyName;
@@ -70,9 +71,9 @@ namespace WFEngine.SDK
 
                 //object[] args = new object[] { m_callFlowEngine, xmlComponent };
                 object[] args = new object[] { SessionId, key, name, type };
-                log.Debug($"2Name={name} Type={type}");
+                //log.Debug($"2Name={name} Type={type}");
                 activity = Activator.CreateInstance(objectType, args) as WFActivities.Activity;
-                log.Debug($"3Name={name} Type={type}");
+                //log.Debug($"3Name={name} Type={type}");
                 activity.Properties = Sessions.Get(SessionId)?.Activities?.GetProperties(key);
                 activity.ActionBlock = ActivityAction.ActionBlock;
 

@@ -81,5 +81,17 @@ namespace WFEngine.SDK
             }
 
         }
+
+        public class ActivityType
+        {
+            public static string Path
+            {
+                get
+                {
+                    return AppSettings.XMLSettings.Element("ActivityType").Attribute("Path").Value;
+
+                }
+            }
+        }
     }
 }

@@ -86,9 +86,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Adapters\Temlate1.cs" />
+    <Compile Include="Adapters\Common\Assign.cs" />
+    <Compile Include="Adapters\General\Transparent.cs" />
     <Compile Include="Adapters\Template.cs" />
-    <Compile Include="Adapters\Transparent.cs" />
     <Compile Include="Attributes\CustomDataTypeAttribute.cs" />
     <Compile Include="BaseAdapter.cs" />
     <Compile Include="Behaviors\ComboBoxHelper.cs" />

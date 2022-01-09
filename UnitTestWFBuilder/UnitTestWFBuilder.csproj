@@ -67,9 +67,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WFActivities\WFActivities.csproj">
+      <Project>{9C4E2DBD-7028-4353-A410-268EA1FAE59B}</Project>
+      <Name>WFActivities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WFBuilder\WFBuilder.csproj">
       <Project>{144670cb-6396-488c-a76d-2e03a3b69e78}</Project>
       <Name>WFBuilder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WFEngine\WFEngine.csproj">
+      <Project>{8D4D9EF3-EC70-480E-A599-BC5E6F6084F3}</Project>
+      <Name>WFEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

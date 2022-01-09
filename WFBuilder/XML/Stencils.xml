@@ -1,10 +1,15 @@
 ﻿<root>
   <Stencils>
     <Stencil id="1" name="General" isVisible="1">
-      <Activities>
-        <Activity Namespace="WFBuilder.Adapters" Type="Template" />
-        <Activity Namespace="WFBuilder.Adapters" Type="Transparent" />
-      </Activities>
+      <Adapters>
+        <Adapter Namespace="WFBuilder.Adapters" Type="Template" />
+        <Adapter Namespace="WFBuilder.Adapters.General" Type="Transparent" />
+      </Adapters>
+    </Stencil>
+    <Stencil id="2" name="Common" isVisible="1">
+      <Adapters>
+        <Adapter Namespace="WFBuilder.Adapters.Common" Type="Assign" />        
+      </Adapters>
     </Stencil>
   </Stencils>
 </root>

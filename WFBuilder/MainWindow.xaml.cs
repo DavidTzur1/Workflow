@@ -328,9 +328,9 @@ namespace WFBuilder
                 string name = stencil.Attribute("name").Value;
                 stencilCollection.Add(id);
                 var diagramStencil = new DevExpress.Diagram.Core.DiagramStencil(id, name);
-                foreach (XElement activity in stencil.Element("Activities").Elements("Activity"))
+                foreach (XElement adapter in stencil.Element("Adapters").Elements("Adapter"))
                 {
-                    FactoryItemTool containerTool = new FactoryItemTool(activity.Attribute("Type").Value, () => activity.Attribute("Type").Value, d => BaseAdapter.Create(activity.Attribute("Namespace").Value, activity.Attribute("Type").Value));
+                    FactoryItemTool containerTool = new FactoryItemTool(adapter.Attribute("Type").Value, () => adapter.Attribute("Type").Value, d => BaseAdapter.Create(adapter.Attribute("Namespace").Value, adapter.Attribute("Type").Value));
 
                     diagramStencil.RegisterTool(containerTool);
                 }
@@ -492,17 +492,33 @@ namespace WFBuilder
         public List<VariableModel> VariablesGeneric(string param)
         {
 
-            ValidationDataTypeEx parameter = ValidationDataTypeEx.Null;
-            if (param == "String")
-                parameter = ValidationDataTypeEx.String;
-            if (param == "Integer")
-                parameter = ValidationDataTypeEx.Integer;
-
             List<VariableModel> list = new List<VariableModel>();
-            foreach (var item in Variables.Where(x => x.ValType == parameter))
+            foreach (var item in Variables)
             {
-                list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"), VariableID = item.VariableID });
+                bool shouldAdd = false;
+                switch (param)
+                {
+                    case "Integer":
+                        shouldAdd = item.ValType == ValidationDataTypeEx.Integer;
+                        break;
+                    case "String":
+                        shouldAdd = item.ValType == ValidationDataTypeEx.String;
+                        break;
+                    case "Object":
+                        shouldAdd = item.ValType == ValidationDataTypeEx.Object;
+                        break;
+                    case "All":
+                        shouldAdd = true;
+                        break;
+                }
+                if (shouldAdd)
+                {
+                    list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"), VariableID = item.VariableID });
+                }
             }
+
+           
+
             return list;
         }
        

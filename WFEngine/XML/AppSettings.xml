@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root>
   <DBWorkflow BatchSize="1" BatchTimer="5" BoundedCapacity="20000" MaxDegreeOfParallelism="1"  ConnectionStrings="Data Source=gensql2012tst;Initial Catalog=Workflow;Persist Security Info=True;User ID=vaxivr;Password=proliant"/>
- 
+  <ActivityType Path="C:\Users\dtzur\source\repos\Workflow\WFEngine\XML\Activities.xml" />
 </root>

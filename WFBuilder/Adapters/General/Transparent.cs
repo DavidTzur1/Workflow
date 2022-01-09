@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WFBuilder.Adapters
+namespace WFBuilder.Adapters.General
 {
 
     public class Transparent : BaseAdapter
@@ -37,7 +37,7 @@ namespace WFBuilder.Adapters
         }
 
 
-       
+
 
 
 
@@ -47,13 +47,13 @@ namespace WFBuilder.Adapters
             base.Name = "Transparent";
 
             base.PinsIn.Add(new Pin() { id = 1, name = "In1" });
-    
+
             base.PinsOut.Add(new Pin() { id = 33, name = "Out1" });
 
 
             //Width = 100;
             Height = Math.Max(base.PinsIn.Count, base.PinsOut.Count) * 40;
-          
+
         }
 
         static Transparent()
@@ -66,12 +66,13 @@ namespace WFBuilder.Adapters
             //Add Base properties
             base.AddProperties(e);
 
-            
+
             ///////////////////////////////////Add prorerties of this adapter//////////////////////////////////////
 
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.Transparent"))["_PinsQty"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.Transparent"))["_PinsQty"]);
 
 
         }
     }
 }
+
