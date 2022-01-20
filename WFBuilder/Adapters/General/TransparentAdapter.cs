@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace WFBuilder.Adapters.General
 {
 
-    public class Transparent : BaseAdapter
+    public class TransparentAdapter : BaseAdapter
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -42,7 +42,7 @@ namespace WFBuilder.Adapters.General
 
 
 
-        public Transparent()
+        public TransparentAdapter()
         {
             base.Name = "Transparent";
 
@@ -56,9 +56,9 @@ namespace WFBuilder.Adapters.General
 
         }
 
-        static Transparent()
+        static TransparentAdapter()
         {
-            DiagramControl.ItemTypeRegistrator.Register(typeof(Transparent));
+            DiagramControl.ItemTypeRegistrator.Register(typeof(TransparentAdapter));
         }
 
         public override void AddProperties(DiagramCustomGetEditableItemPropertiesEventArgs e)
@@ -69,7 +69,7 @@ namespace WFBuilder.Adapters.General
 
             ///////////////////////////////////Add prorerties of this adapter//////////////////////////////////////
 
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.Transparent"))["_PinsQty"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.TransparentAdapter"))["_PinsQty"]);
 
 
         }

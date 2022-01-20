@@ -25,7 +25,7 @@ namespace WFActivities
         public string ActivityType { get; set; }
 
         public XElement Properties { get; set; }
-        public Variables Variables { get; set; }
+        public Variables Variables { get; set; } 
 
         
         //public Dictionary<string, object> Variables { get; set; }
@@ -55,6 +55,8 @@ namespace WFActivities
             string value = Properties?.Attribute(name).Value;
             if (value.StartsWith("@") || value.StartsWith("::"))
             {
+                //Variables.LocalList.Select(i => $"{i.Key}:{(i.Value as Variable).Value}").ToList().ForEach(log.Debug);
+                //log.Debug($"Variables {Variables.LocalList.Count}");
                 return Variables.TryGetValue(value)?.Value ?? value;
             }
             else
@@ -76,6 +78,22 @@ namespace WFActivities
             else
             {
                 return str;
+            }
+
+        }
+
+        public string GetPropertyByValueNew(string name)
+        {
+            string value = name;
+            if (value.StartsWith("@") || value.StartsWith("::"))
+            {
+
+                return Variables.TryGetValue(value)?.Value.ToString() ?? value;
+
+            }
+            else
+            {
+                return value;
             }
 
         }

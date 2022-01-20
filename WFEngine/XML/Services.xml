@@ -3,6 +3,7 @@
     <Service Name ="Template" Dest="0544165500" Path ="D:\WFData\Documents\Test\Document.xml" Ver ="1.0" Params=""></Service>
     <Service Name ="Transparent" Dest="0544165501" Path ="D:\WFData\Documents\Test\Transparent.xml" Ver ="1.0" Params=""></Service>
     <Service Name ="Assign" Dest="0544165502" Path ="D:\WFData\Documents\Test\Assign.xml" Ver ="1.0" Params=""></Service>
+    <Service Name ="Log" Dest="0544165502" Path ="D:\WFData\Documents\Test\LogAdapter.xml" Ver ="1.0" Params=""></Service>
   </Services>
 
 </root>

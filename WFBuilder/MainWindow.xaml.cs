@@ -130,7 +130,7 @@ namespace WFBuilder
             MessageBox.Show($"OnPropertyChanged1 e= {e.Property} Old={e.OldValue} New={e.NewValue}");
 
         }
-        MainWindowViewModel VM = new MainWindowViewModel();
+       // MainWindowViewModel VM = new MainWindowViewModel();
         
         public MainWindow()
         {
@@ -157,9 +157,14 @@ namespace WFBuilder
             Variables = new ObservableCollection<VariableModel>() 
             { 
                 new VariableModel { Name = "Int1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 },
-                new VariableModel { Name = "Int2", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 10 },
+                new VariableModel { Name = "Int2", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Integer, Val = 20 },
                 new VariableModel { Name = "Str1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.String, Val = "ValSrr1" },
-                new VariableModel { Name = "Str2", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.String, Val = "ValStr2" }
+                new VariableModel { Name = "Str2", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.String, Val = "ValStr2" },
+                new VariableModel { Name = "Date1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.DateTime, Val = DateTime.Now.ToString() },
+                new VariableModel { Name = "Dou1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Double, Val = 3.5 },
+                new VariableModel { Name = "Bool1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Boolean, Val = false },
+                new VariableModel { Name = "Obj1", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Object, Val = "" },
+                new VariableModel { Name = "Cur", LevelScope = LevelScopeType.Local, ValType = ValidationDataTypeEx.Currency, Val = 5.30 },
             };
 
             Variables.CollectionChanged += Variables_CollectionChanged;
@@ -330,7 +335,7 @@ namespace WFBuilder
                 var diagramStencil = new DevExpress.Diagram.Core.DiagramStencil(id, name);
                 foreach (XElement adapter in stencil.Element("Adapters").Elements("Adapter"))
                 {
-                    FactoryItemTool containerTool = new FactoryItemTool(adapter.Attribute("Type").Value, () => adapter.Attribute("Type").Value, d => BaseAdapter.Create(adapter.Attribute("Namespace").Value, adapter.Attribute("Type").Value));
+                    FactoryItemTool containerTool = new FactoryItemTool(adapter.Attribute("Type").Value, () => adapter.Attribute("Name").Value, d => BaseAdapter.Create(adapter.Attribute("Namespace").Value, adapter.Attribute("Type").Value, adapter.Attribute("Name").Value));
 
                     diagramStencil.RegisterTool(containerTool);
                 }
@@ -489,35 +494,18 @@ namespace WFBuilder
 
         ///////////////Varabels//////////////////////////////////////////////////////////////////////////
 
-        public List<VariableModel> VariablesGeneric(string param)
+        public List<VariableModel> VariablesGeneric(string valTypes)
         {
 
             List<VariableModel> list = new List<VariableModel>();
             foreach (var item in Variables)
             {
-                bool shouldAdd = false;
-                switch (param)
-                {
-                    case "Integer":
-                        shouldAdd = item.ValType == ValidationDataTypeEx.Integer;
-                        break;
-                    case "String":
-                        shouldAdd = item.ValType == ValidationDataTypeEx.String;
-                        break;
-                    case "Object":
-                        shouldAdd = item.ValType == ValidationDataTypeEx.Object;
-                        break;
-                    case "All":
-                        shouldAdd = true;
-                        break;
-                }
-                if (shouldAdd)
+                if(valTypes.Contains(Enum.GetName(typeof(ValidationDataTypeEx),item.ValType)))
                 {
                     list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"), VariableID = item.VariableID });
                 }
+               
             }
-
-           
 
             return list;
         }

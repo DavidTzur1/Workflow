@@ -66,6 +66,6 @@ namespace WFBuilder.Models
     }
 
     public enum LevelScopeType {Local,Global}
-    public enum ValidationDataTypeEx {Null,String,Integer,Double,Date,Currency,Boolean,Object}
+    public enum ValidationDataTypeEx {Null,String,Integer,Double,DateTime,Currency,Boolean,Object}
 
 }

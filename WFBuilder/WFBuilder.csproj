@@ -86,8 +86,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Adapters\Common\Assign.cs" />
-    <Compile Include="Adapters\General\Transparent.cs" />
+    <Compile Include="Adapters\Common\AssignAdapter.cs" />
+    <Compile Include="Adapters\General\EscData\CreateSetEscDataAdapter.cs" />
+    <Compile Include="Adapters\General\LogAdapter.cs" />
+    <Compile Include="Adapters\General\TransparentAdapter.cs" />
     <Compile Include="Adapters\Template.cs" />
     <Compile Include="Attributes\CustomDataTypeAttribute.cs" />
     <Compile Include="BaseAdapter.cs" />
@@ -95,12 +97,13 @@
     <Compile Include="Behaviors\ListBoxBehavior.cs" />
     <Compile Include="Converters\CustomDataTypeConverter.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Models\AdapterModel.cs" />
     <Compile Include="Models\BroadcastMessageModel.cs" />
     <Compile Include="Models\BrodcastTargetModel.cs" />
     <Compile Include="Models\EntryPointModel.cs" />
+    <Compile Include="Models\KeyValueModel.cs" />
     <Compile Include="Models\PinModel.cs" />
+    <Compile Include="Models\ValueModel.cs" />
     <Compile Include="Models\VariableModel.cs" />
     <Compile Include="PropertyGridControlEx.cs" />
     <Compile Include="Validations\ValidValAttribute.cs" />

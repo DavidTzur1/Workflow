@@ -118,8 +118,6 @@
     <Compile Include="SDK\Session.cs" />
     <Compile Include="SDK\Sessions.cs" />
     <Compile Include="SDK\StartUp.cs" />
-    <Compile Include="SDK\Variable.cs" />
-    <Compile Include="SDK\Variables.cs" />
     <Compile Include="SDK\Workflow.cs" />
     <Compile Include="SDK\WorkFlows.cs" />
   </ItemGroup>
@@ -141,6 +139,10 @@
     <ProjectReference Include="..\CommonActivities\CommonActivities.csproj">
       <Project>{fb356b81-06d0-4632-b583-ecdf940ab1f3}</Project>
       <Name>CommonActivities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\General\General.csproj">
+      <Project>{1be71ebf-96d5-4be8-81d9-04db58116ef5}</Project>
+      <Name>General</Name>
     </ProjectReference>
     <ProjectReference Include="..\WFActivities\WFActivities.csproj">
       <Project>{9c4e2dbd-7028-4353-a410-268ea1fae59b}</Project>

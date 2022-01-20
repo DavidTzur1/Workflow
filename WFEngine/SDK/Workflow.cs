@@ -67,8 +67,9 @@ namespace WFEngine.SDK
                     if (item.Attribute("Tag")?.Value == "Adapter")
                     {
                         XElement adapter = new XElement("Activity", new XAttribute("ID", item.Attribute("AdapterID").Value), new XAttribute("Name", item.Attribute("Header").Value), new XAttribute("Type", item.Attribute("ItemKind").Value));
-                        adapter.Add(new XElement("Properties"));
-                        adapter.Element("Properties").Add(GetProperties(item));
+                        //adapter.Add(new XElement("Properties"));
+                        //adapter.Element("Properties").Add(GetProperties(item));
+                        adapter.Add(GetProperties(item));
                         adapter.Element("Properties").Add(GetPins(item.Element("Children")));
 
                         outXml.Element("Activities").Add(adapter);
@@ -91,16 +92,32 @@ namespace WFEngine.SDK
 
         }
 
-        private static List<XAttribute> GetProperties(XElement root)
+        private static XElement GetProperties(XElement root)
         {
-            List<XAttribute> properties = new List<XAttribute>();
-            foreach (var item in root.Attributes())
+            XElement properties = new XElement("Properties");
+            // List<XAttribute> properties = new List<XAttribute>();
+            foreach (var item in root.Attributes().Where(x => x.Name.ToString().StartsWith("_")))
             {
-                if (item.Name.ToString().StartsWith("_"))
+                properties.Add(new XAttribute(item.Name.ToString().TrimStart('_'), item.Value));
+            }
+           
+            foreach(var item in root.Elements().Where(x => x.Name.ToString().StartsWith("_")))
+            {
+                string name = item.Name.ToString().TrimStart('_');
+                XElement child = new XElement(name);
+               
+                foreach( var element in root.Element(item.Name).Elements())
                 {
+                    XElement itemLevel = new XElement("Value");
+                    foreach (var prop in element.Attributes())
+                    {
+                        itemLevel.Add(new XAttribute(prop.Name, prop.Value));
+                    }
+                    child.Add(itemLevel);
 
-                    properties.Add(new XAttribute(item.Name.ToString().TrimStart('_'), item.Value));
                 }
+                properties.Add(child);
+
             }
 
             return properties;

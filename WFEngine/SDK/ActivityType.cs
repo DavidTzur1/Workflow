@@ -24,8 +24,8 @@ namespace WFEngine.SDK
                 XElement xml = XElement.Load(AppSettings.ActivityType.Path);
                 foreach(var item in xml.Elements("Activity") )
                 {
-                    ActivityTypeModel model = new ActivityTypeModel() { AssemblyName = item.Attribute("AssemblyName").Value,Namespace= item.Attribute("Namespace").Value };
-                    Data.Add(item.Attribute("Type").Value, model);
+                    ActivityTypeModel model = new ActivityTypeModel() {Type=item.Attribute("Type").Value, AssemblyName = item.Attribute("AssemblyName").Value,Namespace= item.Attribute("Namespace").Value };
+                    Data.Add(item.Attribute("ItemKind").Value, model);
                 }
 
                

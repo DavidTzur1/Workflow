@@ -10,14 +10,34 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using WFBuilder.Models;
+using WFEngine.SDK;
 
 namespace UnitTestWFBuilder
 {
     [TestClass]
     public class DocumentParser
     {
+        enum Colors
+        {
+            Red,
+            Orange,
+            Green,
+            Blue,
+            Black
+        }
 
+        Colors color = Colors.Black;
         string Document = @"C:\Users\dtzur\source\repos\Workflow\WFBuilder\Documents\Document.xml";
+        [TestMethod]
+        public void TestCreateWorkflow()
+        {
+            object date = DateTime.Now;
+            Debug.WriteLine(date.ToString());
+            string str = Enum.GetName(typeof(Colors), color);
+            string path = @"D:\WFData\Documents\Test\LogAdapter.xml";
+            //string path = @"D:\WFData\Documents\Test\CreateSetEscData.xml";
+            var xml = Workflow.Create(path);
+        }
         [TestMethod]
         public void TestMethod1()
         {

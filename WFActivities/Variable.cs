@@ -43,7 +43,7 @@ namespace WFActivities
                 }
 
                 int Int;
-                if (Type == "Int")
+                if (Type == "Integer")
                 {
                     if (int.TryParse(value.ToString(), out Int))
                     {

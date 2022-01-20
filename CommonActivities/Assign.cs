@@ -46,8 +46,9 @@ namespace CommonActivities
 
             try
             {
+               // log.Debug($"Pre Destination = {Destination.ToString()}");
                 Destination = Source;
-                log.Debug($"Destination = {Destination.ToString()}");
+               // log.Debug($"Destination = {Destination.ToString()}");
                 activityActionArgs = new ActivityActionArgs(SessionId, ActivityId, 33);
                 ActionBlock.Post(activityActionArgs);
 

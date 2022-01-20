@@ -7,6 +7,7 @@ namespace WFEngine.Models
 {
     public class ActivityTypeModel
     {
+        public string Type { get; set; }
         public string AssemblyName { get; set; }
         public string Namespace { get; set; }
     }

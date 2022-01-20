@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Activities>
-  <Activity Type="Transparent" Namespace="WFActivities" AssemblyName="WFActivities" />
-  <Activity Type="Assign" Namespace="CommonActivities" AssemblyName="CommonActivities" />
+  <Activity ItemKind="TransparentAdapter" Type="Transparent" Namespace="General" AssemblyName="General" />
+  <Activity ItemKind="AssignAdapter" Type="Assign" Namespace="CommonActivities" AssemblyName="CommonActivities" />
+  <Activity ItemKind="LogAdapter" Type ="Log" Namespace="General.Logger" AssemblyName="General" />
 </Activities> 

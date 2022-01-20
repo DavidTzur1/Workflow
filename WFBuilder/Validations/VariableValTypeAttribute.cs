@@ -64,7 +64,7 @@ namespace WFBuilder.Validations
                         ErrorMessage = results.FirstOrDefault().ToString();
                         return new ValidationResult(ErrorMessage);
                     }
-                case ValidationDataTypeEx.Date:
+                case ValidationDataTypeEx.DateTime:
                     atributes = new List<ValidationAttribute> { new RangeAttribute(typeof(DateTime),DateTime.MinValue.ToString(),DateTime.MaxValue.ToString()) };
                     valContext = new ValidationContext(value, null, null) { };
                     if (Validator.TryValidateValue(value, valContext, results, atributes))

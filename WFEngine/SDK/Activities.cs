@@ -59,14 +59,16 @@ namespace WFEngine.SDK
                 //namespace.class name
 
                 string name = xmlActivity.Attribute("Name").Value;
-                string type = xmlActivity.Attribute("Type").Value;
+                string adapterType = xmlActivity.Attribute("Type").Value;
                 //log.Debug($"Name={name} Type={type}");
                 //string Namespace = xmlActivity.Attribute("Namespace").Value;
-                string assemblyName = ActivityType.Data[type].AssemblyName; 
-                string Namespace = ActivityType.Data[type].Namespace;
+                string assemblyName = ActivityType.Data[adapterType].AssemblyName; 
+                string Namespace = ActivityType.Data[adapterType].Namespace;
+                string type = ActivityType.Data[adapterType].Type;
                 string fullClassName = Namespace + "." + type;
 
                 string objectToInstantiate = fullClassName + "," + assemblyName;
+                //log.Debug("objectToInstantiate=" + objectToInstantiate);
                 var objectType = Type.GetType(objectToInstantiate);
 
                 //object[] args = new object[] { m_callFlowEngine, xmlComponent };
@@ -76,6 +78,9 @@ namespace WFEngine.SDK
                 //log.Debug($"3Name={name} Type={type}");
                 activity.Properties = Sessions.Get(SessionId)?.Activities?.GetProperties(key);
                 activity.ActionBlock = ActivityAction.ActionBlock;
+                //activity.Variables.LocalList = Sessions.Get(SessionId)?.Variables.LocalList;
+                //WFActivities.Variables.GlobalList = Variables.GlobalList;
+                activity.Variables = Sessions.Get(SessionId)?.Variables;
 
 
                 if (ActivityList.TryAdd(key, activity))

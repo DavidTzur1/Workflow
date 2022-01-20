@@ -11,9 +11,9 @@ namespace WFActivities
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        Dictionary<string, Variable> LocalList = new Dictionary<string, Variable>();
+        public Dictionary<string, Variable> LocalList = new Dictionary<string, Variable>();
 
-        static Dictionary<string, Variable> GlobalList = new Dictionary<string, Variable>();
+        public static Dictionary<string, Variable> GlobalList = new Dictionary<string, Variable>();
 
 
         public Variables(XElement Variables, IDictionary<string, object> escData = null)
@@ -23,6 +23,7 @@ namespace WFActivities
                 string name = item.Attribute("Name").Value;
                 string type = item.Attribute("Type").Value;
                 object value = item.Attribute("Value").Value;
+               
 
                 if (name == "@EscData")
                 {
@@ -67,6 +68,7 @@ namespace WFActivities
             if (key.StartsWith("@"))
             {
                 LocalList.TryGetValue(key, out variable);
+               // log.Debug($"variable Name={variable.Name} Type={variable.Type} Value={variable.Value}");
 
             }
             else

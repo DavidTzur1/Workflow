@@ -41,7 +41,7 @@
             <dxe:ComboBoxEdit Name="PART_Editor" Tag="ValTypeEditor"              
                         ItemsSource="{dxe:EnumItemsSource EnumType={x:Type model:ValidationDataTypeEx}}" />
         </DataTemplate>
-
+        <!--<sys:Double x:Key="{dxdiagt:DiagramToolboxControlThemeKey ResourceKey=ShapePresenterSize, IsThemeIndependent=True}">100</sys:Double>-->
 
 
 
@@ -57,7 +57,8 @@
             <dxdiag:DiagramDesignerControl.Resources>
 
                 <DataTemplate x:Key="VariablesEditorGeneric">
-                    <dxe:PopupBaseEdit Name="PART_Editor"
+                    
+                                <dxe:PopupBaseEdit Name="PART_Editor"
                                        Tag="VariablesTempEditor">
                         <dxe:PopupBaseEdit.PopupContentTemplate>
                             <ControlTemplate>
@@ -81,6 +82,7 @@
                             </ControlTemplate>
                         </dxe:PopupBaseEdit.PopupContentTemplate>
                     </dxe:PopupBaseEdit>
+                        
                 </DataTemplate>
                 <DataTemplate x:Key="VariablesIntEditor">
                     <dxe:PopupBaseEdit Name="PART_Editor" Tag="VariablesTempEditor">

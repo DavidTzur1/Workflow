@@ -18,6 +18,7 @@ namespace WFEngine.Controllers
         // http://10.11.32.43:8081/api/TestController?path=D:\Workflow\Test\Assign.xml
         //http://10.11.32.43:82/api/TestController?Dest=0544165500&Orig=Web&Service=Template&Params=""
         //http://10.11.32.43:82/api/TestController?id=0544165500
+        //http://10.11.32.43:82/api/TestController?Dest=0544165500&Orig=Web&Service=Log&Params=""
 
         //public string Get(string id)
         //{

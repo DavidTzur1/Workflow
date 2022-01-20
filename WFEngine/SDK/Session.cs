@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using WFActivities;
 
 namespace WFEngine.SDK
 {
@@ -60,7 +61,7 @@ namespace WFEngine.SDK
 
             XElement workflowXML = WorkFlows.Get(workflowFile);
 
-          
+
 
             Variables = new Variables(workflowXML.Element("Variables"), escData);
 

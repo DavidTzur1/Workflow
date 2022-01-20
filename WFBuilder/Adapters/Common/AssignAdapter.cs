@@ -12,7 +12,7 @@ using WFBuilder.Attributes;
 
 namespace WFBuilder.Adapters.Common
 {
-    public class Assign : BaseAdapter
+    public class AssignAdapter : BaseAdapter
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -32,7 +32,7 @@ namespace WFBuilder.Adapters.Common
 
 
 
-        public Assign()
+        public AssignAdapter()
         {
             base.Name = "Assign";
 
@@ -45,9 +45,9 @@ namespace WFBuilder.Adapters.Common
 
         }
 
-        static Assign()
+        static AssignAdapter()
         {
-            DiagramControl.ItemTypeRegistrator.Register(typeof(Assign));
+            DiagramControl.ItemTypeRegistrator.Register(typeof(AssignAdapter));
         }
 
         public override void AddProperties(DiagramCustomGetEditableItemPropertiesEventArgs e)

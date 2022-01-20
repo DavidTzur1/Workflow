@@ -215,11 +215,10 @@ namespace WFBuilder
 
         public virtual void AddProperties(DiagramCustomGetEditableItemPropertiesEventArgs e)
         {
-           // MainWindow.Instance.CurrentAdapterID= (int)e.Item.Tag;
             MainWindow.Instance.CurrentAdapterID = AdapterID;
             e.Properties.Add(e.CreateProxyProperty("AdapterID", adapter => (e.Item as BaseAdapter).AdapterID, (adapter, value) => (e.Item as BaseAdapter).AdapterID = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" }, new ReadOnlyAttribute(true) }));
             e.Properties.Add(e.CreateProxyProperty("Name", adapter => (e.Item as BaseAdapter).Header, (adapter, value) => (e.Item as BaseAdapter).Header = value, new Attribute[] { new DisplayAttribute() { GroupName = "Adapter" } }));
-            //e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.BaseAdapter"))["AdapterID"]);
+
             
             foreach (var item in (e.Item as BaseAdapter).Items)
             {
@@ -248,7 +247,7 @@ namespace WFBuilder
             }
         }
 
-        public static DiagramContainer Create(string path,string typeName)
+        public static DiagramContainer Create(string path,string typeName,string name)
         {
             string fullName = $"{path}.{typeName}";
             ObjectHandle handle = Activator.CreateInstance("WFBuilder", fullName);
