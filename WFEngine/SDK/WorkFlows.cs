@@ -22,6 +22,12 @@ namespace WFEngine.SDK
                // workFlow = XElement.Load(path);
                 WorkflowList.Add(path, workFlow);
             }
+            else
+            {
+                workFlow = Workflow.Create(path);
+                WorkflowList[path] = workFlow;
+
+            }
 
             return WorkflowList[path];
 

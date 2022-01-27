@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Activities>
+  <!--//////////////////Commom////////////////////////////////////////////////////////////-->
+  <Activity ItemKind="AssignAdapter" Type="Assign" Namespace="Common" AssemblyName="Common" />
+  <Activity ItemKind="TimerAdapter" Type="Timer" Namespace="Common" AssemblyName="Common" />
+  <Activity ItemKind="CounterAdapter" Type="Counter" Namespace="Common" AssemblyName="Common" />
+  <!--//////////////////General////////////////////////////////////////////////////////////-->
   <Activity ItemKind="TransparentAdapter" Type="Transparent" Namespace="General" AssemblyName="General" />
-  <Activity ItemKind="AssignAdapter" Type="Assign" Namespace="CommonActivities" AssemblyName="CommonActivities" />
   <Activity ItemKind="LogAdapter" Type ="Log" Namespace="General.Logger" AssemblyName="General" />
+  <Activity ItemKind="LogEscDataAdapter" Type ="LogEscData" Namespace="General.Logger" AssemblyName="General" />
+  <Activity ItemKind="CreateSetEscDataAdapter" Type ="CreateSetEscData" Namespace="General.EscData" AssemblyName="General" />
+  <Activity ItemKind="GetEscDataAdapter" Type ="GetEscData" Namespace="General.EscData" AssemblyName="General" />
+  <Activity ItemKind="SetEscDataAdapter" Type ="SetEscData" Namespace="General.EscData" AssemblyName="General" />
 </Activities> 

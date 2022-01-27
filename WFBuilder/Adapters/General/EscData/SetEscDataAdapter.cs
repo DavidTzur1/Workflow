@@ -17,28 +17,34 @@ using WFBuilder.Validations;
 
 namespace WFBuilder.Adapters.General.EscData
 {
-    public class CreateSetEscDataAdapter : BaseAdapter, IXtraSupportDeserializeCollectionItem
+    public class SetEscDataAdapter : BaseAdapter, IXtraSupportDeserializeCollectionItem
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [XtraSerializableProperty]
-        [Category("CreateSet")]
+        [Category("SetEsc")]
         [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("Object")]
         [Display(Name = "EscData")]
         public string _EscData { get; set; } = "";
 
+
+
         [XtraSerializableProperty(XtraSerializationVisibility.Collection, useCreateItem: true)]
-        [Category("CreateSet")]
+        [Category("SetEsc")]
         [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("All")]
         [Display(Name = "Values")]
         public ObservableCollection<KeyValue> _Values { get; set; }
 
-       
+        [XtraSerializableProperty]
+        [Category("SetEsc")]
+        [Display(Name = "AllowAddNewKey")]
+        public bool _AllowAddNewKey { get; set; } = false;
 
-        public CreateSetEscDataAdapter()
+
+        public SetEscDataAdapter()
         {
 
-            base.Name = "CrSetEsc";
+            base.Name = "SetEsc";
 
             base.PinsIn.Add(new Pin() { id = 1, name = "in" });
 
@@ -51,9 +57,9 @@ namespace WFBuilder.Adapters.General.EscData
 
         }
 
-        static CreateSetEscDataAdapter()
+        static SetEscDataAdapter()
         {
-            DiagramControl.ItemTypeRegistrator.Register(typeof(CreateSetEscDataAdapter));
+            DiagramControl.ItemTypeRegistrator.Register(typeof(SetEscDataAdapter));
         }
 
         object IXtraSupportDeserializeCollectionItem.CreateCollectionItem(string propertyName, XtraItemEventArgs e)
@@ -73,28 +79,16 @@ namespace WFBuilder.Adapters.General.EscData
 
             ///////////////////////////////////Add prorerties of this adapter//////////////////////////////////////
 
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.EscData.CreateSetEscDataAdapter"))["_EscData"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.EscData.CreateSetEscDataAdapter"))["_Values"]);
-           
-
-
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.EscData.SetEscDataAdapter"))["_EscData"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.EscData.SetEscDataAdapter"))["_Values"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.EscData.SetEscDataAdapter"))["_AllowAddNewKey"]);
         }
 
-        //public enum LogLevel { Info, Debug, Error, Critical, Warning };
+
     }
 
-    public class KeyValue
-    {
-        [XtraSerializableProperty]
-        [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("String")]
-        [ValidVal("String", ErrorMessage = "The value is invalid")]
-        [Display(Name = "Key")]
-        public string Key { get; set; } = "";
-        [XtraSerializableProperty]
-        [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("All")]
-        [ValidVal("String", ErrorMessage = "The value is invalid")]
-        [Display(Name = "Value")]
-        public string Value { get; set; } = "";
-    }
+
 }
+
+
 

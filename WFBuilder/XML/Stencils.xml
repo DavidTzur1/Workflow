@@ -4,13 +4,19 @@
       <Adapters>
         <Adapter Namespace="WFBuilder.Adapters" Type="Template" Name="Template"/>
         <Adapter Namespace="WFBuilder.Adapters.General" Type="TransparentAdapter" Name="Transparent" />
-        <Adapter Namespace="WFBuilder.Adapters.General" Type="LogAdapter" Name="Log" />
+        <Adapter Namespace="WFBuilder.Adapters.General" Type="BroadcastOriginatorAdapter" Name="BrcsOrg" />
+        <Adapter Namespace="WFBuilder.Adapters.General.Logger" Type="LogAdapter" Name="Log" />
+        <Adapter Namespace="WFBuilder.Adapters.General.Logger" Type="LogEscDataAdapter" Name="LogEsc" />
         <Adapter Namespace="WFBuilder.Adapters.General.EscData" Type="CreateSetEscDataAdapter" Name="CreSetEsc" />
+        <Adapter Namespace="WFBuilder.Adapters.General.EscData" Type="GetEscDataAdapter" Name="GetEsc" />
+        <Adapter Namespace="WFBuilder.Adapters.General.EscData" Type="SetEscDataAdapter" Name="SetEsc" />
       </Adapters>
     </Stencil>
     <Stencil id="2" name="Common" isVisible="1">
       <Adapters>
-        <Adapter Namespace="WFBuilder.Adapters.Common" Type="AssignAdapter" Name="Assign" />        
+        <Adapter Namespace="WFBuilder.Adapters.Common" Type="AssignAdapter" Name="Assign" /> 
+        <Adapter Namespace="WFBuilder.Adapters.Common" Type="TimerAdapter" Name="Timer" />
+        <Adapter Namespace="WFBuilder.Adapters.Common" Type="CounterAdapter" Name="Counter" />
       </Adapters>
     </Stencil>
   </Stencils>

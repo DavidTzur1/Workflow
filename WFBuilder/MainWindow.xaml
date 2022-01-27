@@ -136,6 +136,9 @@
                 <DataTemplate x:Key="AdaptersEditorTemplate">
                     <dxe:ComboBoxEdit Name="PART_Editor"  DisplayMember="AdapterName"  ValueMember="AdapterID"     ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=dxdiag:DiagramDesignerControl}, Path=DataContext.Adapters,Mode=OneWay}" />
                 </DataTemplate>
+                <DataTemplate x:Key="BroadcastEditorTemplate">
+                    <dxe:ComboBoxEdit Name="PART_Editor"       ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=dxdiag:DiagramDesignerControl}, Path=DataContext.BroadcastMessageNames,Mode=OneWay}" />
+                </DataTemplate>
                 <DataTemplate x:Key="PinsEditorTemplate1">
                     <dxe:ComboBoxEdit Name="PART_Editor" 
                                       DisplayMember="PinName" 

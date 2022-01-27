@@ -123,7 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.config" />
-    <Content Include="Config\ActivityType.json" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -134,11 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Config\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonActivities\CommonActivities.csproj">
-      <Project>{fb356b81-06d0-4632-b583-ecdf940ab1f3}</Project>
-      <Name>CommonActivities</Name>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{0889618e-e16c-44d3-888d-00a56bd0e938}</Project>
+      <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\General\General.csproj">
       <Project>{1be71ebf-96d5-4be8-81d9-04db58116ef5}</Project>

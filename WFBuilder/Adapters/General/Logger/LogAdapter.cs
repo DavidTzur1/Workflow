@@ -15,9 +15,9 @@ using WFBuilder.Attributes;
 using WFBuilder.Models;
 using WFBuilder.Validations;
 
-namespace WFBuilder.Adapters.General
+namespace WFBuilder.Adapters.General.Logger
 {
-    public class LogAdapter : BaseAdapter  , IXtraSupportDeserializeCollectionItem
+    public class LogAdapter : BaseAdapter, IXtraSupportDeserializeCollectionItem
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -42,13 +42,13 @@ namespace WFBuilder.Adapters.General
 
         public LogAdapter()
         {
-            
+
             base.Name = "Log";
 
             base.PinsIn.Add(new Pin() { id = 1, name = "in" });
 
             base.PinsOut.Add(new Pin() { id = 33, name = "out" });
-            
+
 
             Height = Math.Max(base.PinsIn.Count, base.PinsOut.Count) * 40;
             _Values = new ObservableCollection<StringValue>();
@@ -77,14 +77,14 @@ namespace WFBuilder.Adapters.General
 
             ///////////////////////////////////Add prorerties of this adapter//////////////////////////////////////
 
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.LogAdapter"))["_Values"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.LogAdapter"))["_Delimiter"]);
-            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.LogAdapter"))["_Level"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.Logger.LogAdapter"))["_Values"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.Logger.LogAdapter"))["_Delimiter"]);
+            e.Properties.Add(TypeDescriptor.GetProperties(Type.GetType("WFBuilder.Adapters.General.Logger.LogAdapter"))["_Level"]);
 
 
         }
 
-        public enum LogLevel {DEBUG, INFO, WARN, ERROR, FATAL };
+        public enum LogLevel { DEBUG, INFO, WARN, ERROR, FATAL };
 
         [Serializable]
         public class StringValue
@@ -98,3 +98,4 @@ namespace WFBuilder.Adapters.General
         }
     }
 }
+

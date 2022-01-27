@@ -173,7 +173,11 @@ namespace WFBuilder
             EntryPoints = new ObservableCollection<EntryPointModel>() ;
             EntryPoints.CollectionChanged += EntryPoints_CollectionChanged;
 
-            BroadcastMessages = new ObservableCollection<BroadcastMessageModel>();
+            BroadcastMessages = new ObservableCollection<BroadcastMessageModel>()
+            {
+                new BroadcastMessageModel{BroadcastMessageID=0,BroadcastMessageName="bk"},
+                new BroadcastMessageModel{BroadcastMessageID=1,BroadcastMessageName="stop"}
+            };
             BroadcastMessages.CollectionChanged += BroadcastMessages_CollectionChanged;
 
 
@@ -500,7 +504,7 @@ namespace WFBuilder
             List<VariableModel> list = new List<VariableModel>();
             foreach (var item in Variables)
             {
-                if(valTypes.Contains(Enum.GetName(typeof(ValidationDataTypeEx),item.ValType)))
+                if(valTypes.Contains(Enum.GetName(typeof(ValidationDataTypeEx),item.ValType)) || valTypes=="All")
                 {
                     list.Add(new VariableModel { Name = (item.LevelScope == LevelScopeType.Local ? $"@{item.Name}" : $"::{item.Name}"), VariableID = item.VariableID });
                 }
@@ -509,7 +513,18 @@ namespace WFBuilder
 
             return list;
         }
-       
+
+        ///////////////BroadcastMessage//////////////////////////////////////////////////////////////////////////
+        public List<string> BroadcastMessageNames
+        {
+            get
+            {
+
+                return BroadcastMessages.Select(x => x.BroadcastMessageName).ToList();
+            }
+            
+        }
+
 
     }
 }

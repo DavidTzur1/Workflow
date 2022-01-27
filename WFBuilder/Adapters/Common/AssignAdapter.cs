@@ -19,13 +19,13 @@ namespace WFBuilder.Adapters.Common
 
 
         [XtraSerializableProperty]
-        [Description("Property Str with template"), Category("Assign")]
+        [Category("Assign")]
         [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("All")]
         [Display(Name = "Source")]
         public string _Source { get; set; } = "";
 
         [XtraSerializableProperty]
-        [Description("Property Str with template"), Category("Assign")]
+        [Category("Assign")]
         [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("All")]
         [Display(Name = "Destination")]
         public string _Destination { get; set; } = "";
