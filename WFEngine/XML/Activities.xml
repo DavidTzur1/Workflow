@@ -11,5 +11,5 @@
   <Activity ItemKind="CreateSetEscDataAdapter" Type ="CreateSetEscData" Namespace="General.EscData" AssemblyName="General" />
   <Activity ItemKind="GetEscDataAdapter" Type ="GetEscData" Namespace="General.EscData" AssemblyName="General" />
   <Activity ItemKind="SetEscDataAdapter" Type ="SetEscData" Namespace="General.EscData" AssemblyName="General" />
-  <!--//////////////////General////////////////////////////////////////////////////////////-->
+  
 </Activities> 
