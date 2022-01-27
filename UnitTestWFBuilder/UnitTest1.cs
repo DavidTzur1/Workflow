@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NCalc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using WFBuilder;
+using Expression = NCalc.Expression;
 
 namespace UnitTestWFBuilder
 {
@@ -15,22 +17,26 @@ namespace UnitTestWFBuilder
         [TestMethod]
         public void TestMethod1()
         {
-            //string path = "WFBuilder.Adapters";
-            //string typeName = "Template";
-            //var adapter = BaseAdapter.Create(path, typeName);
+            
+            string ValueText = "3*5";
 
-            //PropertyInfo[] properties = adapter.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            try
+            {
+                var exp = new NCalc.Expression(ValueText);
+                var obj = exp.Evaluate();
+                MessageBox.Show($"{obj}");
 
-            //foreach (var item in properties)
-            //{
-            //    Debug.WriteLine($"Property is {item.Name}");
-            //}
-            object str = "5";
-            //object a = int.Parse(str);
-            object a = str;
-            MessageBox.Show($"{a.ToString()}");
-           // Debug.WriteLine($"Property is {item.Name}");
 
+            }
+            catch (Exception)
+            {
+                
+            }
+
+           
+
+            
+           
         }
     }
 }

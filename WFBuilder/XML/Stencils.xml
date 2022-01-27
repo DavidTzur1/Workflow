@@ -17,6 +17,9 @@
         <Adapter Namespace="WFBuilder.Adapters.Common" Type="AssignAdapter" Name="Assign" /> 
         <Adapter Namespace="WFBuilder.Adapters.Common" Type="TimerAdapter" Name="Timer" />
         <Adapter Namespace="WFBuilder.Adapters.Common" Type="CounterAdapter" Name="Counter" />
+        <Adapter Namespace="WFBuilder.Adapters.Common" Type="ExpressionAdapter" Name="Expression" />
+        <Adapter Namespace="WFBuilder.Adapters.Common" Type="RandomAdapter" Name="Random" />
+        <Adapter Namespace="WFBuilder.Adapters.Common" Type="GenerateIDAdapter" Name="GenerateID" />
       </Adapters>
     </Stencil>
   </Stencils>

@@ -90,9 +90,10 @@ namespace WFBuilder.Adapters.General.Logger
         public class StringValue
         {
             [XtraSerializableProperty]
-            [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("String|Integer|DateTime")]
+            [PropertyGridEditor(TemplateKey = "VariablesEditorGeneric"), CustomDataType("String|Integer|DateTime|Double")]
             [ValidVal("String", ErrorMessage = "The value is invalid")]
             [Display(Name = "Value")]
+            
             public string Value { get; set; } = "";
 
         }

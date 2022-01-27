@@ -88,6 +88,9 @@
     </ApplicationDefinition>
     <Compile Include="Adapters\Common\AssignAdapter.cs" />
     <Compile Include="Adapters\Common\CounterAdapter.cs" />
+    <Compile Include="Adapters\Common\ExpressionAdapter.cs" />
+    <Compile Include="Adapters\Common\GenerateIDAdapter.cs" />
+    <Compile Include="Adapters\Common\RandomAdapter.cs" />
     <Compile Include="Adapters\Common\TimerAdapter.cs" />
     <Compile Include="Adapters\General\BroadcastOriginatorAdapter.cs" />
     <Compile Include="Adapters\General\EscData\CreateSetEscDataAdapter.cs" />

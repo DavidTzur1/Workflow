@@ -62,7 +62,7 @@ namespace WFActivities
 
                 }
                 double Real;
-                if (Type == "Real")
+                if (Type == "Double")
                 {
                     if (double.TryParse(value.ToString(), out Real))
                     {

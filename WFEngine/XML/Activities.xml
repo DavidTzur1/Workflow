@@ -4,6 +4,9 @@
   <Activity ItemKind="AssignAdapter" Type="Assign" Namespace="Common" AssemblyName="Common" />
   <Activity ItemKind="TimerAdapter" Type="Timer" Namespace="Common" AssemblyName="Common" />
   <Activity ItemKind="CounterAdapter" Type="Counter" Namespace="Common" AssemblyName="Common" />
+  <Activity ItemKind="ExpressionAdapter" Type="Expression" Namespace="Common" AssemblyName="Common" />
+  <Activity ItemKind="RandomAdapter" Type="Random" Namespace="Common" AssemblyName="Common" />
+  <Activity ItemKind="GenerateIDAdapter" Type="GenerateID" Namespace="Common" AssemblyName="Common" />
   <!--//////////////////General////////////////////////////////////////////////////////////-->
   <Activity ItemKind="TransparentAdapter" Type="Transparent" Namespace="General" AssemblyName="General" />
   <Activity ItemKind="LogAdapter" Type ="Log" Namespace="General.Logger" AssemblyName="General" />

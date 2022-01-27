@@ -7,6 +7,9 @@
     <Service Name ="TestEscData" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestEscData.xml" Ver ="1.0" Params=""></Service>
     <Service Name ="TestTimer" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestTimer.xml" Ver ="1.0" Params=""></Service>
     <Service Name ="TestCounter" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestCounter.xml" Ver ="1.0" Params=""></Service>
+    <Service Name ="TestExpression" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestExpression.xml" Ver ="1.0" Params=""></Service>
+    <Service Name ="TestRandom" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestRandom.xml" Ver ="1.0" Params=""></Service>
+    <Service Name ="TestGenerateID" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestGenerateID.xml" Ver ="1.0" Params=""></Service>
   </Services>
 
 </root>
