@@ -14,5 +14,7 @@
   <Activity ItemKind="CreateSetEscDataAdapter" Type ="CreateSetEscData" Namespace="General.EscData" AssemblyName="General" />
   <Activity ItemKind="GetEscDataAdapter" Type ="GetEscData" Namespace="General.EscData" AssemblyName="General" />
   <Activity ItemKind="SetEscDataAdapter" Type ="SetEscData" Namespace="General.EscData" AssemblyName="General" />
+  <!--//////////////////Network////////////////////////////////////////////////////////////-->
+  <Activity ItemKind="HttpSendAdapter" Type="HttpSend" Namespace="Network" AssemblyName="Network" />
   
 </Activities> 

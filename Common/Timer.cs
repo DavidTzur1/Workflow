@@ -61,7 +61,7 @@ namespace Common
         }
         public override void Clear()
         {
-            log.Debug("Clear");
+            //log.Debug("Clear");
             source.Cancel();
             source.Dispose();
         }

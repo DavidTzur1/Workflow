@@ -22,5 +22,10 @@
         <Adapter Namespace="WFBuilder.Adapters.Common" Type="GenerateIDAdapter" Name="GenerateID" />
       </Adapters>
     </Stencil>
+    <Stencil id="3" name="Network" isVisible="1">
+      <Adapters>
+        <Adapter Namespace="WFBuilder.Adapters.Network" Type="HttpSendAdapter" Name="Http" />       
+      </Adapters>
+    </Stencil>
   </Stencils>
 </root>

@@ -18,7 +18,7 @@ namespace General.Logger
             get
             {
                 string str = String.Empty;
-                return base.Properties.Element("Values").Elements("Value").Attributes("Value").Select(x=>x.Value).ToList();
+                return base.Properties?.Element("Values")?.Elements("Value")?.Attributes("Value")?.Select(x=>x.Value)?.ToList();
             }
 
         }
@@ -56,10 +56,12 @@ namespace General.Logger
             try
             {
                 List<string> targets = new List<string>();
-                foreach (var item in Values)
+                if (Values != null)
                 {
-                   // log.Debug(base.GetPropertyByValue(item).ToString());
-                    targets.Add(base.GetPropertyByValue(item).ToString());
+                    foreach (var item in Values)
+                    {
+                        targets.Add(base.GetPropertyByValue(item)?.ToString());
+                    }
                 }
 
                 string Message = String.Join(Delimiter, targets.ToArray());
