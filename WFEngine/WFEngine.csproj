@@ -187,6 +187,10 @@
       <Project>{0889618e-e16c-44d3-888d-00a56bd0e938}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataBase\DataBase.csproj">
+      <Project>{b7e2dc7c-3a7e-43a5-9bf7-cd3a5a666586}</Project>
+      <Name>DataBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\General\General.csproj">
       <Project>{1be71ebf-96d5-4be8-81d9-04db58116ef5}</Project>
       <Name>General</Name>

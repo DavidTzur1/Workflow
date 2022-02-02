@@ -16,5 +16,8 @@
   <Activity ItemKind="SetEscDataAdapter" Type ="SetEscData" Namespace="General.EscData" AssemblyName="General" />
   <!--//////////////////Network////////////////////////////////////////////////////////////-->
   <Activity ItemKind="HttpSendAdapter" Type="HttpSend" Namespace="Network" AssemblyName="Network" />
+  <!--//////////////////DataBase////////////////////////////////////////////////////////////-->
+  <Activity ItemKind="DBExecuteAdapter" Type="DBExecute" Namespace="DataBase" AssemblyName="DataBase" />
+  <Activity ItemKind="DBReaderAdapter" Type="DBReader" Namespace="DataBase" AssemblyName="DataBase" />
   
 </Activities> 

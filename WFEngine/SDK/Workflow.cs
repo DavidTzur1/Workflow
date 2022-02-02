@@ -17,7 +17,7 @@ namespace WFEngine.SDK
         {
             try
             {
-                log.Debug($"path = { path}");
+                //log.Debug($"path = { path}");
                 XElement xml = XElement.Load(path);
                 XElement outXml = new XElement("Workflow");
 

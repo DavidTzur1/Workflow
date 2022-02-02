@@ -24,7 +24,7 @@ namespace WFEngine.SDK
             }
             else
             {
-                workFlow = Workflow.Create(path);
+               workFlow = Workflow.Create(path);
                WorkflowList[path] = workFlow;
 
             }

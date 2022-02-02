@@ -27,5 +27,11 @@
         <Adapter Namespace="WFBuilder.Adapters.Network" Type="HttpSendAdapter" Name="Http" />       
       </Adapters>
     </Stencil>
+    <Stencil id="4" name="DataBase" isVisible="1">
+      <Adapters>
+        <Adapter Namespace="WFBuilder.Adapters.DataBase" Type="DBExecuteAdapter" Name="DBExecute" />
+        <Adapter Namespace="WFBuilder.Adapters.DataBase" Type="DBReaderAdapter" Name="DBReader" />
+      </Adapters>
+    </Stencil>
   </Stencils>
 </root>

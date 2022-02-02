@@ -93,6 +93,8 @@
     <Compile Include="Adapters\Common\GenerateIDAdapter.cs" />
     <Compile Include="Adapters\Common\RandomAdapter.cs" />
     <Compile Include="Adapters\Common\TimerAdapter.cs" />
+    <Compile Include="Adapters\DataBase\DBExecuteAdapter.cs" />
+    <Compile Include="Adapters\DataBase\DBReaderAdapter.cs" />
     <Compile Include="Adapters\General\BroadcastOriginatorAdapter.cs" />
     <Compile Include="Adapters\General\EscData\CreateSetEscDataAdapter.cs" />
     <Compile Include="Adapters\General\EscData\GetEscDataAdapter.cs" />

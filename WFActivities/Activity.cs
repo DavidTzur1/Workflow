@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Xml.Linq;
@@ -27,12 +28,17 @@ namespace WFActivities
         public XElement Properties { get; set; }
         public Variables Variables { get; set; } 
 
-        
+        public CancellationTokenSource cts { get; set; }
+
+        public SemaphoreSlim semaphoreSlim { get; set; }
+
+
         //public Dictionary<string, object> Variables { get; set; }
 
 
         public abstract Task Execute(int pinId);
         public abstract void Clear();
+        //public virtual void Clear() { }
         public virtual int Pure(int pinId) { return 1; }
         public Activity()
         {

@@ -11,6 +11,8 @@
     <Service Name ="TestRandom" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestRandom.xml" Ver ="1.0" Params=""></Service>
     <Service Name ="TestGenerateID" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestGenerateID.xml" Ver ="1.0" Params=""></Service>
     <Service Name ="TestHttpSend" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestHttpSend.xml" Ver ="1.0" Params=""></Service>
+    <Service Name ="TestDBExecute" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestDBExecute.xml" Ver ="1.0" Params=""></Service>
+    <Service Name ="TestDBReader" Dest="0544165502" Path ="D:\WFData\Documents\Test\TestDBReader.xml" Ver ="1.0" Params=""></Service>
   </Services>
 
 </root>
